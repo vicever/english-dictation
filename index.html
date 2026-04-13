@@ -1558,48 +1558,88 @@ function normalizeLine(line) {
   return result;
 }
 
+// 解析单行词汇 - 支持两种格式：
+// 格式1: 英文 词性 中文释义
+// 格式2: 中文释义 英文 [词性] [额外中文]
 function parseEntriesFromLine(line) {
-  // 去掉行首编号
-  line = line.replace(/^\d+\.\s*/, '');
-  if (!line.trim()) return [];
+  // 去掉行首编号和空行
+  line = line.replace(/^\d+\.\s*/, '').trim();
+  if (!line || line === '/') return [];
 
-  // 标准化
-  const normalized = normalizeLine(line);
   const entries = [];
-
+  
   // 词性正则
   const posRegex = POS_MARKERS.map(p => p.replace(/\./g, '\\.')).join('|');
-  const wordPattern = new RegExp(`\\s*([a-z][a-zA-Z\\-]*(?:[\\-'][a-zA-Z\\-]+)*)\\s*(${posRegex})\\s*`, 'gi');
-
-  // 查找所有词条
-  const matches = [...normalized.matchAll(wordPattern)];
-
-  for (let i = 0; i < matches.length; i++) {
-    const word = matches[i][1];
-    const pos = matches[i][2];
-    const start = matches[i].index + matches[i][0].length;
-
-    // 找中文释义（到下一个词条或字符串末尾）
-    let end;
-    if (i + 1 < matches.length) {
-      end = matches[i + 1].index;
-    } else {
-      end = normalized.length;
+  
+  // 标准化（词性标记前加空格）
+  const normalized = normalizeLine(line);
+  
+  // 尝试标准格式：英文 + 词性 + 中文
+  const standardMatch = normalized.match(new RegExp(`^([a-z][a-zA-Z\\-']*)\\s+(${posRegex})\\s*(.+)`));
+  
+  if (standardMatch) {
+    // 标准格式
+    entries.push({
+      en: standardMatch[1],
+      pos: standardMatch[2],
+      zh: standardMatch[3].trim(),
+      examples: [],
+      type: standardMatch[1].includes(' ') ? 'phrase' : 'word'
+    });
+    return entries;
+  }
+  
+  // 非标准格式：中文在前，英文在后
+  // 找到第一个英文单词（至少2个连续字母）
+  const firstEnglishIdx = normalized.search(/[a-zA-Z]{2,}/);
+  
+  if (firstEnglishIdx > 0) {
+    // 中文在前，英文在后
+    const zhPart = normalized.substring(0, firstEnglishIdx).trim();
+    const enPart = normalized.substring(firstEnglishIdx).trim();
+    
+    // 从英文部分提取单词和词性
+    const enMatch = enPart.match(new RegExp(`^([a-z][a-zA-Z\\-']*(?:\\s+[a-z][a-zA-Z\\-']*)*)\\s*(${posRegex})?\\s*(.*)`));
+    
+    if (enMatch) {
+      const englishWord = enMatch[1].trim();
+      const pos = enMatch[2] || 'v.';
+      const extraZh = enMatch[3] || '';
+      
+      // 合并中文释义
+      let zhText = zhPart.replace(/[；;]/g, '；');
+      if (extraZh) {
+        zhText += ' ' + extraZh;
+      }
+      
+      if (englishWord && zhText) {
+        const isPhrase = englishWord.includes(' ');
+        const isDerived = !isPhrase && DERIVED_SUFFIXES.some(s => englishWord.toLowerCase().endsWith(s));
+        
+        entries.push({
+          en: englishWord,
+          pos: pos,
+          zh: zhText.replace(/\s+/g, ' ').trim(),
+          examples: [],
+          type: (isPhrase || isDerived) ? 'phrase' : 'word'
+        });
+      }
     }
-
-    const zhText = normalized.slice(start, end).trim().replace(/[，。、；： ""''（）【】…—]+$/, '');
-
-    if (word && zhText) {
-      // 判断是单词还是词组
-      const isDerived = DERIVED_SUFFIXES.some(s => word.toLowerCase().endsWith(s)) && !word.includes(' ');
-      const isPhrase = word.includes(' ') || pos === 'phr.';
-
+  } else if (firstEnglishIdx >= 0) {
+    // 英文在前（但中文在后没词性）
+    const enPart = normalized.substring(firstEnglishIdx).trim();
+    const spaceIdx = enPart.search(/\s{2,}|(?=[A-Z])|(?=\()/);
+    const englishWord = spaceIdx > 0 ? enPart.substring(0, spaceIdx) : enPart.split(/\s/)[0];
+    
+    if (englishWord && normalized.length > firstEnglishIdx + englishWord.length) {
+      const zhText = normalized.substring(firstEnglishIdx + englishWord.length).trim();
+      
       entries.push({
-        en: word,
-        pos: pos,
+        en: englishWord,
+        pos: 'v.',
         zh: zhText,
         examples: [],
-        type: (isDerived || isPhrase) ? 'phrase' : 'word'
+        type: englishWord.includes(' ') ? 'phrase' : 'word'
       });
     }
   }
