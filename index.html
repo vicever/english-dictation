@@ -71,10 +71,11 @@
   .dash-card.new::before{background:linear-gradient(90deg,#4f46e5,#7c3aed)}
   .dash-card.review::before{background:linear-gradient(90deg,#10b981,#059669)}
   .dash-card.mix::before{background:linear-gradient(90deg,#f59e0b,#d97706)}
+  .dash-card.study::before{background:linear-gradient(90deg,#ec4899,#be185d)}
   .dash-card-icon{font-size:1.8rem;margin-bottom:6px}
   .dash-card-title{font-size:.85rem;color:var(--muted);margin-bottom:4px}
   .dash-card-count{font-size:2rem;font-weight:800}
-  .dash-card-count.blue{color:var(--primary)}.dash-card-count.green{color:var(--success)}.dash-card-count.orange{color:var(--warn)}
+  .dash-card-count.blue{color:var(--primary)}.dash-card-count.green{color:var(--success)}.dash-card-count.orange{color:var(--warn)}.dash-card-count.pink{color:#ec4899}
   .dash-card-sub{font-size:.78rem;color:var(--muted);margin-top:2px}
 
   .dash-tip{background:#f8faff;border:1px solid #e0e7ff;border-radius:10px;padding:12px 16px;font-size:.85rem;color:var(--muted);line-height:1.7}
@@ -85,6 +86,70 @@
   .batch-stat{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
   .batch-stat .num{font-size:1.5rem;font-weight:800;color:var(--primary)}
   .batch-stat .label{font-size:.75rem;color:var(--muted);margin-top:2px}
+
+  /* ===== LEARNING PAGE (NEW!) ===== */
+  .study-date-header{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--border);
+  }
+  .study-date-header h2{font-size:1.1rem;color:var(--primary)}
+  .study-date-badge{
+    background:linear-gradient(135deg,#ec4899,#be185d);color:#fff;
+    padding:4px 14px;border-radius:16px;font-size:.82rem;font-weight:700;
+  }
+  
+  .study-toggle-bar{
+    display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;
+  }
+  .study-toggle-btn{
+    padding:6px 14px;border-radius:8px;border:1.5px solid var(--border);
+    background:#fff;color:var(--muted);font-size:.82rem;cursor:pointer;
+    transition:all .15s;
+  }
+  .study-toggle-btn:hover{border-color:var(--primary);color:var(--primary)}
+  .study-toggle-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+  .study-toggle-btn span{opacity:.7;font-size:.75rem}
+
+  .study-word-card{
+    background:#fff;border:1px solid var(--border);border-radius:10px;
+    padding:14px 16px;margin-bottom:10px;position:relative;
+    transition:all .2s;
+  }
+  .study-word-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.08)}
+  .study-word-card .en{font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:4px}
+  .study-word-card .pos{
+    display:inline-block;background:#e0e7ff;color:#1e40af;
+    padding:1px 8px;border-radius:6px;font-size:.72rem;margin-left:8px;
+  }
+  .study-word-card .phrase-hint{
+    display:inline-block;background:#ede9fe;color:var(--purple);
+    padding:1px 8px;border-radius:6px;font-size:.72rem;margin-left:8px;
+  }
+  .study-word-card .zh{color:var(--muted);font-size:.88rem;margin-top:6px}
+  .study-word-card .examples{
+    margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);
+    font-size:.8rem;color:#64748b;
+  }
+  .study-word-card.hidden-en .en{filter:blur(5px);user-select:none}
+  .study-word-card.hidden-pos .pos,.study-word-card.hidden-pos .phrase-hint{opacity:.3}
+  .study-word-card.hidden-zh .zh{filter:blur(5px);user-select:none}
+  .study-word-card .toggle-hint{
+    position:absolute;top:8px;right:10px;font-size:.72rem;color:#94a3b8;
+    opacity:0;transition:opacity .2s;
+  }
+  .study-word-card:hover .toggle-hint{opacity:1}
+
+  .study-actions{
+    display:flex;gap:10px;justify-content:center;flex-wrap:wrap;
+    margin-top:20px;padding-top:16px;border-top:1px solid var(--border);
+  }
+
+  /* 学习进度 */
+  .study-progress-bar{
+    background:var(--border);border-radius:8px;height:8px;margin-bottom:16px;overflow:hidden;
+  }
+  .study-progress{height:100%;background:linear-gradient(90deg,#ec4899,#be185d);border-radius:8px;transition:width .4s ease}
+  .study-progress-text{font-size:.82rem;color:var(--muted);text-align:center;margin-bottom:12px}
 
   /* ===== QUIZ ===== */
   .quiz-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:.82rem;color:var(--muted)}
@@ -214,6 +279,7 @@
   <h1>📝 英语默写练习</h1>
   <div class="nav-tabs">
     <button class="nav-tab active" onclick="showPage('page-home')">首页</button>
+    <button class="nav-tab" onclick="showPage('page-study')">📖 学习</button>
     <button class="nav-tab" onclick="showPage('page-library')">词库</button>
     <button class="nav-tab" onclick="showPage('page-wrong')">错题本</button>
     <button class="nav-tab" onclick="showPage('page-stats')">统计</button>
@@ -241,6 +307,13 @@
           <div class="dash-card-count green" id="dash-review-count">0</div>
           <div class="dash-card-sub" id="dash-review-sub">没有待复习单词</div>
         </div>
+        <!-- 学习模块 -->
+        <div class="dash-card study" onclick="goToStudy()">
+          <div class="dash-card-icon">📖</div>
+          <div class="dash-card-title">今日学习</div>
+          <div class="dash-card-count pink" id="dash-study-count">0</div>
+          <div class="dash-card-sub" id="dash-study-sub">查看今日单词</div>
+        </div>
         <!-- 综合 -->
         <div class="dash-card mix" onclick="startQuiz('mix')" style="grid-column:1/-1">
           <div class="dash-card-icon">🎯</div>
@@ -262,6 +335,47 @@
     <div class="card" id="recent-card" style="display:none;">
       <h2 style="font-size:1rem;margin-bottom:12px;color:var(--primary);">🕐 最近练习</h2>
       <div id="recent-list"></div>
+    </div>
+  </div>
+
+  <!-- ===== 学习页（新增） ===== -->
+  <div id="page-study" class="page">
+    <div class="card">
+      <div class="study-date-header">
+        <h2 id="study-page-title">📖 今日学习</h2>
+        <span class="study-date-badge" id="study-date-badge">3.9</span>
+      </div>
+      
+      <div class="study-progress-text" id="study-progress-text">0 / 0 已学习</div>
+      <div class="study-progress-bar">
+        <div class="study-progress" id="study-progress" style="width:0%"></div>
+      </div>
+
+      <div class="study-toggle-bar">
+        <button class="study-toggle-btn active" onclick="toggleStudyView('en')">
+          👁️ 英文 <span>[V]</span>
+        </button>
+        <button class="study-toggle-btn active" onclick="toggleStudyView('pos')">
+          🏷️ 词性 <span>[P]</span>
+        </button>
+        <button class="study-toggle-btn active" onclick="toggleStudyView('zh')">
+          🔤 中文 <span>[Z]</span>
+        </button>
+        <button class="study-toggle-btn" onclick="toggleStudyView('example')">
+          📝 例句
+        </button>
+      </div>
+
+      <div id="study-word-list"></div>
+
+      <div class="study-actions">
+        <button class="btn btn-success btn-lg" onclick="startQuizFromStudy()">
+          开始默写 ✍️
+        </button>
+        <button class="btn btn-ghost" onclick="selectStudyDate()">
+          选择日期 📅
+        </button>
+      </div>
     </div>
   </div>
 
@@ -309,7 +423,6 @@
             <option value="v./adj.">v./adj.</option>
             <option value="v./n.">v./n.</option>
             <option value="n./v./adj.">n./v./adj.</option>
-            <option value="n./v.">n./v.</option>
           </select>
         </div>
       </div>
@@ -442,6 +555,15 @@
   </div>
 </div>
 
+<!-- 日期选择模态框 -->
+<div class="modal-overlay" id="modal-study-date">
+  <div class="modal">
+    <h3>📅 选择学习日期</h3>
+    <div id="study-date-list" style="max-height:400px;overflow-y:auto;"></div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('modal-study-date')">取消</button></div>
+  </div>
+</div>
+
 <script>
 // ================================================================
 // 数据模型
@@ -457,73 +579,525 @@ let db = {
   plan: {
     batchSize: 10,    // 每轮新增数
     mixRatio: '1:1',  // 混合比例
-    cycleStart: null // 周期起始日期
-  }
+    cycleStart: null  // 周期起始日期
+  },
+  // 学习进度：{ date: { learned: [], viewed: [] } }
+  studyProgress: {},
+  // 当前选中的学习日期
+  currentStudyDate: null
 };
 
-// 内置词库
-// pos: 词性（n.名词 v.动词 adj.形容词 adv.副词 prep.介词 conj.连词 phr.词组/短语）
-// 规则：pos 为 "phr." 的视为词组，提示单词数；其余视为单词，提示词性
-const BUILT_IN_GROUP = { id: 'builtin_21', name: '每日词汇(21)' };
-const BUILT_IN_WORDS = [
-  {en:"focus on the key points",zh:"专注于关键点",pos:"phr."},
-  {en:"develop this important skill",zh:"培养这一重要技能",pos:"phr."},
-  {en:"come across things worth reporting",zh:"遇到值得报道的事情",pos:"phr."},
-  {en:"on one's mind",zh:"萦绕在心头；惦记着；担心着",pos:"phr."},
-  {en:"in one's mind",zh:"在脑海里",pos:"phr."},
-  {en:"get to do sth.",zh:"有机会做某事",pos:"phr."},
-  {en:"get to apply theoretical knowledge to real-world problems",zh:"有机会将理论知识应用到实践中去",pos:"phr."},
-  {en:"have something in common",zh:"有一些共同之处",pos:"phr."},
-  {en:"have nothing in common",zh:"毫无相同之处",pos:"phr."},
-  {en:"have a lot in common",zh:"有很多共同之处",pos:"phr."},
-  {en:"make a good journalist",zh:"成为好的新闻记者",pos:"phr."},
-  {en:"make a good politician",zh:"成为好的政治家",pos:"phr."},
-  {en:"open one's eyes to sth.",zh:"使某人看清/认识/意识到；大开眼界",pos:"phr."},
-  {en:"keep your eyes and ears open",zh:"眼观六路，耳听八方",pos:"phr."},
-  {en:"curiosity",zh:"好奇心",pos:"n."},
-  {en:"be curious about",zh:"对…好奇",pos:"phr."},
-  {en:"contain",zh:"包含",pos:"v."},
-  {en:"contain errors",zh:"包含错误",pos:"phr."},
-  {en:"journalist",zh:"记者",pos:"n."},
-  {en:"a journalist on the job",zh:"一名在职记者",pos:"phr."},
-  {en:"journalism",zh:"新闻业",pos:"n."},
-  {en:"participate",zh:"参加",pos:"v."},
-  {en:"participate in the annual Career Day",zh:"参加年度职业日",pos:"phr."},
-  {en:"participation",zh:"参与（名词）",pos:"n."},
-  {en:"spot",zh:"看到/发现/留意到/识别",pos:"v."},
-  {en:"spot the symptoms of such infection",zh:"识别这种感染的症状",pos:"phr."},
-  {en:"spot a good news story",zh:"发现一则好新闻故事",pos:"phr."},
-  {en:"spot somebody doing",zh:"发现某人在做…",pos:"phr."},
-  {en:"current",zh:"当前的；通用流行的；水电气流；潮流",pos:"adj./n."},
-  {en:"keep up with current events",zh:"关注时事",pos:"phr."},
-  {en:"against the current",zh:"逆流",pos:"phr."},
-  {en:"ocean current",zh:"洋流",pos:"phr."},
-  {en:"AC (alternating current)",zh:"交流电",pos:"phr."},
-  {en:"DC (direct current)",zh:"直流电",pos:"phr."},
-  {en:"conduct electric current",zh:"传导电流",pos:"phr."},
-  {en:"present",zh:"展示；出席的；现在的；颁发",pos:"v./adj./n."},
-  {en:"present the facts in a fair way",zh:"以公正的方式陈述事实",pos:"phr."},
-  {en:"live in the present",zh:"活在当下",pos:"phr."},
-  {en:"at present",zh:"目前",pos:"phr."},
-  {en:"mentor",zh:"导师；良师益友",pos:"n."},
-  {en:"instructor",zh:"指导者；教练",pos:"n."},
-  {en:"guider",zh:"引导者",pos:"n."},
-  {en:"limit",zh:"限制；限度；界限；范围",pos:"n./v."},
-  {en:"a limit on/to the number of words",zh:"字数限制",pos:"phr."},
-  {en:"upper limit",zh:"上限",pos:"phr."},
-  {en:"within limits",zh:"在一定程度上",pos:"phr."},
-  {en:"off-limits",zh:"禁止入内的",pos:"phr."},
-  {en:"push sb. to one's limits",zh:"迫使某人达到极限状态",pos:"phr."},
-  {en:"limited",zh:"有限的",pos:"adj."},
-  {en:"appeal",zh:"呼吁；恳求；上诉；吸引力",pos:"n./v."},
-  {en:"appeal to readers' emotions",zh:"唤起读者感情",pos:"phr."},
-  {en:"appeal to one's sense of justice",zh:"激发正义感",pos:"phr."},
-  {en:"appeal to all ages and social groups",zh:"老少皆宜；雅俗共赏",pos:"phr."},
-  {en:"hold little appeal for",zh:"对…没什么吸引力",pos:"phr."},
-  {en:"file an appeal",zh:"提出上诉",pos:"phr."},
-  {en:"appeal to a higher court",zh:"向上级法院申诉",pos:"phr."},
-  {en:"at all times",zh:"一直，始终",pos:"phr."},
-];
+// 唯一编码生成器
+const genUniqueId = (dateKey, index, type) => {
+  // dateKey: "3.9", "3.10" 等
+  // type: "w" (word) 或 "p" (phrase)
+  const dateNorm = dateKey.replace('.', '_');
+  return `${dateNorm}_${type}${String(index).padStart(3, '0')}`;
+};
+
+// ================================================================
+// 内置词汇数据（已解析自腾讯文档）
+// ================================================================
+const BUILT_IN_DATA = {
+  "3.9": {
+    words: [
+      {en:"recognize",zh:"认识/识别出；承人/认可/接受",pos:"v.",examples:["recognize A as B 把A认为为B","beyond recognition 难以/无法识别"]},
+      {en:"overall",zh:"全面/总体的/地；综合的/地",pos:"adj./adv.",examples:["overall performance 总体表现"]},
+      {en:"distinguish",zh:"区别；辩别；分清",pos:"v.",examples:["be distinguished from 与...区分开","distinguished career 辉煌职业生涯"]},
+      {en:"classify",zh:"把...分/归类；划分",pos:"v.",examples:["A as B 把A定为B","classified files 机密文件"]},
+      {en:"moral",zh:"(有)道德(上)的；品行端正的",pos:"adj.",examples:["a moral dilemma 道德困境","moral kidnapping 道德绑架"]},
+      {en:"hazardous",zh:"危险/有害的",pos:"adj.",examples:["hazard analysis 危害分析"]},
+      {en:"xenophobia",zh:"仇外心理/情绪",pos:"n.",examples:["phobia n. 恐惧"]},
+      {en:"vowel",zh:"元音(字母)",pos:"n.",examples:["consonant n. 辅音(字母)"]},
+      {en:"outlast",zh:"比...更长久",pos:"v.",examples:["outlive 活得比...更长","outweigh 比...重"]},
+      {en:"machinery",zh:"机械(总称)",pos:"n.",examples:["永单：equipment, clothing, furniture"]}
+    ],
+    phrases: [
+      {en:"be engaged in",zh:"从事；参与；忙着",pos:"phr."},
+      {en:"raise one's awareness of sth.",zh:"提高某人对...的认识/意识",pos:"phr."},
+      {en:"challenge social regulations",zh:"挑战社会规范/规则",pos:"phr."},
+      {en:"lead sb. to do sth.",zh:"导致某人做某事",pos:"phr."},
+      {en:"be intended to do",zh:"旨在做某事",pos:"phr."},
+      {en:"be tied to sth.",zh:"与某事绑定/联系在一块儿",pos:"phr."},
+      {en:"fight poverty",zh:"扶贫；摆脱/反贫穷",pos:"phr."},
+      {en:"a bout of laughter",zh:"一阵大笑",pos:"phr."},
+      {en:"head/lead a research team",zh:"领导一个研究团队",pos:"phr."},
+      {en:"on a regular basis",zh:"定期地；经常；常态化",pos:"phr."}
+    ]
+  },
+  "3.10": {
+    words: [
+      {en:"Anglo-Saxon",zh:"英国人；央格鲁撒克逊人",pos:"n.",examples:["+s则是复数形式"]},
+      {en:"excessive",zh:"过度/多/过分的",pos:"adj.",examples:["excessive drinking 酗酒","excessive spending 过度消费"]},
+      {en:"diverse",zh:"多元的；不同/各色各样的",pos:"adj.",examples:["diversity n. 多样性","biodiversity n. 生物多样性"]},
+      {en:"definition",zh:"定义",pos:"n.",examples:["define A as B 把A定义为B"]},
+      {en:"influence",zh:"影响；左右(某人决策等)",pos:"v./n.",examples:["influence sb. 对某人有影响","influential adj. 有影响力的"]},
+      {en:"compare",zh:"对比；比较",pos:"v.",examples:["compare A with/to B","by comparison 相比之下"]},
+      {en:"major",zh:"主要的；重大的；主修",pos:"v./n./adj.",examples:["a majority of=most","minority n. 少数民族"]},
+      {en:"workaholic",zh:"工作狂",pos:"n.",examples:["shopaholic 购物狂"]},
+      {en:"spread",zh:"传播/散步；蔓延/扩散",pos:"v./n.",examples:["spread fast across the world 火速传遍全球"]},
+      {en:"range",zh:"范围；种类；区间；系列",pos:"v./n.",examples:["in a wide range of areas 在广泛的领域中"]},
+      {en:"maintain",zh:"维持；保持；维修；保养",pos:"v.",examples:["maintain social distance 保持社交距离"]},
+      {en:"electronic",zh:"电子的",pos:"adj.",examples:["electronic products 电子产品"]},
+      {en:"independent",zh:"独立的",pos:"adj.",examples:["independent learning 独立学习","be independent of 不依赖"]}
+    ],
+    phrases: [
+      {en:"have come to stay",zh:"继续存在；普遍认可",pos:"phr."},
+      {en:"be here to stay",zh:"继续存在；普遍认可",pos:"phr."},
+      {en:"mother tongue / native language",zh:"母语",pos:"phr."},
+      {en:"the Germanic language",zh:"日耳曼语",pos:"phr."},
+      {en:"electronic products",zh:"电子产品",pos:"phr."},
+      {en:"less fast",zh:"没那么快；慢一点",pos:"phr."},
+      {en:"make up",zh:"组/构成；弥补；化妆；编造",pos:"phr."},
+      {en:"app store(s)",zh:"应用商店",pos:"phr."},
+      {en:"independent learning",zh:"独立学习；自学",pos:"phr."},
+      {en:"Parents can easily become over-protective of their children",zh:"父母容易过度保护孩子",pos:"phr."}
+    ]
+  },
+  "3.11": {
+    words: [
+      {en:"harsh",zh:"恶劣/艰苦的；严酷/厉/苛的",pos:"adj.",examples:["harsh voice 刺耳的嗓音","harsh wind 凛冽的寒风"]},
+      {en:"identify",zh:"辨/指认/显示身份",pos:"v.",examples:["identify with 认同/共鸣","identification n. 鉴定"]},
+      {en:"combat",zh:"搏斗；战斗",pos:"v./n.",examples:["combat child labor 打击(使用)童工现象"]},
+      {en:"ensure",zh:"确保；保证",pos:"v.",examples:["ensure that+句子"]},
+      {en:"highlight",zh:"突出；强调；做醒目标志",pos:"v./n.",examples:["highlight the key points 突出重点"]},
+      {en:"sustainable",zh:"不破坏生态平衡的；可持续的",pos:"adj.",examples:["sustainability n. 可持续性","sustain v. 维持"]},
+      {en:"access",zh:"机会/权利；路/途径；登录/访问",pos:"v./n.",examples:["access s.p. 登录/访问某地","accessible adj. 可进入的"]},
+      {en:"depression",zh:"抑郁(症)；沮丧/消沉；萧条",pos:"n.",examples:["depress v. 使沮丧","depressive adj. 抑郁的"]},
+      {en:"status",zh:"地位；身份；状况/态",pos:"n.",examples:["social status 社会地位"]},
+      {en:"evaluate",zh:"评价/评估",pos:"v.",examples:["evaluation n. 评估"]}
+    ],
+    phrases: [
+      {en:"drug addiction",zh:"药物成瘾；不断嗑药",pos:"phr."},
+      {en:"stimulate the blood flow",zh:"促进/刺激血液循环",pos:"phr."},
+      {en:"such....as to do",zh:"如此以至于",pos:"phr."},
+      {en:"go through",zh:"通过；经受；完成",pos:"phr."},
+      {en:"stream some radio",zh:"播放一些广播节目",pos:"phr."},
+      {en:"obey one's demands",zh:"满足某人要求",pos:"phr."},
+      {en:"feel obliged to do sth.",zh:"感到有义务做某事",pos:"phr."},
+      {en:"arouse feelings of guilt in sb.",zh:"使某人产生内疚感",pos:"phr."},
+      {en:"meet/satisfy one's needs",zh:"满足某人需求",pos:"phr."},
+      {en:"emotional blackmail",zh:"情感勒索；感情敲诈",pos:"phr."}
+    ]
+  },
+  "3.12": {
+    words: [
+      {en:"dialect",zh:"方言；土话",pos:"n.",examples:[]},
+      {en:"nightmare",zh:"噩梦；梦魇",pos:"n.",examples:[]},
+      {en:"brainstorm",zh:"突发灵感/妙计 v. 头脑风暴",pos:"n./v.",examples:["brainstorm ideas 集思广益"]},
+      {en:"wipe",zh:"擦；拭；抹；消除",pos:"v.",examples:["wipe sth. off 擦掉；抹去"]},
+      {en:"revolution",zh:"大变革；巨变",pos:"n.",examples:["revolutionary adj. 革命性的"]},
+      {en:"jewellery/jewelry",zh:"珠宝；首饰",pos:"n.",examples:["永单"]},
+      {en:"genre",zh:"体裁；类型",pos:"n.",examples:["literary genre 文学体裁"]},
+      {en:"feather",zh:"羽/翎毛",pos:"n.",examples:["a feather pillow 羽绒枕头"]},
+      {en:"tragedy",zh:"悲剧/悲哀；惨祸",pos:"n.",examples:["tragic adj. 悲剧的"]},
+      {en:"subheading",zh:"副标题",pos:"n.",examples:["subtitle n. 副标题"]}
+    ],
+    phrases: [
+      {en:"cardiovascular system",zh:"心血管系统",pos:"phr."},
+      {en:"brush one's needs aside",zh:"将个人需求置之脑后",pos:"phr."},
+      {en:"in favor of",zh:"支持；赞同；偏向于",pos:"phr."},
+      {en:"by means of",zh:"凭借；通过；借助于",pos:"phr."},
+      {en:"negotiate with",zh:"和...妥协/协商/谈判",pos:"phr."},
+      {en:"The ball is in your court",zh:"轮到你做决定了；该你行动了",pos:"phr."},
+      {en:"borrowed word/language",zh:"外来语",pos:"phr."},
+      {en:"be pressured into doing",zh:"被迫做某事",pos:"phr."},
+      {en:"under/in no circumstance(s)",zh:"绝不",pos:"phr."},
+      {en:"leave sb. feeling guilty",zh:"让某人感到内疚",pos:"phr."}
+    ]
+  },
+  "3.13": {
+    words: [
+      {en:"compromise",zh:"妥协；折中；让步",pos:"n./v.",examples:[]},
+      {en:"pollution-free",zh:"无污染/无公害的；洁净的",pos:"adj.",examples:[]},
+      {en:"monitor",zh:"监视/监控(器/员)；班长",pos:"v./n.",examples:[]},
+      {en:"resentful",zh:"气愤/憎/怨恨的",pos:"adj.",examples:["resent v. 怨恨"]},
+      {en:"foreseeable",zh:"可预知/预料/预见的",pos:"adj.",examples:["foresee v. 预见"]},
+      {en:"acknowledge",zh:"承认；认可",pos:"v.",examples:["acknowledgement n. 承认"]},
+      {en:"desert",zh:"沙漠；荒原；抛/离/遗弃",pos:"v./n.",examples:["dessert n. 甜点"]},
+      {en:"trigger",zh:"扳机；诱因；触发/引爆",pos:"v./n.",examples:["trigger an alarm 触发警报器"]},
+      {en:"means",zh:"方法/手段/财富",pos:"n.",examples:["by no means 绝不"]},
+      {en:"alternative",zh:"可供选择的事物；可替代的",pos:"n./adj.",examples:["alternative therapy 替代疗法"]}
+    ],
+    phrases: [
+      {en:"implied meaning",zh:"隐含/含蓄意义；寓意",pos:"phr."},
+      {en:"power cars",zh:"为汽车提供动力",pos:"phr."},
+      {en:"the automated system",zh:"自动系统",pos:"phr."},
+      {en:"reserve space for the car",zh:"为汽车预留空间",pos:"phr."},
+      {en:"fall into disuse",zh:"逐渐不再使用/逐步废弃",pos:"phr."},
+      {en:"remain an honest man",zh:"依然是个诚实的人",pos:"phr."},
+      {en:"head for s.p.",zh:"前往/去某地",pos:"phr."},
+      {en:"There goes the bell",zh:"打铃了/下课了",pos:"phr."},
+      {en:"It is whispered that",zh:"据说",pos:"phr."},
+      {en:"dial instructions about one's position",zh:"(拨打电话)告知某人所在位置",pos:"phr."}
+    ]
+  },
+  "3.16": {
+    words: [
+      {en:"tension",zh:"焦虑/烦躁；紧张",pos:"n.",examples:["relieve/ease tension 缓解紧张"]},
+      {en:"rewind",zh:"倒带；回放",pos:"v./n.",examples:[]},
+      {en:"browse",zh:"随意浏览",pos:"v./n.",examples:[]},
+      {en:"innovative",zh:"创新/新颖的",pos:"adj.",examples:["innovation n. 创新"]},
+      {en:"victim",zh:"受害者",pos:"n.",examples:[]},
+      {en:"colleague",zh:"同事/同仁",pos:"n.",examples:[]},
+      {en:"unintentional",zh:"无意的",pos:"adj.",examples:["intentional adj. 故意的"]},
+      {en:"resistance",zh:"抵制/抵抗",pos:"n.",examples:["resistant adj. 抵抗的"]},
+      {en:"entrepreneur",zh:"创业者；企业家",pos:"n.",examples:[]},
+      {en:"persistent",zh:"坚持不懈/持续的",pos:"adj.",examples:["persist in 坚持"]}
+    ],
+    phrases: [
+      {en:"take turns doing sth.",zh:"轮流做某事",pos:"phr."},
+      {en:"expand one's presence",zh:"扩大影响力/增强存在感",pos:"phr."},
+      {en:"bring in funding",zh:"筹集资金",pos:"phr."},
+      {en:"leaf through the pages",zh:"翻阅书页；浏览",pos:"phr."},
+      {en:"lift the ban on sth.",zh:"解除对...的禁令",pos:"phr."},
+      {en:"bring to light the truth",zh:"揭露/揭示真相",pos:"phr."},
+      {en:"be not in line with",zh:"与...不符/不一致",pos:"phr."},
+      {en:"marvel at",zh:"对...(感到)惊奇；惊叹于",pos:"phr."},
+      {en:"be reflective of",zh:"反映/表现出",pos:"phr."},
+      {en:"advance the cause",zh:"推动/促进事业",pos:"phr."}
+    ]
+  },
+  "3.17": {
+    words: [
+      {en:"proverb",zh:"谚语；格言",pos:"n.",examples:["as the proverb goes 俗话说"]},
+      {en:"apparently",zh:"显而易见地",pos:"adv.",examples:["apparent adj. 明显的"]},
+      {en:"distracted",zh:"分心/心不在焉的",pos:"adj.",examples:["distract v. 使分心"]},
+      {en:"astronaut",zh:"宇航员/太空人",pos:"n.",examples:["astronomy n. 天文"]},
+      {en:"elasticity",zh:"柔韧性；弹性/弹力",pos:"n.",examples:["elastic adj. 有弹性的"]},
+      {en:"exterminator",zh:"灭虫师/专家；灭鼠药",pos:"n.",examples:["exterminate v. 消灭"]},
+      {en:"bow",zh:"鞠躬；垂首；弯曲",pos:"v./n.",examples:["bow to pressure 屈服于压力"]},
+      {en:"ignore",zh:"忽略/无视/不理会",pos:"v.",examples:["ignorance n. 无知"]},
+      {en:"desperate",zh:"迫不及待/不顾一切的",pos:"adj.",examples:["desperate for 渴望"]},
+      {en:"vacancy",zh:"空缺/空职/空额",pos:"n.",examples:["job vacancies 职位空缺"]}
+    ],
+    phrases: [
+      {en:"safe and sound",zh:"安然无恙",pos:"phr."},
+      {en:"the truth came out",zh:"真相大白",pos:"phr."},
+      {en:"compared with males",zh:"相比于男性",pos:"phr."},
+      {en:"be stressed out",zh:"感到压力山大/过于紧张",pos:"phr."},
+      {en:"blow off sb.",zh:"不理睬；终止与某人的关系",pos:"phr."},
+      {en:"object to (one's) doing",zh:"反对(某人)做某事",pos:"phr."},
+      {en:"cut time short",zh:"缩短时间",pos:"phr."},
+      {en:"the commitment of time and thought to doing sth.",zh:"全身心地投入到...之中",pos:"phr."},
+      {en:"be to blame",zh:"应该受到责备；是...的罪魁祸首",pos:"phr."},
+      {en:"be seated",zh:"就座；坐下",pos:"phr."}
+    ]
+  },
+  "3.18": {
+    words: [
+      {en:"legacy",zh:"遗产；遗留问题/后遗症",pos:"n.",examples:[]},
+      {en:"echo",zh:"回声；附和；回应/音",pos:"v./n.",examples:[]},
+      {en:"catalyst",zh:"催化剂；诱因",pos:"n.",examples:[]},
+      {en:"originate",zh:"起源/发端于",pos:"v.",examples:["original adj. 原始的"]},
+      {en:"vary",zh:"不同/有别；变化/变更",pos:"v.",examples:["various adj. 各种各样的"]},
+      {en:"snap",zh:"照片；咔嚓声；断裂",pos:"n./v.",examples:["snap back at sb. 反唇相讥"]},
+      {en:"mainstay",zh:"中流砥柱/顶梁柱",pos:"n.",examples:["economic mainstay 经济支柱"]},
+      {en:"haunt",zh:"(鬼魂等)出没；萦绕在脑际",pos:"v.",examples:["a haunting melody 难以忘怀的乐曲"]},
+      {en:"cringe",zh:"畏缩；怯退；感到难为情",pos:"v.",examples:[]},
+      {en:"strike",zh:"击/打/撞；罢工；突然想到",pos:"v./n.",examples:["strike while the iron is hot 趁热打铁"]}
+    ],
+    phrases: [
+      {en:"come in handy",zh:"派上用场/迟早有用",pos:"phr."},
+      {en:"get promoted",zh:"升职；晋/提升",pos:"phr."},
+      {en:"shave one's beard off",zh:"刮/剃掉胡子",pos:"phr."},
+      {en:"make ends meet with one's salary",zh:"靠薪水维持生计",pos:"phr."},
+      {en:"get tied up in traffic",zh:"陷入交通拥堵之中",pos:"phr."},
+      {en:"log off",zh:"登出；注销",pos:"phr."},
+      {en:"pass away",zh:"(文语)仙逝；驾鹤西去",pos:"phr."},
+      {en:"digital footprints",zh:"数字足迹",pos:"phr."},
+      {en:"shuffle off the mortal coil",zh:"摆脱尘世的束缚",pos:"phr."},
+      {en:"compete in doubles",zh:"参加双打比赛",pos:"phr."}
+    ]
+  },
+  "3.19": {
+    words: [
+      {en:"matinee",zh:"下午/午后场",pos:"n.",examples:[]},
+      {en:"showcase",zh:"展示",pos:"v.",examples:["display/exhibit"]},
+      {en:"ethical",zh:"伦理的；道德上的",pos:"adj.",examples:[]},
+      {en:"artifact",zh:"(有文化或历史价值的)手工艺/人工制品",pos:"n.",examples:[]},
+      {en:"layout",zh:"布局；(版面)设计",pos:"n.",examples:["page layout 页面设置"]},
+      {en:"late",zh:"已故的",pos:"adj.",examples:["late husband 亡夫"]},
+      {en:"mature",zh:"成熟(的)",pos:"adj./v.",examples:["maturity n. 成熟"]},
+      {en:"accompanying",zh:"陪伴/附带的",pos:"adj.",examples:["accompany v. 陪伴"]},
+      {en:"habitat",zh:"栖息地/生活环境",pos:"n.",examples:["natural habitat 天然栖息地"]},
+      {en:"ecology",zh:"生态(学)",pos:"n.",examples:["ecologist n. 生态学家"]},
+      {en:"eligible",zh:"有资格的；合乎条件的",pos:"adj.",examples:["eligible to vote 有资格投票"]}
+    ],
+    phrases: [
+      {en:"fundamental fault",zh:"根本性错误",pos:"phr."},
+      {en:"give new insight into sth.",zh:"对某事有新的见解/理解",pos:"phr."},
+      {en:"graphic designer",zh:"平面设计师",pos:"phr."},
+      {en:"standby ticket",zh:"候补(机)票；余票",pos:"phr."},
+      {en:"pay off",zh:"偿清债务；某行为带来回报",pos:"phr."},
+      {en:"brag about",zh:"吹嘘；夸耀",pos:"phr."},
+      {en:"food court",zh:"美食广场",pos:"phr."},
+      {en:"(Really) speeds things up",zh:"真是事半功倍啊",pos:"phr."},
+      {en:"Learned that the hard way",zh:"我吃过苦头/知道那行不通",pos:"phr."}
+    ]
+  },
+  "3.20": {
+    words: [
+      {en:"apprentice",zh:"徒弟；学徒",pos:"n.",examples:[]},
+      {en:"preachy",zh:"说教的；劝诫的",pos:"adj.",examples:[]},
+      {en:"bait",zh:"下/放诱饵/鱼饵",pos:"n./v.",examples:["take the bait 上当"]},
+      {en:"entertaining",zh:"使人愉快的；娱乐性/有趣的",pos:"adj.",examples:[]},
+      {en:"blockbuster",zh:"一鸣惊人的事物；大片",pos:"n.",examples:["hit 热门影片"]},
+      {en:"portray",zh:"描绘/画/写；刻画",pos:"v.",examples:["portray sb. as 描绘某人为"]},
+      {en:"tame",zh:"驯化/服/养；驯化的",pos:"v./adj.",examples:["tame one's anger 压制怒火"]},
+      {en:"dissuade",zh:"劝阻；劝止",pos:"v.",examples:["dissuade sb. from doing"]},
+      {en:"devour",zh:"吞噬/吞食；狼吞虎咽地吃",pos:"v.",examples:["devour books 如饥似渴地阅读"]},
+      {en:"visually",zh:"视觉上地；直观地",pos:"adv.",examples:["visual arts 视觉艺术"]}
+    ],
+    phrases: [
+      {en:"count on",zh:"依靠/指望",pos:"phr."},
+      {en:"for financial purposes",zh:"出于财务方面的考虑/目的",pos:"phr."},
+      {en:"in the blink of an eye",zh:"立刻/转瞬之间",pos:"phr."},
+      {en:"the adventure film",zh:"冒险片；惊险片",pos:"phr."},
+      {en:"on one's own route/way to doing",zh:"按照自己的方式去做某事",pos:"phr."},
+      {en:"let up on sb./sth.",zh:"对某人宽容或减少/缓和某事",pos:"phr."},
+      {en:"an epic struggle",zh:"一场激烈的斗争",pos:"phr."},
+      {en:"set out to do",zh:"开始/着手做某事",pos:"phr."},
+      {en:"devote oneself to doing",zh:"献身/致力于做某事",pos:"phr."},
+      {en:"make a dash for freedom",zh:"奋力争取自由",pos:"phr."}
+    ]
+  },
+  "3.23": {
+    words: [
+      {en:"illegible",zh:"难以辨认/无法识别的",pos:"adj.",examples:[]},
+      {en:"specially",zh:"专门地；特意",pos:"adv.",examples:["especially adv. 尤其"]},
+      {en:"panick",zh:"惊慌失措；恐慌",pos:"v./n./adj.",examples:["in panic 惊慌的"]},
+      {en:"defeat",zh:"击败；战胜",pos:"v./n.",examples:["A man can be destroyed but not defeated"]},
+      {en:"wound",zh:"受(枪/刀)伤/伤口",pos:"v./n.",examples:["Time heals all wounds 时间能抚平一切创伤"]},
+      {en:"likelihood",zh:"可能性",pos:"n.",examples:["likely adj. 可能的"]},
+      {en:"target",zh:"目/指标；靶子",pos:"v./n.",examples:["targeted audience 目标受众"]},
+      {en:"approach",zh:"走/靠/接近；处理/解决",pos:"v./n.",examples:["different approaches to doing sth."]},
+      {en:"wrap",zh:"包装；包；裹；缠绕",pos:"v.",examples:["wrap up 包裹；完成"]},
+      {en:"venture",zh:"敢于去(危险之地)；企业",pos:"n./v.",examples:["business venture 经营项目"]}
+    ],
+    phrases: [
+      {en:"keep/bear sth. in mind",zh:"谨记某事",pos:"phr."},
+      {en:"in the long run/term",zh:"长远来看",pos:"phr."},
+      {en:"come up with",zh:"想/提出(方法/对策等)",pos:"phr."},
+      {en:"fight off the bloodthirsty shark",zh:"击退嗜血的鲨鱼",pos:"phr."},
+      {en:"put sth. away",zh:"收拾好某物",pos:"phr."},
+      {en:"hear the noise of skin and flesh ripping",zh:"听到皮肤和肉撕裂的声音",pos:"phr."},
+      {en:"survive a shark attack",zh:"\"鲨\"口逃生",pos:"phr."},
+      {en:"close in on sb.",zh:"向某人逼近/包围",pos:"phr."},
+      {en:"Sb. is faced with sth.",zh:"面临/面对某个情况",pos:"phr."},
+      {en:"be tied to",zh:"被绑于/束缚于；与...挂钩",pos:"phr."}
+    ]
+  },
+  "3.24": {
+    words: [
+      {en:"excerpt",zh:"摘录；节选",pos:"n./v.",examples:[]},
+      {en:"internship",zh:"实习期",pos:"n.",examples:["intern n. 实习生"]},
+      {en:"donor",zh:"捐赠者",pos:"n.",examples:["donate v. 捐赠"]},
+      {en:"hybrid",zh:"杂交植物/动物；混合物",pos:"n.",examples:["a hybrid car 混合动力汽车"]},
+      {en:"archaeology",zh:"考古学",pos:"n.",examples:["archaeological adj. 考古学的"]},
+      {en:"works",zh:"著作/作品(复数)；工厂",pos:"n.",examples:["a steel works 钢铁厂"]},
+      {en:"quote",zh:"引用；引语",pos:"v./n.",examples:["quotation n. 引语"]},
+      {en:"yield",zh:"产出；产量",pos:"v./n.",examples:["yield dividends 产生回报"]},
+      {en:"commemorate",zh:"纪念；深切怀念",pos:"v.",examples:["端午节是为了纪念爱国诗人屈原"]},
+      {en:"paralyze",zh:"使麻痹/瘫痪",pos:"v.",examples:["paralyzed with fear 吓得呆若木鸡"]}
+    ],
+    phrases: [
+      {en:"Line A crosses with line B",zh:"直线A和B相交",pos:"phr."},
+      {en:"drive the spear into the shark's brain with all his strength",zh:"用尽全力把鱼叉插进鲨鱼的脑袋",pos:"phr."},
+      {en:"with determination and complete hatred",zh:"怀着决心和满满的恨意",pos:"phr."},
+      {en:"turn over",zh:"翻身/翻转；翻阅；交接/移交",pos:"phr."},
+      {en:"on one's back",zh:"仰面朝天",pos:"phr."},
+      {en:"three quarters",zh:"四分之三",pos:"phr."},
+      {en:"be better armed",zh:"装备更精良",pos:"phr."},
+      {en:"go out on the sea to fish",zh:"出海打鱼",pos:"phr."},
+      {en:"It is too good to last",zh:"(光景)太好了不可能长久",pos:"phr."},
+      {en:"lie quietly",zh:"静静地躺着",pos:"phr."}
+    ]
+  },
+  "3.25": {
+    words: [
+      {en:"setback",zh:"挫折/败；阻碍",pos:"n.",examples:["despite the setback 尽管遇到挫折"]},
+      {en:"mathematician",zh:"数学家",pos:"n.",examples:["mathematics n. 数学"]},
+      {en:"curious",zh:"好奇/求知欲强的",pos:"adj.",examples:["be curious about 对...感到好奇"]},
+      {en:"false",zh:"错误的；伪造/虚伪/假的",pos:"adj.",examples:["false alarm 虚惊一场"]},
+      {en:"count",zh:"重要",pos:"v.",examples:["Hard work counts 勤奋很重要"]},
+      {en:"achieve",zh:"获得；实现；完成",pos:"v.",examples:["achieve success 获得成功"]},
+      {en:"afford",zh:"买得起；承担得起",pos:"v.",examples:["cannot afford to do sth. 承担不起"]},
+      {en:"dedicate",zh:"奉献",pos:"v.",examples:["dedicate oneself to doing 致力于"]},
+      {en:"despite",zh:"即使；尽管；虽然",pos:"prep.",examples:["despite all her efforts"]},
+      {en:"prove",zh:"证明",pos:"v.",examples:["prove to be effective 证明是有效的"]}
+    ],
+    phrases: [
+      {en:"start as a failure",zh:"开始时/起初很失败",pos:"phr."},
+      {en:"a late developer",zh:"大器晚成者",pos:"phr."},
+      {en:"be expelled from school",zh:"被学校开除",pos:"phr."},
+      {en:"become one of the most important physicists of/in the 20th century",zh:"成为二十世纪最重要的物理学家之一",pos:"phr."},
+      {en:"sell for a huge amount of money",zh:"卖了一大笔钱",pos:"phr."},
+      {en:"be permanently paralyzed",zh:"终生瘫痪",pos:"phr."},
+      {en:"the rest is history",zh:"后来发生的事众所周知",pos:"phr."},
+      {en:"the fire brigade",zh:"消防队",pos:"phr."},
+      {en:"in advance",zh:"提前",pos:"phr."},
+      {en:"set aside enough time",zh:"留足时间",pos:"phr."}
+    ]
+  },
+  "3.26": {
+    words: [
+      {en:"skeleton",zh:"骨架/骨骼；骷髅",pos:"n.",examples:["a skeleton in the cupboard 不可外扬的家丑"]},
+      {en:"carcass",zh:"(尤指动物)尸体",pos:"n.",examples:["corpse 多指人的尸体"]},
+      {en:"scary",zh:"吓/骇人/恐怖的",pos:"adj.",examples:["a scary movie 恐怖电影"]},
+      {en:"sacrifice",zh:"牺牲；舍弃",pos:"v./n.",examples:["sacrifice family life for career"]},
+      {en:"opponent",zh:"对手；竞争者；反对者",pos:"n.",examples:["oppose v. 反抗"]},
+      {en:"remains",zh:"残羹冷炙；遗体；残骸",pos:"n.",examples:[]},
+      {en:"pessimistic",zh:"悲观(主义)的",pos:"adj.",examples:["pessimist n. 悲观主义者"]},
+      {en:"surgery",zh:"外科手术",pos:"n.",examples:["cosmetic/plastic surgery 整形/美容手术"]},
+      {en:"tremendously",zh:"巨/极大地",pos:"adv.",examples:["tremendous adj. 巨大的"]},
+      {en:"worthy",zh:"值得(尊重)的；有价值的",pos:"adj.",examples:["worthy of 值得...的"]}
+    ],
+    phrases: [
+      {en:"There were no such lines",zh:"没有这样的线条",pos:"phr."},
+      {en:"get rid of",zh:"除去；摆脱",pos:"phr."},
+      {en:"I wish it had been a dream",zh:"真希望是场梦",pos:"phr."},
+      {en:"confess one's sins",zh:"忏悔某人的罪过",pos:"phr."},
+      {en:"in contrast",zh:"正相反；相比之下",pos:"phr."},
+      {en:"It occurred to me that",zh:"突然想到",pos:"phr."},
+      {en:"mistake A for B",zh:"将A错当成/误以为B",pos:"phr."},
+      {en:"Legend has it that",zh:"据传说/言",pos:"phr."},
+      {en:"located in=situated in=lying in",zh:"位于/坐落于",pos:"phr."},
+      {en:"be attached to",zh:"依恋/依附",pos:"phr."}
+    ]
+  },
+  "4.7": {
+    words: [
+      {en:"curiosity",zh:"好奇",pos:"n.",examples:["be curious about 对...好奇"]},
+      {en:"contain",zh:"包含/含有",pos:"v.",examples:["contain errors 包含错误"]},
+      {en:"journalist",zh:"记者",pos:"n.",examples:["journalism n. 新闻业"]},
+      {en:"participate",zh:"参加/与",pos:"v.",examples:["participate in 参加"]},
+      {en:"spot",zh:"看到/发现/留意到",pos:"v.",examples:["spot a good news story 发现好新闻"]},
+      {en:"current",zh:"当前/现在的；水/电/气流",pos:"adj./n.",examples:["keep up with current events 关注时事"]},
+      {en:"present",zh:"展/显示；现/存在的；礼物",pos:"v./n./adj.",examples:["present the facts 陈述事实"]},
+      {en:"mentor",zh:"导师/良师益友",pos:"n.",examples:[]},
+      {en:"limit",zh:"限制/限度；界限",pos:"v./n.",examples:["a limit on/to the number of words 字数限制"]},
+      {en:"appeal",zh:"呼吁/恳求/上诉/吸引力",pos:"v./n.",examples:["appeal to 吸引；呼吁"]}
+    ],
+    phrases: [
+      {en:"at all times",zh:"一直，始终",pos:"phr."},
+      {en:"for one thing",zh:"首先，一则",pos:"phr."},
+      {en:"focus on the key points",zh:"专注于关键点",pos:"phr."},
+      {en:"develop this important skill",zh:"培养这一重要技能",pos:"phr."},
+      {en:"come across things worth reporting",zh:"遇到值得报道的事情",pos:"phr."},
+      {en:"on one's mind",zh:"萦绕在心头；惦记着",pos:"phr."},
+      {en:"in one's mind",zh:"在脑海里",pos:"phr."},
+      {en:"get to do sth.",zh:"有机会做某事",pos:"phr."},
+      {en:"have something in common",zh:"有一些共同之处",pos:"phr."},
+      {en:"make a good journalist",zh:"成为好的新闻记者",pos:"phr."},
+      {en:"open one's eyes to sth.",zh:"使某人看清/认识到",pos:"phr."}
+    ]
+  },
+  "4.8": {
+    words: [
+      {en:"betray",zh:"背叛/出卖；泄密",pos:"v.",examples:["betrayal n. 背叛"]},
+      {en:"ecosystem",zh:"生态系统",pos:"n.",examples:["ecology n. 生态学"]},
+      {en:"ignorant",zh:"无知的",pos:"adj.",examples:["be ignorant of 对...不知情"]},
+      {en:"annoy",zh:"使恼怒",pos:"v.",examples:["get/be annoyed 生气"]},
+      {en:"entertainer",zh:"表演者；艺人",pos:"n.",examples:["entertain v. 款待；使娱乐"]},
+      {en:"superior",zh:"更好/更胜一筹的；上司",pos:"n./adj.",examples:["A is superior to B in sth."]},
+      {en:"resistant",zh:"抵制/反抗的；抗...的",pos:"adj.",examples:["be resistant to 对...有抵抗力"]},
+      {en:"assume",zh:"假定/假设；认为",pos:"v.",examples:["assume responsibility 承担责任"]},
+      {en:"motive",zh:"动机/目的",pos:"n.",examples:["motivation n. 动力"]},
+      {en:"underestimate",zh:"低估；轻视",pos:"v.",examples:["overestimate 高估"]}
+    ],
+    phrases: [
+      {en:"have purpose",zh:"有意义",pos:"phr."},
+      {en:"in an objective way",zh:"客观地",pos:"phr."},
+      {en:"check up on facts",zh:"核对/实事实",pos:"phr."},
+      {en:"under time pressure",zh:"在时间的压力下",pos:"phr."},
+      {en:"turn in the report(s) late",zh:"迟交报告",pos:"phr."},
+      {en:"care about",zh:"关心，在乎",pos:"phr."},
+      {en:"sources of information",zh:"信息来源",pos:"phr."},
+      {en:"be late for interviews",zh:"采访迟到",pos:"phr."},
+      {en:"get paid",zh:"获得报酬",pos:"phr."},
+      {en:"be responsible for",zh:"对...负责",pos:"phr."}
+    ]
+  },
+  "4.9": {
+    words: [
+      {en:"cuddle",zh:"拥抱；依偎",pos:"v./n.",examples:["hug/embrace"]},
+      {en:"auction",zh:"拍卖(会)",pos:"n.",examples:["at auction 在拍卖会上"]},
+      {en:"fatigue",zh:"疲劳/疲乏/疲惫",pos:"n.",examples:["driver fatigue 驾驶疲劳"]},
+      {en:"failing",zh:"失败/未成功做到的",pos:"adj.",examples:["failing health 每况愈下的健康状况"]},
+      {en:"communicative",zh:"爱说话/乐意沟通的",pos:"adj.",examples:["communication n. 交流"]},
+      {en:"adapt",zh:"(使)适应；改编",pos:"v.",examples:["adapt to 适应"]},
+      {en:"block",zh:"大块；阻碍；街区",pos:"n./v.",examples:["writer's block 作家瓶颈"]},
+      {en:"resident",zh:"居民/住户",pos:"n.",examples:["residential area 住宅区"]},
+      {en:"diagnose",zh:"诊断",pos:"v.",examples:["be diagnosed with 被诊断患有"]},
+      {en:"moody",zh:"情绪多变/喜怒无常的",pos:"adj.",examples:["mood n. 情绪"]}
+    ],
+    phrases: [
+      {en:"give a rare glimpse into sth.",zh:"提供对某事物难得的观察视角",pos:"phr."},
+      {en:"define one's work",zh:"明确自己的工作职责",pos:"phr."},
+      {en:"be on sick leave",zh:"休病假",pos:"phr."},
+      {en:"the literary dry spell",zh:"文学创作的低谷/干旱期",pos:"phr."},
+      {en:"make heavy demands on sb.",zh:"对某人提出苛刻的要求",pos:"phr."},
+      {en:"be buried in data and academic journals",zh:"被淹没在大量的数据和学术期刊之中",pos:"phr."},
+      {en:"pull on the clothes",zh:"穿上衣服",pos:"phr."},
+      {en:"the associate professor",zh:"副教授",pos:"phr."},
+      {en:"resonate with",zh:"与...产生共鸣",pos:"phr."},
+      {en:"have a bad press",zh:"有/受到负面报道；口碑不好",pos:"phr."}
+    ]
+  },
+  "4.10": {
+    words: [
+      {en:"sociologist",zh:"社会学家",pos:"n.",examples:["sociology n. 社会学"]},
+      {en:"venomous",zh:"有毒的；恶意/充满仇恨的",pos:"adj.",examples:["venom n. 毒液"]},
+      {en:"underdog",zh:"弱旅；弱势群体",pos:"n.",examples:[]},
+      {en:"fluffy",zh:"覆盖有绒毛的；松软/蓬松的",pos:"adj.",examples:[]},
+      {en:"unknowingly",zh:"不知不觉/不知情地",pos:"adv.",examples:[]},
+      {en:"perceive",zh:"认为/理解；注意/察觉",pos:"v.",examples:["perception n. 感知"]},
+      {en:"sideline",zh:"副业/兼职；边线",pos:"n./v.",examples:["on the sideline 袖手旁观"]},
+      {en:"futility",zh:"徒劳；无用",pos:"n.",examples:["futile adj. 徒劳的"]},
+      {en:"fuel",zh:"燃料；刺激因素",pos:"v./n.",examples:["fuel consumption 耗油量"]},
+      {en:"fault",zh:"过错/失；责任；缺陷",pos:"n.",examples:["at fault 有罪/错的"]}
+    ],
+    phrases: [
+      {en:"the deputy head",zh:"副主管/副校长",pos:"phr."},
+      {en:"fight-or-flight response",zh:"战斗或逃逸反应",pos:"phr."},
+      {en:"As sb. puts it",zh:"正如某人所说",pos:"phr."},
+      {en:"pay the ultimate price",zh:"付出最终/最大代价",pos:"phr."},
+      {en:"have a respect for",zh:"尊/敬重",pos:"phr."},
+      {en:"fit into nature",zh:"与自然融为一体",pos:"phr."},
+      {en:"become/be critical of",zh:"对...感到不满/持批评态度",pos:"phr."},
+      {en:"blame sb. for sth.",zh:"归咎于某人；因某事责备某人",pos:"phr."},
+      {en:"be out of touch with modern ways",zh:"与现代(生活)方式脱节",pos:"phr."},
+      {en:"feel cut off from the adult world",zh:"感觉与成年人世界隔绝了",pos:"phr."}
+    ]
+  },
+  "4.13": {
+    words: [
+      {en:"surface",zh:"表面/层；水/地/液面",pos:"n./v.",examples:["on the surface 表面上"]},
+      {en:"aim",zh:"以...为目的；瞄准/针对",pos:"v./n.",examples:["aim at (doing) sth. 旨在"]},
+      {en:"polish",zh:"擦亮；磨/抛光；改善/润色",pos:"v./n.",examples:["polish shoes 擦鞋"]},
+      {en:"stuff",zh:"物品/东西；塞/填满",pos:"n./v.",examples:["Don't stuff the kids with chocolate"]},
+      {en:"serve",zh:"服役；为...工作；供应",pos:"v.",examples:["serve the public 为人民服务"]},
+      {en:"photographer",zh:"摄影师",pos:"n.",examples:["photography n. 摄影"]},
+      {en:"merely",zh:"仅仅；只不过",pos:"adv.",examples:[]},
+      {en:"cuisine",zh:"烹饪；风味/菜肴",pos:"n.",examples:["Italian cuisine 意式烹饪"]},
+      {en:"recipe",zh:"诀窍；秘诀；食谱",pos:"n.",examples:["recipe for success 成功秘诀"]},
+      {en:"province",zh:"省份；一级行政区",pos:"n.",examples:["provincial capital 省会"]}
+    ],
+    phrases: [
+      {en:"the late rice harvest",zh:"晚稻的收成/丰收",pos:"phr."},
+      {en:"A Bite of China",zh:"舌尖上的中国",pos:"phr."},
+      {en:"foods from different regions of China",zh:"中国不同地区的食物",pos:"phr."},
+      {en:"attitude towards life",zh:"生活态度",pos:"phr."},
+      {en:"a story from the second episode",zh:"第二集的故事",pos:"phr."},
+      {en:"focus on",zh:"聚焦于",pos:"phr."},
+      {en:"make rice cakes",zh:"做年糕",pos:"phr."},
+      {en:"a staple food in meals",zh:"膳食中的主食",pos:"phr."},
+      {en:"a family reunion/get-together",zh:"一次家庭聚会/重逢",pos:"phr."},
+      {en:"go on the air",zh:"被现场直播",pos:"phr."}
+    ]
+  }
+};
 
 // ================================================================
 // 工具
@@ -557,9 +1131,6 @@ function shuffle(arr) {
 
 // ================================================================
 // 艾宾浩斯复习调度（SM-2简化版）
-// 正确：interval × easeFactor，最小1，最大90
-// 错误：interval = 1，easeFactor -= 0.2（最低1.3）
-// 间隔序列：1 → 3 → 7 → 14 → 30 → 60
 // ================================================================
 const BASE_INTERVALS = [1, 3, 7, 14, 30, 60, 90];
 
@@ -619,7 +1190,6 @@ function getCycleDay() {
 }
 
 function getCurrentBatchWords() {
-  // 当前3天周期内新增但未学的词
   const cycleDay = getCycleDay();
   const cycleBatch = Math.floor(cycleDay / 3);
   return db.words.filter(w => {
@@ -638,6 +1208,213 @@ function getNewWordsForBatch() {
 }
 
 // ================================================================
+// 学习模块相关
+// ================================================================
+let studyViewState = {
+  en: true,
+  pos: true,
+  zh: true,
+  example: false
+};
+
+function toggleStudyView(field) {
+  studyViewState[field] = !studyViewState[field];
+  renderStudyPage();
+}
+
+function getStudyDateFromToday() {
+  // 获取今天对应的学习日期（根据当前日期自动匹配）
+  const allDates = Object.keys(BUILT_IN_DATA).sort((a, b) => {
+    // 转换日期进行比较
+    const parseDate = (d) => {
+      const [m, day] = d.split('.');
+      return parseInt(m) * 100 + parseInt(day);
+    };
+    return parseDate(a) - parseDate(b);
+  });
+  
+  const today = new Date();
+  const todayMonth = today.getMonth() + 1;
+  const todayDay = today.getDate();
+  const todayNum = todayMonth * 100 + todayDay;
+  
+  // 找到最近的学习日期
+  let closestDate = allDates[0];
+  for (const d of allDates) {
+    const [m, day] = d.split('.');
+    const dNum = parseInt(m) * 100 + parseInt(day);
+    if (dNum <= todayNum) {
+      closestDate = d;
+    } else {
+      break;
+    }
+  }
+  
+  return closestDate;
+}
+
+function renderStudyPage() {
+  const dateKey = db.currentStudyDate || getStudyDateFromToday();
+  const data = BUILT_IN_DATA[dateKey];
+  
+  if (!data) {
+    document.getElementById('study-word-list').innerHTML = '<div class="empty-state"><div class="icon">📅</div><p>暂无该日期的学习内容</p></div>';
+    return;
+  }
+  
+  // 更新标题
+  document.getElementById('study-date-badge').textContent = dateKey;
+  document.getElementById('study-page-title').textContent = `📖 ${dateKey} 学习内容`;
+  
+  // 更新切换按钮状态
+  Object.keys(studyViewState).forEach(key => {
+    const btn = document.querySelector(`.study-toggle-btn[onclick="toggleStudyView('${key}')"]`);
+    if (btn) {
+      btn.classList.toggle('active', studyViewState[key]);
+    }
+  });
+  
+  // 获取学习进度
+  if (!db.studyProgress[dateKey]) {
+    db.studyProgress[dateKey] = { learned: [], viewed: [] };
+  }
+  const progress = db.studyProgress[dateKey];
+  
+  // 合并单词和词组
+  const allItems = [
+    ...data.words.map((w, i) => ({...w, id: genUniqueId(dateKey, i + 1, 'w'), type: 'word'})),
+    ...data.phrases.map((p, i) => ({...p, id: genUniqueId(dateKey, i + 1, 'p'), type: 'phrase'}))
+  ];
+  
+  const total = allItems.length;
+  const learned = progress.learned.length;
+  
+  // 更新进度
+  document.getElementById('study-progress-text').textContent = `${learned} / ${total} 已学习`;
+  document.getElementById('study-progress').style.width = `${total > 0 ? (learned/total*100) : 0}%`;
+  
+  // 首页仪表盘也更新
+  document.getElementById('dash-study-count').textContent = total;
+  document.getElementById('dash-study-sub').textContent = `${dateKey} · ${total} 个词`;
+  
+  // 渲染单词列表
+  let html = '';
+  allItems.forEach((item, idx) => {
+    const isLearned = progress.learned.includes(item.id);
+    const posLabel = item.pos === 'phr.' ? '词组' : item.pos;
+    const isPhrase = item.pos === 'phr.';
+    const wordCount = item.en.trim().split(/\s+/).length;
+    const hint = isPhrase ? `${wordCount} 个单词` : posLabel;
+    
+    html += `<div class="study-word-card ${!studyViewState.en ? 'hidden-en' : ''} ${!studyViewState.pos ? 'hidden-pos' : ''} ${!studyViewState.zh ? 'hidden-zh' : ''}">
+      <div class="toggle-hint">点击卡片切换</div>
+      <div class="en">
+        ${esc(item.en)}
+        ${item.pos && item.pos !== 'phr.' ? `<span class="pos">${esc(item.pos)}</span>` : ''}
+        ${item.pos === 'phr.' ? `<span class="phrase-hint">词组 · ${wordCount}词</span>` : ''}
+        ${isLearned ? '<span style="color:var(--success);margin-left:8px;">✓</span>' : ''}
+      </div>
+      <div class="zh">${esc(item.zh)}</div>
+      ${studyViewState.example && item.examples && item.examples.length > 0 ? `
+        <div class="examples">
+          ${item.examples.slice(0, 2).map(e => `<div>· ${esc(e)}</div>`).join('')}
+        </div>
+      ` : ''}
+    </div>`;
+  });
+  
+  document.getElementById('study-word-list').innerHTML = html;
+}
+
+function goToStudy() {
+  db.currentStudyDate = getStudyDateFromToday();
+  showPage('page-study');
+  renderStudyPage();
+}
+
+function selectStudyDate() {
+  const dates = Object.keys(BUILT_IN_DATA).sort((a, b) => {
+    const parseDate = (d) => {
+      const [m, day] = d.split('.');
+      return parseInt(m) * 100 + parseInt(day);
+    };
+    return parseDate(a) - parseDate(b);
+  });
+  
+  let html = '';
+  dates.forEach(d => {
+    const data = BUILT_IN_DATA[d];
+    const wordCount = (data.words?.length || 0) + (data.phrases?.length || 0);
+    const isActive = d === db.currentStudyDate;
+    
+    html += `<div class="study-date-option ${isActive ? 'active' : ''}" onclick="selectDateAndClose('${d}')" style="
+      padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;
+      background:${isActive ? '#eef2ff' : '#fff'};
+    ">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-weight:600;">${d}</span>
+        <span style="font-size:.8rem;color:var(--muted);">${wordCount} 个词</span>
+      </div>
+    </div>`;
+  });
+  
+  document.getElementById('study-date-list').innerHTML = html;
+  openModal('modal-study-date');
+}
+
+function selectDateAndClose(dateKey) {
+  db.currentStudyDate = dateKey;
+  closeModal('modal-study-date');
+  renderStudyPage();
+}
+
+function startQuizFromStudy() {
+  const dateKey = db.currentStudyDate || getStudyDateFromToday();
+  const data = BUILT_IN_DATA[dateKey];
+  
+  if (!data) return;
+  
+  // 标记为已学习
+  if (!db.studyProgress[dateKey]) {
+    db.studyProgress[dateKey] = { learned: [], viewed: [] };
+  }
+  
+  const allItems = [
+    ...data.words.map((w, i) => ({...w, id: genUniqueId(dateKey, i + 1, 'w'), type: 'word', groupId: dateKey})),
+    ...data.phrases.map((p, i) => ({...p, id: genUniqueId(dateKey, i + 1, 'p'), type: 'phrase', groupId: dateKey}))
+  ];
+  
+  allItems.forEach(item => {
+    if (!db.studyProgress[dateKey].learned.includes(item.id)) {
+      db.studyProgress[dateKey].learned.push(item.id);
+    }
+    // 同步到 db.words 用于默写
+    if (!db.words.find(w => w.id === item.id)) {
+      db.words.push({
+        id: item.id,
+        groupId: item.groupId,
+        en: item.en,
+        zh: item.zh,
+        pos: item.pos
+      });
+    }
+  });
+  
+  saveDB();
+  renderStudyPage();
+  
+  // 开始默写
+  const shuffled = shuffle(allItems);
+  quiz = { questions: shuffled.map(w => ({...w, _type:'new'})), current:0, correct:0, wrong:0, results:[], submitted:false };
+  showPage('page-quiz');
+  document.getElementById('quiz-result').style.display = 'none';
+  document.getElementById('quiz-area').style.display = 'block';
+  document.getElementById('quiz-meta-left').textContent = `📖 ${dateKey} 学习`;
+  document.getElementById('quiz-meta-right').textContent = `共 ${shuffled.length} 题`;
+  showQuestion();
+}
+
+// ================================================================
 // 初始化
 // ================================================================
 function initDB() {
@@ -645,11 +1422,11 @@ function initDB() {
   if (saved) {
     try {
       const parsed = JSON.parse(saved);
-      // 合并：保留memData、history、plan的完整性
       db = { ...db, ...parsed };
       if (!db.memData) db.memData = {};
       if (!db.history) db.history = [];
       if (!db.plan) db.plan = { batchSize:10, mixRatio:'1:1', cycleStart:null };
+      if (!db.studyProgress) db.studyProgress = {};
     } catch(e) {}
   }
 
@@ -658,13 +1435,54 @@ function initDB() {
     db.plan.cycleStart = today();
   }
 
-  // 内置词库
-  const hasBuiltin = db.groups.find(g => g.id === BUILT_IN_GROUP.id);
-  if (!hasBuiltin) {
-    db.groups.unshift(BUILT_IN_GROUP);
-    BUILT_IN_WORDS.forEach((w,i) => {
-      db.words.push({ id:'bi_'+i, groupId:BUILT_IN_GROUP.id, en:w.en, zh:w.zh });
+  // 内置词汇库
+  const builtInGroupId = 'builtin_dates';
+  const hasBuiltIn = db.groups.find(g => g.id === builtInGroupId);
+  if (!hasBuiltIn) {
+    // 添加分组
+    Object.keys(BUILT_IN_DATA).forEach(dateKey => {
+      const groupExists = db.groups.find(g => g.id === dateKey);
+      if (!groupExists) {
+        db.groups.push({ id: dateKey, name: dateKey + '.', source: 'builtin' });
+      }
     });
+    
+    // 添加单词和词组
+    Object.keys(BUILT_IN_DATA).forEach(dateKey => {
+      const data = BUILT_IN_DATA[dateKey];
+      
+      // 添加单词
+      data.words.forEach((w, i) => {
+        const wordId = genUniqueId(dateKey, i + 1, 'w');
+        if (!db.words.find(existing => existing.id === wordId)) {
+          db.words.push({
+            id: wordId,
+            groupId: dateKey,
+            en: w.en,
+            zh: w.zh,
+            pos: w.pos,
+            examples: w.examples || [],
+            source: 'builtin'
+          });
+        }
+      });
+      
+      // 添加词组
+      data.phrases.forEach((p, i) => {
+        const phraseId = genUniqueId(dateKey, i + 1, 'p');
+        if (!db.words.find(existing => existing.id === phraseId)) {
+          db.words.push({
+            id: phraseId,
+            groupId: dateKey,
+            en: p.en,
+            zh: p.zh,
+            pos: 'phr.',
+            source: 'builtin'
+          });
+        }
+      });
+    });
+    
     saveDB();
   }
 }
@@ -679,11 +1497,12 @@ function saveDB() {
 function showPage(pageId) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(pageId).classList.add('active');
+  const pages = ['page-home','page-study','page-library','page-quiz','page-wrong','page-stats'];
   document.querySelectorAll('.nav-tab').forEach((t,i) => {
-    const pages = ['page-home','page-library','page-quiz','page-wrong','page-stats'];
     t.classList.toggle('active', pages[i]===pageId);
   });
   if (pageId==='page-home') renderDashboard();
+  if (pageId==='page-study') renderStudyPage();
   if (pageId==='page-library') renderWordList();
   if (pageId==='page-wrong') renderWrongBook();
   if (pageId==='page-stats') renderStats();
@@ -720,6 +1539,13 @@ function renderDashboard() {
   document.getElementById('dash-review-sub').textContent = dueSub;
   document.getElementById('dash-review-card').style.opacity = duePool.length > 0 ? '1' : '0.6';
 
+  // 学习模块
+  const studyDate = getStudyDateFromToday();
+  const studyData = BUILT_IN_DATA[studyDate];
+  const studyCount = studyData ? (studyData.words.length + studyData.phrases.length) : 0;
+  document.getElementById('dash-study-count').textContent = studyCount;
+  document.getElementById('dash-study-sub').textContent = studyCount > 0 ? `${studyDate} · ${studyCount} 个词` : '暂无学习内容';
+
   // 混合总题数
   const [newR, reviewR] = db.plan.mixRatio.split(':').map(Number);
   const mixTotal = Math.min(
@@ -750,7 +1576,7 @@ function renderDashboard() {
 function renderPlanTimeline() {
   const cycleDay = getCycleDay();
   const currentCycle = Math.floor(cycleDay / 3);
-  const dayInCycle = cycleDay % 3; // 0,1,2
+  const dayInCycle = cycleDay % 3;
 
   let html = '';
   for (let i = Math.max(0, currentCycle-2); i <= currentCycle+1; i++) {
@@ -902,7 +1728,6 @@ function quizKeydown(e) {
 
 function quizConfirm() {
   if (quiz.submitted) {
-    // 已提交 → 下一题
     nextQuestion();
     return;
   }
@@ -917,7 +1742,6 @@ function quizConfirm() {
   const q = quiz.questions[quiz.current];
   const correct = normalize(userAns) === normalize(q.en);
 
-  // 立即显示结果
   if (correct) {
     input.classList.add('correct');
     quiz.correct++;
@@ -935,7 +1759,6 @@ function quizConfirm() {
   }
   saveDB();
 
-  // 更新进度条（答题后实时显示当前进度）
   const pct = Math.round(quiz.current / quiz.questions.length * 100);
   document.getElementById('quiz-progress').style.width = pct + '%';
 
@@ -982,13 +1805,11 @@ function showQuizResult() {
   document.getElementById('result-wrong').textContent = quiz.wrong;
   document.getElementById('result-total').textContent = total;
 
-  // 记录历史
   db.history.push({ date:today(), correct:quiz.correct, wrong:quiz.wrong, total, pct,
     type: quiz.questions[0]?._type || 'mix' });
   if (db.history.length > 100) db.history = db.history.slice(-100);
   saveDB();
 
-  // 详细结果
   document.getElementById('result-detail-list').innerHTML = quiz.results.map(r => `
     <div class="result-item">
       <div class="emoji">${r.correct ? '✅' : '❌'}</div>
@@ -1050,7 +1871,6 @@ function renderWordList() {
   if (currentFilterGroup !== 'all') words = words.filter(w => w.groupId===currentFilterGroup);
   if (search) words = words.filter(w => w.en.toLowerCase().includes(search) || w.zh.includes(search));
 
-  // 填充分组select
   ['add-group','batch-group'].forEach(sid => {
     const sel = document.getElementById(sid);
     if (sel) sel.innerHTML = db.groups.map(g => `<option value="${g.id}">${g.name}</option>`).join('');
@@ -1155,7 +1975,6 @@ function doBatchImport() {
 // ================================================================
 function renderWrongBook() {
   const list = document.getElementById('wrong-list');
-  // 按遗忘程度排序：错误次数多+间隔短的优先
   const wrongWords = db.words.filter(w => {
     const m = db.memData[w.id];
     return m && m.reviewCount > 0 && m.interval <= 3;
@@ -1173,9 +1992,6 @@ function renderWrongBook() {
     const m = db.memData[w.id];
     const group = db.groups.find(g=>g.id===w.groupId);
     const level = getMasteryLevel(w.id);
-    const wrongCount = db.history.filter(h =>
-      h.date===today() && !quiz.results?.find(r=>r.word.id===w.id)
-    ).length;
 
     return `<div class="wrong-book-item">
       ${level<2?`<span class="wrong-book-priority">⚠️ 高频错</span>`:''}
@@ -1221,7 +2037,6 @@ function renderStats() {
     <div class="stats-card"><div class="big">${db.history.length}</div><div class="desc">练习轮次</div></div>
   `;
 
-  // 掌握度分布
   const levels = [0,1,2,3].map(l => db.words.filter(w=>getMasteryLevel(w.id)===l).length);
   const colors = ['#cbd5e1','#60a5fa','#34d399','#fbbf24'];
   document.getElementById('stats-mastery').innerHTML = `
@@ -1236,7 +2051,6 @@ function renderStats() {
     </div>
   `;
 
-  // 分组统计
   let groupHtml = '<div style="font-weight:700;color:var(--primary);margin:16px 0 8px;">各分组进度</div>';
   db.groups.forEach(g => {
     const total_g = db.words.filter(w=>w.groupId===g.id).length;
@@ -1254,7 +2068,6 @@ function renderStats() {
   });
   document.getElementById('stats-groups').innerHTML = groupHtml;
 
-  // 每日历史
   const last7 = db.history.slice(-14);
   if (last7.length>0) {
     document.getElementById('stats-history').innerHTML = last7.map(h => `
@@ -1295,13 +2108,20 @@ function savePlan() {
 // 启动
 // ================================================================
 initDB();
-// 默认显示首页
 document.addEventListener('DOMContentLoaded', () => {
   showPage('page-home');
-  // 设置计划模态框的打开按钮（由于在库页面用 onclick，这里额外绑定）
   document.querySelectorAll('[onclick="openModal(\'modal-plan\')"]').forEach(el => {
     el.addEventListener('click', () => openPlanModal());
   });
+});
+
+// 键盘快捷键
+document.addEventListener('keydown', (e) => {
+  if (document.getElementById('page-study').classList.contains('active')) {
+    if (e.key === 'v' || e.key === 'V') toggleStudyView('en');
+    if (e.key === 'p' || e.key === 'P') toggleStudyView('pos');
+    if (e.key === 'z' || e.key === 'Z') toggleStudyView('zh');
+  }
 });
 </script>
 </body>
