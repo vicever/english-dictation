@@ -662,9 +662,28 @@ const genUniqueId = (dateKey, index, type) => {
 };
 
 // ================================================================
-// 内置词汇数据（已解析自腾讯文档）
+// 词汇数据加载（从 vocabulary.json 异步加载）
 // ================================================================
-const BUILT_IN_DATA = {
+let BUILT_IN_DATA = {};
+
+async function loadVocabData() {
+  try {
+    const res = await fetch('vocabulary.json');
+    if (res.ok) {
+      BUILT_IN_DATA = await res.json();
+      console.log('✅ 词汇库加载成功:', Object.keys(BUILT_IN_DATA).length, '个日期分组');
+      return true;
+    }
+  } catch(e) {
+    console.warn('⚠️ vocabulary.json 加载失败，使用内置数据:', e.message);
+  }
+  // 如果加载失败，使用内置数据（保持兼容性）
+  initBuiltInData();
+  return false;
+}
+
+function initBuiltInData() {
+  BUILT_IN_DATA = {
   "3.9": {
     words: [
       {en:"recognize",zh:"认识/识别出；承人/认可/接受",pos:"v.",examples:["recognize A as B 把A认为为B","beyond recognition 难以/无法识别"]},
@@ -1165,6 +1184,11 @@ const BUILT_IN_DATA = {
   }
 };
 
+// ==================      ]
+    }
+  };
+}
+
 // ================================================================
 // 工具
 // ================================================================
@@ -1483,7 +1507,10 @@ function startQuizFromStudy() {
 // ================================================================
 // 初始化
 // ================================================================
-function initDB() {
+async function initDB() {
+  // 首先加载词汇数据
+  await loadVocabData();
+  
   const saved = localStorage.getItem('dictation_v2_db');
   if (saved) {
     try {
