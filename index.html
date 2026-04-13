@@ -1571,11 +1571,10 @@ function parseEntriesFromLine(line) {
   // 词性正则
   const posRegex = POS_MARKERS.map(p => p.replace(/\./g, '\\.')).join('|');
   
-  // 标准化（词性标记前加空格）
+  // 标准化（词性标记前加空格）- 但不处理括号内的内容
   const normalized = normalizeLine(line);
   
   // 尝试标准格式：英文 + 词性 + 中文
-  // 英文可以是单词或多单词词组
   const standardMatch = normalized.match(new RegExp(`^([a-z][a-zA-Z\\-']*(?:\\s+[a-z][a-zA-Z\\-']*)*)\\s+(${posRegex})\\s*(.+)`));
   
   if (standardMatch) {
@@ -1590,23 +1589,48 @@ function parseEntriesFromLine(line) {
   }
   
   // 非标准格式：中文在前，英文在后
-  // 找到第一个英文单词（至少2个连续字母）
-  const firstEnglishIdx = normalized.search(/[a-zA-Z]{2,}/);
+  // 找到第一个英文单词（至少2个连续字母），跳过括号内的内容
+  // 先去掉括号内容再找
+  const withoutParens = normalized.replace(/\([^)]*\)/g, '').replace(/[（][^）]*[）]/g, '');
+  const firstEnglishIdx = withoutParens.search(/[a-zA-Z]{2,}/);
   
-  if (firstEnglishIdx > 0) {
-    const zhPart = normalized.substring(0, firstEnglishIdx).trim();
-    const enPart = normalized.substring(firstEnglishIdx).trim();
+  // 在原字符串中找到对应的英文位置
+  let actualIdx = 0;
+  if (firstEnglishIdx >= 0) {
+    let count = 0;
+    for (let i = 0; i < normalized.length; i++) {
+      const ch = normalized[i];
+      // 跳过括号内容
+      if (ch === '(' || ch === '（') {
+        // 跳过到对应的右括号
+        const close = ch === '(' ? ')' : '）';
+        while (i < normalized.length && normalized[i] !== close) i++;
+        continue;
+      }
+      if (/[a-zA-Z]/.test(ch)) count++;
+      if (count === firstEnglishIdx + 1) {
+        // 回退到单词开始
+        while (i > 0 && /[a-zA-Z]/.test(normalized[i-1])) i--;
+        actualIdx = i;
+        break;
+      }
+    }
+  }
+  
+  if (actualIdx > 0) {
+    const zhPart = normalized.substring(0, actualIdx).trim();
+    // 去掉末尾的括号等标点
+    const enPart = normalized.substring(actualIdx).trim();
     
     // 尝试匹配英文词组 + 可选词性 + 剩余中文
-    // 英文词组: 可能是 "be distinguished from", "classified files", "recognize A as B" 等
-    const enMatch = enPart.match(new RegExp(`^([a-z][a-zA-Z\\-']*(?:\\s+[a-zA-Z][a-zA-Z\\-']*)*)\\s*(${posRegex})?\\s*(.*)`));
+    const enMatch = enPart.match(new RegExp(`^([a-z][a-zA-Z\\-']*(?:\\s+[a-z][a-zA-Z\\-']*)*)\\s*(${posRegex})?\\s*(.*)`));
     
     if (enMatch) {
       const englishWord = enMatch[1].trim();
       const pos = enMatch[2] || 'v.';
       const extraZh = enMatch[3] || '';
       
-      let zhText = zhPart;
+      let zhText = zhPart.replace(/[（(].*$/, '').trim(); // 去掉末尾的不完整括号
       if (extraZh) {
         zhText += ' ' + extraZh;
       }
