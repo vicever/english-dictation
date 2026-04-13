@@ -1528,35 +1528,31 @@ async function initDB() {
     db.plan.cycleStart = today();
   }
 
-  // 内置词汇库
-  const builtInGroupId = 'builtin_dates';
-  const hasBuiltIn = db.groups.find(g => g.id === builtInGroupId);
-  if (!hasBuiltIn) {
-    // 添加分组
-    Object.keys(BUILT_IN_DATA).forEach(dateKey => {
-      const groupExists = db.groups.find(g => g.id === dateKey);
-      if (!groupExists) {
-        db.groups.push({ id: dateKey, name: dateKey + '.', source: 'builtin' });
-      }
-    });
+  // 内置词汇库 - 总是检查并补充缺失的日期分组和词汇
+  Object.keys(BUILT_IN_DATA).forEach(dateKey => {
+    const groupExists = db.groups.find(g => g.id === dateKey);
+    if (!groupExists) {
+      db.groups.push({ id: dateKey, name: dateKey + '.', source: 'builtin' });
+    }
+  });
+  
+  // 添加单词和词组
+  Object.keys(BUILT_IN_DATA).forEach(dateKey => {
+    const data = BUILT_IN_DATA[dateKey];
     
-    // 添加单词和词组
-    Object.keys(BUILT_IN_DATA).forEach(dateKey => {
-      const data = BUILT_IN_DATA[dateKey];
-      
-      // 添加单词
-      data.words.forEach((w, i) => {
-        const wordId = genUniqueId(dateKey, i + 1, 'w');
-        if (!db.words.find(existing => existing.id === wordId)) {
-          db.words.push({
-            id: wordId,
-            groupId: dateKey,
-            en: w.en,
-            zh: w.zh,
-            pos: w.pos,
-            examples: w.examples || [],
-            source: 'builtin'
-          });
+    // 添加单词
+    data.words.forEach((w, i) => {
+      const wordId = genUniqueId(dateKey, i + 1, 'w');
+      if (!db.words.find(existing => existing.id === wordId)) {
+        db.words.push({
+          id: wordId,
+          groupId: dateKey,
+          en: w.en,
+          zh: w.zh,
+          pos: w.pos,
+          examples: w.examples || [],
+          source: 'builtin'
+        });
         }
       });
       
@@ -1577,7 +1573,6 @@ async function initDB() {
     });
     
     saveDB();
-  }
 }
 
 function saveDB() {
