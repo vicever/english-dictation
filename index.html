@@ -428,7 +428,10 @@
       </div>
       <div style="margin-top:8px;text-align:right;"><button class="btn btn-primary" onclick="addWord()">添加单词</button></div>
       <div style="margin-top:10px;font-size:.82rem;color:var(--muted);">
-        💡 批量导入：<button class="btn btn-ghost btn-sm" onclick="openModal('modal-batch')">批量导入</button>
+        💡 批量导入：
+        <button class="btn btn-ghost btn-sm" onclick="openModal('modal-batch')">文本导入</button>
+        <button class="btn btn-ghost btn-sm" onclick="openModal('modal-import-file')">文档导入</button>
+        <button class="btn btn-ghost btn-sm" onclick="openModal('modal-json-import')">JSON导入</button>
         &nbsp;|&nbsp;
         <button class="btn btn-ghost btn-sm" onclick="openModal('modal-plan')">设置周期</button>
       </div>
@@ -528,6 +531,69 @@
     <div class="form-row"><label>选择分组</label><select id="batch-group"></select></div>
     <div class="form-row"><label>每行一条，格式：<b>英文 | 中文 | 词性（可选）</b></label><textarea id="batch-text" rows="8" placeholder="focus on the key points | 专注于关键点 | phr.&#10;curiosity | 好奇心 | n.&#10;..."></textarea></div>
     <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('modal-batch')">取消</button><button class="btn btn-primary" onclick="doBatchImport()">导入</button></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-import-file">
+  <div class="modal">
+    <h3>📂 从文件导入词汇</h3>
+    <div class="form-row">
+      <label>支持格式</label>
+      <div style="font-size:.85rem;color:var(--muted);line-height:1.6;">
+        <b>Word 文档 (.docx)</b>：复制粘贴文档内容即可自动解析<br>
+        <b>纯文本 (.txt)</b>：每行一条词汇，格式同上<br>
+        <b>JSON 文件 (.json)</b>：已内置的词汇库格式
+      </div>
+    </div>
+    <div class="form-row">
+      <label>词汇内容（粘贴）</label>
+      <textarea id="import-content" rows="10" placeholder="粘贴从 Word 文档复制的词汇内容..."></textarea>
+    </div>
+    <div class="form-row">
+      <label>日期标识（如：3.9、4.7 等，用于自动分组）</label>
+      <input type="text" id="import-date-key" placeholder="如：3.9 或 4.15">
+    </div>
+    <div class="form-row">
+      <label style="color:var(--purple);">💡 解析说明</label>
+      <div style="font-size:.82rem;color:var(--muted);padding:8px;background:#f8fafc;border-radius:8px;">
+        自动识别以下格式：<br>
+        • <b>recognize v.</b> 认识/识别出<br>
+        • <b>recognition n.</b> 认识/识别出（派生词自动拆分）<br>
+        • <b>beyond recognition</b> 难以/无法识别（短语自动拆分）<br>
+        同一行中的多个词条会自动拆分独立添加
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-import-file')">取消</button>
+      <button class="btn btn-primary" onclick="doImportFromFile()">解析并导入</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-json-import">
+  <div class="modal">
+    <h3>📦 导入 JSON 词汇库</h3>
+    <div class="form-row">
+      <label>说明</label>
+      <div style="font-size:.85rem;color:var(--muted);line-height:1.6;">
+        支持导入标准格式的词汇 JSON 文件，可用于备份恢复或导入他人分享的词库。
+      </div>
+    </div>
+    <div class="form-row">
+      <label>JSON 内容</label>
+      <textarea id="json-import-content" rows="12" placeholder='{&#10;  "3.9": {&#10;    "words": [{"en":"word","zh":"中文","pos":"n."}],&#10;    "phrases": [{"en":"phrase","zh":"短语"}]&#10;  }&#10;}'></textarea>
+    </div>
+    <div class="form-row">
+      <label>导入模式</label>
+      <select id="json-import-mode">
+        <option value="merge">合并（追加到现有词库）</option>
+        <option value="replace">替换（清空后导入）</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-json-import')">取消</button>
+      <button class="btn btn-primary" onclick="doJsonImport()">导入 JSON</button>
+    </div>
   </div>
 </div>
 
@@ -1968,6 +2034,251 @@ function doBatchImport() {
   closeModal('modal-batch');
   renderWordList();
   alert(`成功导入 ${count} 条单词！`);
+}
+
+// ================================================================
+// 文档导入（支持粘贴的 Word 内容）
+// ================================================================
+
+// 词性标记
+const POS_MARKERS = [
+  'n./v./adj.', 'v./n./adj.', 'n./v.', 'v./n.', 'adj./v.', 'v./adj.',
+  'n./adj.', 'adj./n.', 'n./adv.', 'adj./adv.',
+  'n.', 'v.', 'adj.', 'adv.', 'phr.', 'num.', 'int.', 'conj.', 'pron.', 'prep.'
+];
+
+// 派生词后缀
+const DERIVED_SUFFIXES = [
+  'tion', 'ment', 'ness', 'able', 'ible', 'ive', 'al', 'ly',
+  'ous', 'ful', 'less', 'er', 'or', 'ist', 'ism', 'ity',
+  'ance', 'ence', 'ize', 'ise', 'ed', 'ing'
+];
+
+function normalizeLine(line) {
+  // 在词性标记前插入空格（处理 recognizev. -> recognize v.）
+  let result = line;
+  for (const pos of POS_MARKERS) {
+    const escaped = pos.replace(/\./g, '\\.');
+    result = result.replace(new RegExp(`([a-zA-Z])(${escaped})`, 'g'), '$1 $2');
+  }
+  return result;
+}
+
+function parseEntriesFromLine(line) {
+  // 去掉行首编号
+  line = line.replace(/^\d+\.\s*/, '');
+  if (!line.trim()) return [];
+
+  // 标准化
+  const normalized = normalizeLine(line);
+  const entries = [];
+
+  // 词性正则
+  const posRegex = POS_MARKERS.map(p => p.replace(/\./g, '\\.')).join('|');
+  const wordPattern = new RegExp(`\\s*([a-z][a-zA-Z\\-]*(?:[\\-' + "'" + `][a-zA-Z\\-]+)*)\\s*(${posRegex})\\s*`, 'gi');
+
+  // 查找所有词条
+  const matches = [...normalized.matchAll(wordPattern)];
+
+  for (let i = 0; i < matches.length; i++) {
+    const word = matches[i][1];
+    const pos = matches[i][2];
+    const start = matches[i].index + matches[i][0].length;
+
+    // 找中文释义（到下一个词条或字符串末尾）
+    let end;
+    if (i + 1 < matches.length) {
+      end = matches[i + 1].index;
+    } else {
+      end = normalized.length;
+    }
+
+    const zhText = normalized.slice(start, end).trim().replace(/[，。、；： ""''（）【】…—]+$/, '');
+
+    if (word && zhText) {
+      // 判断是单词还是词组
+      const isDerived = DERIVED_SUFFIXES.some(s => word.toLowerCase().endsWith(s)) && !word.includes(' ');
+      const isPhrase = word.includes(' ') || pos === 'phr.';
+
+      entries.push({
+        en: word,
+        pos: pos,
+        zh: zhText,
+        examples: [],
+        type: (isDerived || isPhrase) ? 'phrase' : 'word'
+      });
+    }
+  }
+
+  return entries;
+}
+
+function doImportFromFile() {
+  const content = document.getElementById('import-content').value.trim();
+  const dateKey = document.getElementById('import-date-key').value.trim();
+
+  if (!content) {
+    alert('请输入词汇内容！');
+    return;
+  }
+
+  if (!dateKey) {
+    alert('请输入日期标识（如 3.9、4.7 等）！');
+    return;
+  }
+
+  // 创建分组
+  let group = db.groups.find(g => g.id === dateKey);
+  if (!group) {
+    group = { id: dateKey, name: dateKey + '.', source: 'imported' };
+    db.groups.push(group);
+  }
+
+  let wordCount = 0;
+  let phraseCount = 0;
+
+  // 按行处理
+  const lines = content.split('\n');
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+
+    // 跳过作业说明行
+    if (trimmed.includes('daily assignment') ||
+        trimmed.includes('背诵每日词汇') ||
+        trimmed.includes('明天照常') ||
+        trimmed.includes('上交') ||
+        trimmed.includes('批改') ||
+        /^[一二三四五六七八九十]+、/.test(trimmed) ||
+        /^完成/.test(trimmed)) {
+      continue;
+    }
+
+    const entries = parseEntriesFromLine(trimmed);
+
+    for (const entry of entries) {
+      // 生成唯一ID
+      const index = (db.words.filter(w => w.groupId === dateKey).length || 0) + 1;
+      const type = entry.type === 'word' ? 'w' : 'p';
+      const id = genUniqueId(dateKey, index, type);
+
+      // 检查是否已存在
+      if (!db.words.find(w => w.id === id)) {
+        db.words.push({
+          id: id,
+          groupId: dateKey,
+          en: entry.en,
+          zh: entry.zh,
+          pos: entry.pos,
+          examples: entry.examples || [],
+          source: 'imported'
+        });
+
+        if (entry.type === 'word') {
+          wordCount++;
+        } else {
+          phraseCount++;
+        }
+      }
+    }
+  }
+
+  saveDB();
+  closeModal('modal-import-file');
+  renderWordList();
+  alert(`导入完成！\n单词：${wordCount} 条\n词组：${phraseCount} 条`);
+}
+
+// ================================================================
+// JSON 导入
+// ================================================================
+
+function doJsonImport() {
+  const content = document.getElementById('json-import-content').value.trim();
+  const mode = document.getElementById('json-import-mode').value;
+
+  if (!content) {
+    alert('请输入 JSON 内容！');
+    return;
+  }
+
+  try {
+    const data = JSON.parse(content);
+
+    // 验证格式
+    if (typeof data !== 'object' || data === null) {
+      throw new Error('无效的 JSON 格式');
+    }
+
+    if (mode === 'replace') {
+      // 清空现有数据
+      db.groups = [];
+      db.words = [];
+      db.memData = {};
+      db.studyProgress = {};
+    }
+
+    let wordCount = 0;
+    let phraseCount = 0;
+
+    // 导入每个日期的词汇
+    for (const [dateKey, dateData] of Object.entries(data)) {
+      // 创建分组
+      if (!db.groups.find(g => g.id === dateKey)) {
+        db.groups.push({ id: dateKey, name: dateKey + '.', source: 'json' });
+      }
+
+      // 导入单词
+      if (dateData.words && Array.isArray(dateData.words)) {
+        const startIndex = db.words.filter(w => w.groupId === dateKey).length + 1;
+        for (let i = 0; i < dateData.words.length; i++) {
+          const w = dateData.words[i];
+          const id = genUniqueId(dateKey, startIndex + i, 'w');
+          if (!db.words.find(existing => existing.id === id)) {
+            db.words.push({
+              id: id,
+              groupId: dateKey,
+              en: w.en || w.word || '',
+              zh: w.zh || w.meaning || '',
+              pos: w.pos || 'n.',
+              examples: w.examples || [],
+              source: 'json'
+            });
+            wordCount++;
+          }
+        }
+      }
+
+      // 导入词组
+      if (dateData.phrases && Array.isArray(dateData.phrases)) {
+        const startIndex = db.words.filter(w => w.groupId === dateKey && w.pos === 'phr.').length + 1;
+        for (let i = 0; i < dateData.phrases.length; i++) {
+          const p = dateData.phrases[i];
+          const id = genUniqueId(dateKey, startIndex + i, 'p');
+          if (!db.words.find(existing => existing.id === id)) {
+            db.words.push({
+              id: id,
+              groupId: dateKey,
+              en: p.en || p.phrase || '',
+              zh: p.zh || p.meaning || '',
+              pos: 'phr.',
+              examples: p.examples || [],
+              source: 'json'
+            });
+            phraseCount++;
+          }
+        }
+      }
+    }
+
+    saveDB();
+    closeModal('modal-json-import');
+    renderWordList();
+    alert(`JSON 导入完成！\n日期分组：${Object.keys(data).length}\n单词：${wordCount} 条\n词组：${phraseCount} 条`);
+
+  } catch (e) {
+    alert('JSON 解析失败：' + e.message);
+  }
 }
 
 // ================================================================
