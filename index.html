@@ -1569,7 +1569,7 @@ function parseEntriesFromLine(line) {
 
   // 词性正则
   const posRegex = POS_MARKERS.map(p => p.replace(/\./g, '\\.')).join('|');
-  const wordPattern = new RegExp(`\\s*([a-z][a-zA-Z\\-]*(?:[\\-' + "'" + `][a-zA-Z\\-]+)*)\\s*(${posRegex})\\s*`, 'gi');
+  const wordPattern = new RegExp(`\\s*([a-z][a-zA-Z\\-]*(?:[\\-'][a-zA-Z\\-]+)*)\\s*(${posRegex})\\s*`, 'gi');
 
   // 查找所有词条
   const matches = [...normalized.matchAll(wordPattern)];
