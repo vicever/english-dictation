@@ -1,0 +1,2768 @@
+{
+  "3.9": {
+    "words": [
+      {
+        "en": "recognize",
+        "zh": "认识/识别出；承人/认可/接受",
+        "pos": "v.",
+        "examples": [
+          "recognize A as B 把A认为为B",
+          "beyond recognition 难以/无法识别"
+        ]
+      },
+      {
+        "en": "overall",
+        "zh": "全面/总体的/地；综合的/地",
+        "pos": "adj./adv.",
+        "examples": [
+          "overall performance 总体表现"
+        ]
+      },
+      {
+        "en": "distinguish",
+        "zh": "区别；辩别；分清",
+        "pos": "v.",
+        "examples": [
+          "be distinguished from 与...区分开",
+          "distinguished career 辉煌职业生涯"
+        ]
+      },
+      {
+        "en": "classify",
+        "zh": "把...分/归类；划分",
+        "pos": "v.",
+        "examples": [
+          "A as B 把A定为B",
+          "classified files 机密文件"
+        ]
+      },
+      {
+        "en": "moral",
+        "zh": "(有)道德(上)的；品行端正的",
+        "pos": "adj.",
+        "examples": [
+          "a moral dilemma 道德困境",
+          "moral kidnapping 道德绑架"
+        ]
+      },
+      {
+        "en": "hazardous",
+        "zh": "危险/有害的",
+        "pos": "adj.",
+        "examples": [
+          "hazard analysis 危害分析"
+        ]
+      },
+      {
+        "en": "xenophobia",
+        "zh": "仇外心理/情绪",
+        "pos": "n.",
+        "examples": [
+          "phobia n. 恐惧"
+        ]
+      },
+      {
+        "en": "vowel",
+        "zh": "元音(字母)",
+        "pos": "n.",
+        "examples": [
+          "consonant n. 辅音(字母)"
+        ]
+      },
+      {
+        "en": "outlast",
+        "zh": "比...更长久",
+        "pos": "v.",
+        "examples": [
+          "outlive 活得比...更长",
+          "outweigh 比...重"
+        ]
+      },
+      {
+        "en": "machinery",
+        "zh": "机械(总称)",
+        "pos": "n.",
+        "examples": [
+          "永单：equipment, clothing, furniture"
+        ]
+      }
+    ],
+    "phrases": [
+      {
+        "en": "be engaged in",
+        "zh": "从事；参与；忙着",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "raise one",
+        "zh": "提高某人对...的认识/意识",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "challenge social regulations",
+        "zh": "挑战社会规范/规则",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "lead sb. to do sth.",
+        "zh": "导致某人做某事",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "be intended to do",
+        "zh": "旨在做某事",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "be tied to sth.",
+        "zh": "与某事绑定/联系在一块儿",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "fight poverty",
+        "zh": "扶贫；摆脱/反贫穷",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "a bout of laughter",
+        "zh": "一阵大笑",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "head/lead a research team",
+        "zh": "领导一个研究团队",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "on a regular basis",
+        "zh": "定期地；经常；常态化",
+        "pos": "phr.",
+        "examples": []
+      }
+    ]
+  },
+  "3.10": {
+    "words": [
+      {
+        "en": "Anglo-Saxon",
+        "zh": "英国人；央格鲁撒克逊人",
+        "pos": "n.",
+        "examples": [
+          "+s则是复数形式"
+        ]
+      },
+      {
+        "en": "excessive",
+        "zh": "过度/多/过分的",
+        "pos": "adj.",
+        "examples": [
+          "excessive drinking 酗酒",
+          "excessive spending 过度消费"
+        ]
+      },
+      {
+        "en": "diverse",
+        "zh": "多元的；不同/各色各样的",
+        "pos": "adj.",
+        "examples": [
+          "diversity n. 多样性",
+          "biodiversity n. 生物多样性"
+        ]
+      },
+      {
+        "en": "definition",
+        "zh": "定义",
+        "pos": "n.",
+        "examples": [
+          "define A as B 把A定义为B"
+        ]
+      },
+      {
+        "en": "influence",
+        "zh": "影响；左右(某人决策等)",
+        "pos": "v./n.",
+        "examples": [
+          "influence sb. 对某人有影响",
+          "influential adj. 有影响力的"
+        ]
+      },
+      {
+        "en": "compare",
+        "zh": "对比；比较",
+        "pos": "v.",
+        "examples": [
+          "compare A with/to B",
+          "by comparison 相比之下"
+        ]
+      },
+      {
+        "en": "major",
+        "zh": "主要的；重大的；主修",
+        "pos": "v./n./adj.",
+        "examples": [
+          "a majority of=most",
+          "minority n. 少数民族"
+        ]
+      },
+      {
+        "en": "workaholic",
+        "zh": "工作狂",
+        "pos": "n.",
+        "examples": [
+          "shopaholic 购物狂"
+        ]
+      },
+      {
+        "en": "spread",
+        "zh": "传播/散步；蔓延/扩散",
+        "pos": "v./n.",
+        "examples": [
+          "spread fast across the world 火速传遍全球"
+        ]
+      },
+      {
+        "en": "range",
+        "zh": "范围；种类；区间；系列",
+        "pos": "v./n.",
+        "examples": [
+          "in a wide range of areas 在广泛的领域中"
+        ]
+      },
+      {
+        "en": "maintain",
+        "zh": "维持；保持；维修；保养",
+        "pos": "v.",
+        "examples": [
+          "maintain social distance 保持社交距离"
+        ]
+      },
+      {
+        "en": "electronic",
+        "zh": "电子的",
+        "pos": "adj.",
+        "examples": [
+          "electronic products 电子产品"
+        ]
+      },
+      {
+        "en": "independent",
+        "zh": "独立的",
+        "pos": "adj.",
+        "examples": [
+          "independent learning 独立学习",
+          "be independent of 不依赖"
+        ]
+      }
+    ],
+    "phrases": [
+      {
+        "en": "have come to stay",
+        "zh": "继续存在；普遍认可",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "be here to stay",
+        "zh": "继续存在；普遍认可",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "mother tongue / native language",
+        "zh": "母语",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "the Germanic language",
+        "zh": "日耳曼语",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "electronic products",
+        "zh": "电子产品",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "less fast",
+        "zh": "没那么快；慢一点",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "make up",
+        "zh": "组/构成；弥补；化妆；编造",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "app store(s)",
+        "zh": "应用商店",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "independent learning",
+        "zh": "独立学习；自学",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "Parents can easily become over-protective of their children",
+        "zh": "父母容易过度保护孩子",
+        "pos": "phr.",
+        "examples": []
+      }
+    ]
+  },
+  "3.11": {
+    "words": [
+      {
+        "en": "harsh",
+        "zh": "恶劣/艰苦的；严酷/厉/苛的",
+        "pos": "adj.",
+        "examples": [
+          "harsh voice 刺耳的嗓音",
+          "harsh wind 凛冽的寒风"
+        ]
+      },
+      {
+        "en": "identify",
+        "zh": "辨/指认/显示身份",
+        "pos": "v.",
+        "examples": [
+          "identify with 认同/共鸣",
+          "identification n. 鉴定"
+        ]
+      },
+      {
+        "en": "combat",
+        "zh": "搏斗；战斗",
+        "pos": "v./n.",
+        "examples": [
+          "combat child labor 打击(使用)童工现象"
+        ]
+      },
+      {
+        "en": "ensure",
+        "zh": "确保；保证",
+        "pos": "v.",
+        "examples": [
+          "ensure that+句子"
+        ]
+      },
+      {
+        "en": "highlight",
+        "zh": "突出；强调；做醒目标志",
+        "pos": "v./n.",
+        "examples": [
+          "highlight the key points 突出重点"
+        ]
+      },
+      {
+        "en": "sustainable",
+        "zh": "不破坏生态平衡的；可持续的",
+        "pos": "adj.",
+        "examples": [
+          "sustainability n. 可持续性",
+          "sustain v. 维持"
+        ]
+      },
+      {
+        "en": "access",
+        "zh": "机会/权利；路/途径；登录/访问",
+        "pos": "v./n.",
+        "examples": [
+          "access s.p. 登录/访问某地",
+          "accessible adj. 可进入的"
+        ]
+      },
+      {
+        "en": "depression",
+        "zh": "抑郁(症)；沮丧/消沉；萧条",
+        "pos": "n.",
+        "examples": [
+          "depress v. 使沮丧",
+          "depressive adj. 抑郁的"
+        ]
+      },
+      {
+        "en": "status",
+        "zh": "地位；身份；状况/态",
+        "pos": "n.",
+        "examples": [
+          "social status 社会地位"
+        ]
+      },
+      {
+        "en": "evaluate",
+        "zh": "评价/评估",
+        "pos": "v.",
+        "examples": [
+          "evaluation n. 评估"
+        ]
+      }
+    ],
+    "phrases": [
+      {
+        "en": "drug addiction",
+        "zh": "药物成瘾；不断嗑药",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "stimulate the blood flow",
+        "zh": "促进/刺激血液循环",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "such....as to do",
+        "zh": "如此以至于",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "go through",
+        "zh": "通过；经受；完成",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "stream some radio",
+        "zh": "播放一些广播节目",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "obey one",
+        "zh": "满足某人要求",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "feel obliged to do sth.",
+        "zh": "感到有义务做某事",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "arouse feelings of guilt in sb.",
+        "zh": "使某人产生内疚感",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "meet/satisfy one",
+        "zh": "满足某人需求",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "emotional blackmail",
+        "zh": "情感勒索；感情敲诈",
+        "pos": "phr.",
+        "examples": []
+      }
+    ]
+  },
+  "3.12": {
+    "words": [
+      {
+        "en": "dialect",
+        "zh": "方言；土话",
+        "pos": "n.",
+        "examples": []
+      },
+      {
+        "en": "nightmare",
+        "zh": "噩梦；梦魇",
+        "pos": "n.",
+        "examples": []
+      },
+      {
+        "en": "brainstorm",
+        "zh": "突发灵感/妙计 v. 头脑风暴",
+        "pos": "n./v.",
+        "examples": [
+          "brainstorm ideas 集思广益"
+        ]
+      },
+      {
+        "en": "wipe",
+        "zh": "擦；拭；抹；消除",
+        "pos": "v.",
+        "examples": [
+          "wipe sth. off 擦掉；抹去"
+        ]
+      },
+      {
+        "en": "revolution",
+        "zh": "大变革；巨变",
+        "pos": "n.",
+        "examples": [
+          "revolutionary adj. 革命性的"
+        ]
+      },
+      {
+        "en": "jewellery/jewelry",
+        "zh": "珠宝；首饰",
+        "pos": "n.",
+        "examples": [
+          "永单"
+        ]
+      },
+      {
+        "en": "genre",
+        "zh": "体裁；类型",
+        "pos": "n.",
+        "examples": [
+          "literary genre 文学体裁"
+        ]
+      },
+      {
+        "en": "feather",
+        "zh": "羽/翎毛",
+        "pos": "n.",
+        "examples": [
+          "a feather pillow 羽绒枕头"
+        ]
+      },
+      {
+        "en": "tragedy",
+        "zh": "悲剧/悲哀；惨祸",
+        "pos": "n.",
+        "examples": [
+          "tragic adj. 悲剧的"
+        ]
+      },
+      {
+        "en": "subheading",
+        "zh": "副标题",
+        "pos": "n.",
+        "examples": [
+          "subtitle n. 副标题"
+        ]
+      }
+    ],
+    "phrases": [
+      {
+        "en": "cardiovascular system",
+        "zh": "心血管系统",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "brush one",
+        "zh": "将个人需求置之脑后",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "in favor of",
+        "zh": "支持；赞同；偏向于",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "by means of",
+        "zh": "凭借；通过；借助于",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "negotiate with",
+        "zh": "和...妥协/协商/谈判",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "The ball is in your court",
+        "zh": "轮到你做决定了；该你行动了",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "borrowed word/language",
+        "zh": "外来语",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "be pressured into doing",
+        "zh": "被迫做某事",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "under/in no circumstance(s)",
+        "zh": "绝不",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "leave sb. feeling guilty",
+        "zh": "让某人感到内疚",
+        "pos": "phr.",
+        "examples": []
+      }
+    ]
+  },
+  "3.13": {
+    "words": [
+      {
+        "en": "compromise",
+        "zh": "妥协；折中；让步",
+        "pos": "n./v.",
+        "examples": []
+      },
+      {
+        "en": "pollution-free",
+        "zh": "无污染/无公害的；洁净的",
+        "pos": "adj.",
+        "examples": []
+      },
+      {
+        "en": "monitor",
+        "zh": "监视/监控(器/员)；班长",
+        "pos": "v./n.",
+        "examples": []
+      },
+      {
+        "en": "resentful",
+        "zh": "气愤/憎/怨恨的",
+        "pos": "adj.",
+        "examples": [
+          "resent v. 怨恨"
+        ]
+      },
+      {
+        "en": "foreseeable",
+        "zh": "可预知/预料/预见的",
+        "pos": "adj.",
+        "examples": [
+          "foresee v. 预见"
+        ]
+      },
+      {
+        "en": "acknowledge",
+        "zh": "承认；认可",
+        "pos": "v.",
+        "examples": [
+          "acknowledgement n. 承认"
+        ]
+      },
+      {
+        "en": "desert",
+        "zh": "沙漠；荒原；抛/离/遗弃",
+        "pos": "v./n.",
+        "examples": [
+          "dessert n. 甜点"
+        ]
+      },
+      {
+        "en": "trigger",
+        "zh": "扳机；诱因；触发/引爆",
+        "pos": "v./n.",
+        "examples": [
+          "trigger an alarm 触发警报器"
+        ]
+      },
+      {
+        "en": "means",
+        "zh": "方法/手段/财富",
+        "pos": "n.",
+        "examples": [
+          "by no means 绝不"
+        ]
+      },
+      {
+        "en": "alternative",
+        "zh": "可供选择的事物；可替代的",
+        "pos": "n./adj.",
+        "examples": [
+          "alternative therapy 替代疗法"
+        ]
+      }
+    ],
+    "phrases": [
+      {
+        "en": "implied meaning",
+        "zh": "隐含/含蓄意义；寓意",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "power cars",
+        "zh": "为汽车提供动力",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "the automated system",
+        "zh": "自动系统",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "reserve space for the car",
+        "zh": "为汽车预留空间",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "fall into disuse",
+        "zh": "逐渐不再使用/逐步废弃",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "remain an honest man",
+        "zh": "依然是个诚实的人",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "head for s.p.",
+        "zh": "前往/去某地",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "There goes the bell",
+        "zh": "打铃了/下课了",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "It is whispered that",
+        "zh": "据说",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "dial instructions about one",
+        "zh": "(拨打电话)告知某人所在位置",
+        "pos": "phr.",
+        "examples": []
+      }
+    ]
+  },
+  "3.16": {
+    "words": [
+      {
+        "en": "tension",
+        "zh": "焦虑/烦躁；紧张",
+        "pos": "n.",
+        "examples": [
+          "relieve/ease tension 缓解紧张"
+        ]
+      },
+      {
+        "en": "rewind",
+        "zh": "倒带；回放",
+        "pos": "v./n.",
+        "examples": []
+      },
+      {
+        "en": "browse",
+        "zh": "随意浏览",
+        "pos": "v./n.",
+        "examples": []
+      },
+      {
+        "en": "innovative",
+        "zh": "创新/新颖的",
+        "pos": "adj.",
+        "examples": [
+          "innovation n. 创新"
+        ]
+      },
+      {
+        "en": "victim",
+        "zh": "受害者",
+        "pos": "n.",
+        "examples": []
+      },
+      {
+        "en": "colleague",
+        "zh": "同事/同仁",
+        "pos": "n.",
+        "examples": []
+      },
+      {
+        "en": "unintentional",
+        "zh": "无意的",
+        "pos": "adj.",
+        "examples": [
+          "intentional adj. 故意的"
+        ]
+      },
+      {
+        "en": "resistance",
+        "zh": "抵制/抵抗",
+        "pos": "n.",
+        "examples": [
+          "resistant adj. 抵抗的"
+        ]
+      },
+      {
+        "en": "entrepreneur",
+        "zh": "创业者；企业家",
+        "pos": "n.",
+        "examples": []
+      },
+      {
+        "en": "persistent",
+        "zh": "坚持不懈/持续的",
+        "pos": "adj.",
+        "examples": [
+          "persist in 坚持"
+        ]
+      }
+    ],
+    "phrases": [
+      {
+        "en": "take turns doing sth.",
+        "zh": "轮流做某事",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "expand one",
+        "zh": "扩大影响力/增强存在感",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "bring in funding",
+        "zh": "筹集资金",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "leaf through the pages",
+        "zh": "翻阅书页；浏览",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "lift the ban on sth.",
+        "zh": "解除对...的禁令",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "bring to light the truth",
+        "zh": "揭露/揭示真相",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "be not in line with",
+        "zh": "与...不符/不一致",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "marvel at",
+        "zh": "对...(感到)惊奇；惊叹于",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "be reflective of",
+        "zh": "反映/表现出",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "advance the cause",
+        "zh": "推动/促进事业",
+        "pos": "phr.",
+        "examples": []
+      }
+    ]
+  },
+  "3.17": {
+    "words": [
+      {
+        "en": "proverb",
+        "zh": "谚语；格言",
+        "pos": "n.",
+        "examples": [
+          "as the proverb goes 俗话说"
+        ]
+      },
+      {
+        "en": "apparently",
+        "zh": "显而易见地",
+        "pos": "adv.",
+        "examples": [
+          "apparent adj. 明显的"
+        ]
+      },
+      {
+        "en": "distracted",
+        "zh": "分心/心不在焉的",
+        "pos": "adj.",
+        "examples": [
+          "distract v. 使分心"
+        ]
+      },
+      {
+        "en": "astronaut",
+        "zh": "宇航员/太空人",
+        "pos": "n.",
+        "examples": [
+          "astronomy n. 天文"
+        ]
+      },
+      {
+        "en": "elasticity",
+        "zh": "柔韧性；弹性/弹力",
+        "pos": "n.",
+        "examples": [
+          "elastic adj. 有弹性的"
+        ]
+      },
+      {
+        "en": "exterminator",
+        "zh": "灭虫师/专家；灭鼠药",
+        "pos": "n.",
+        "examples": [
+          "exterminate v. 消灭"
+        ]
+      },
+      {
+        "en": "bow",
+        "zh": "鞠躬；垂首；弯曲",
+        "pos": "v./n.",
+        "examples": [
+          "bow to pressure 屈服于压力"
+        ]
+      },
+      {
+        "en": "ignore",
+        "zh": "忽略/无视/不理会",
+        "pos": "v.",
+        "examples": [
+          "ignorance n. 无知"
+        ]
+      },
+      {
+        "en": "desperate",
+        "zh": "迫不及待/不顾一切的",
+        "pos": "adj.",
+        "examples": [
+          "desperate for 渴望"
+        ]
+      },
+      {
+        "en": "vacancy",
+        "zh": "空缺/空职/空额",
+        "pos": "n.",
+        "examples": [
+          "job vacancies 职位空缺"
+        ]
+      }
+    ],
+    "phrases": [
+      {
+        "en": "safe and sound",
+        "zh": "安然无恙",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "the truth came out",
+        "zh": "真相大白",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "compared with males",
+        "zh": "相比于男性",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "be stressed out",
+        "zh": "感到压力山大/过于紧张",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "blow off sb.",
+        "zh": "不理睬；终止与某人的关系",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "object to (one",
+        "zh": "反对(某人)做某事",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "cut time short",
+        "zh": "缩短时间",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "the commitment of time and thought to doing sth.",
+        "zh": "全身心地投入到...之中",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "be to blame",
+        "zh": "应该受到责备；是...的罪魁祸首",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "be seated",
+        "zh": "就座；坐下",
+        "pos": "phr.",
+        "examples": []
+      }
+    ]
+  },
+  "3.18": {
+    "words": [
+      {
+        "en": "legacy",
+        "zh": "遗产；遗留问题/后遗症",
+        "pos": "n.",
+        "examples": []
+      },
+      {
+        "en": "echo",
+        "zh": "回声；附和；回应/音",
+        "pos": "v./n.",
+        "examples": []
+      },
+      {
+        "en": "catalyst",
+        "zh": "催化剂；诱因",
+        "pos": "n.",
+        "examples": []
+      },
+      {
+        "en": "originate",
+        "zh": "起源/发端于",
+        "pos": "v.",
+        "examples": [
+          "original adj. 原始的"
+        ]
+      },
+      {
+        "en": "vary",
+        "zh": "不同/有别；变化/变更",
+        "pos": "v.",
+        "examples": [
+          "various adj. 各种各样的"
+        ]
+      },
+      {
+        "en": "snap",
+        "zh": "照片；咔嚓声；断裂",
+        "pos": "n./v.",
+        "examples": [
+          "snap back at sb. 反唇相讥"
+        ]
+      },
+      {
+        "en": "mainstay",
+        "zh": "中流砥柱/顶梁柱",
+        "pos": "n.",
+        "examples": [
+          "economic mainstay 经济支柱"
+        ]
+      },
+      {
+        "en": "haunt",
+        "zh": "(鬼魂等)出没；萦绕在脑际",
+        "pos": "v.",
+        "examples": [
+          "a haunting melody 难以忘怀的乐曲"
+        ]
+      },
+      {
+        "en": "cringe",
+        "zh": "畏缩；怯退；感到难为情",
+        "pos": "v.",
+        "examples": []
+      },
+      {
+        "en": "strike",
+        "zh": "击/打/撞；罢工；突然想到",
+        "pos": "v./n.",
+        "examples": [
+          "strike while the iron is hot 趁热打铁"
+        ]
+      }
+    ],
+    "phrases": [
+      {
+        "en": "come in handy",
+        "zh": "派上用场/迟早有用",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "get promoted",
+        "zh": "升职；晋/提升",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "shave one",
+        "zh": "刮/剃掉胡子",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "make ends meet with one",
+        "zh": "靠薪水维持生计",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "get tied up in traffic",
+        "zh": "陷入交通拥堵之中",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "log off",
+        "zh": "登出；注销",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "pass away",
+        "zh": "(文语)仙逝；驾鹤西去",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "digital footprints",
+        "zh": "数字足迹",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "shuffle off the mortal coil",
+        "zh": "摆脱尘世的束缚",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "compete in doubles",
+        "zh": "参加双打比赛",
+        "pos": "phr.",
+        "examples": []
+      }
+    ]
+  },
+  "3.19": {
+    "words": [
+      {
+        "en": "matinee",
+        "zh": "下午/午后场",
+        "pos": "n.",
+        "examples": []
+      },
+      {
+        "en": "showcase",
+        "zh": "展示",
+        "pos": "v.",
+        "examples": [
+          "display/exhibit"
+        ]
+      },
+      {
+        "en": "ethical",
+        "zh": "伦理的；道德上的",
+        "pos": "adj.",
+        "examples": []
+      },
+      {
+        "en": "artifact",
+        "zh": "(有文化或历史价值的)手工艺/人工制品",
+        "pos": "n.",
+        "examples": []
+      },
+      {
+        "en": "layout",
+        "zh": "布局；(版面)设计",
+        "pos": "n.",
+        "examples": [
+          "page layout 页面设置"
+        ]
+      },
+      {
+        "en": "late",
+        "zh": "已故的",
+        "pos": "adj.",
+        "examples": [
+          "late husband 亡夫"
+        ]
+      },
+      {
+        "en": "mature",
+        "zh": "成熟(的)",
+        "pos": "adj./v.",
+        "examples": [
+          "maturity n. 成熟"
+        ]
+      },
+      {
+        "en": "accompanying",
+        "zh": "陪伴/附带的",
+        "pos": "adj.",
+        "examples": [
+          "accompany v. 陪伴"
+        ]
+      },
+      {
+        "en": "habitat",
+        "zh": "栖息地/生活环境",
+        "pos": "n.",
+        "examples": [
+          "natural habitat 天然栖息地"
+        ]
+      },
+      {
+        "en": "ecology",
+        "zh": "生态(学)",
+        "pos": "n.",
+        "examples": [
+          "ecologist n. 生态学家"
+        ]
+      },
+      {
+        "en": "eligible",
+        "zh": "有资格的；合乎条件的",
+        "pos": "adj.",
+        "examples": [
+          "eligible to vote 有资格投票"
+        ]
+      }
+    ],
+    "phrases": [
+      {
+        "en": "fundamental fault",
+        "zh": "根本性错误",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "give new insight into sth.",
+        "zh": "对某事有新的见解/理解",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "graphic designer",
+        "zh": "平面设计师",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "standby ticket",
+        "zh": "候补(机)票；余票",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "pay off",
+        "zh": "偿清债务；某行为带来回报",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "brag about",
+        "zh": "吹嘘；夸耀",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "food court",
+        "zh": "美食广场",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "(Really) speeds things up",
+        "zh": "真是事半功倍啊",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "Learned that the hard way",
+        "zh": "我吃过苦头/知道那行不通",
+        "pos": "phr.",
+        "examples": []
+      }
+    ]
+  },
+  "3.20": {
+    "words": [
+      {
+        "en": "apprentice",
+        "zh": "徒弟；学徒",
+        "pos": "n.",
+        "examples": []
+      },
+      {
+        "en": "preachy",
+        "zh": "说教的；劝诫的",
+        "pos": "adj.",
+        "examples": []
+      },
+      {
+        "en": "bait",
+        "zh": "下/放诱饵/鱼饵",
+        "pos": "n./v.",
+        "examples": [
+          "take the bait 上当"
+        ]
+      },
+      {
+        "en": "entertaining",
+        "zh": "使人愉快的；娱乐性/有趣的",
+        "pos": "adj.",
+        "examples": []
+      },
+      {
+        "en": "blockbuster",
+        "zh": "一鸣惊人的事物；大片",
+        "pos": "n.",
+        "examples": [
+          "hit 热门影片"
+        ]
+      },
+      {
+        "en": "portray",
+        "zh": "描绘/画/写；刻画",
+        "pos": "v.",
+        "examples": [
+          "portray sb. as 描绘某人为"
+        ]
+      },
+      {
+        "en": "tame",
+        "zh": "驯化/服/养；驯化的",
+        "pos": "v./adj.",
+        "examples": [
+          "tame one"
+        ]
+      },
+      {
+        "en": "dissuade",
+        "zh": "劝阻；劝止",
+        "pos": "v.",
+        "examples": [
+          "dissuade sb. from doing"
+        ]
+      },
+      {
+        "en": "devour",
+        "zh": "吞噬/吞食；狼吞虎咽地吃",
+        "pos": "v.",
+        "examples": [
+          "devour books 如饥似渴地阅读"
+        ]
+      },
+      {
+        "en": "visually",
+        "zh": "视觉上地；直观地",
+        "pos": "adv.",
+        "examples": [
+          "visual arts 视觉艺术"
+        ]
+      }
+    ],
+    "phrases": [
+      {
+        "en": "count on",
+        "zh": "依靠/指望",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "for financial purposes",
+        "zh": "出于财务方面的考虑/目的",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "in the blink of an eye",
+        "zh": "立刻/转瞬之间",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "the adventure film",
+        "zh": "冒险片；惊险片",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "on one",
+        "zh": "按照自己的方式去做某事",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "let up on sb./sth.",
+        "zh": "对某人宽容或减少/缓和某事",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "an epic struggle",
+        "zh": "一场激烈的斗争",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "set out to do",
+        "zh": "开始/着手做某事",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "devote oneself to doing",
+        "zh": "献身/致力于做某事",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "make a dash for freedom",
+        "zh": "奋力争取自由",
+        "pos": "phr.",
+        "examples": []
+      }
+    ]
+  },
+  "3.23": {
+    "words": [
+      {
+        "en": "illegible",
+        "zh": "难以辨认/无法识别的",
+        "pos": "adj.",
+        "examples": []
+      },
+      {
+        "en": "specially",
+        "zh": "专门地；特意",
+        "pos": "adv.",
+        "examples": [
+          "especially adv. 尤其"
+        ]
+      },
+      {
+        "en": "panick",
+        "zh": "惊慌失措；恐慌",
+        "pos": "v./n./adj.",
+        "examples": [
+          "in panic 惊慌的"
+        ]
+      },
+      {
+        "en": "defeat",
+        "zh": "击败；战胜",
+        "pos": "v./n.",
+        "examples": [
+          "A man can be destroyed but not defeated"
+        ]
+      },
+      {
+        "en": "wound",
+        "zh": "受(枪/刀)伤/伤口",
+        "pos": "v./n.",
+        "examples": [
+          "Time heals all wounds 时间能抚平一切创伤"
+        ]
+      },
+      {
+        "en": "likelihood",
+        "zh": "可能性",
+        "pos": "n.",
+        "examples": [
+          "likely adj. 可能的"
+        ]
+      },
+      {
+        "en": "target",
+        "zh": "目/指标；靶子",
+        "pos": "v./n.",
+        "examples": [
+          "targeted audience 目标受众"
+        ]
+      },
+      {
+        "en": "approach",
+        "zh": "走/靠/接近；处理/解决",
+        "pos": "v./n.",
+        "examples": [
+          "different approaches to doing sth."
+        ]
+      },
+      {
+        "en": "wrap",
+        "zh": "包装；包；裹；缠绕",
+        "pos": "v.",
+        "examples": [
+          "wrap up 包裹；完成"
+        ]
+      },
+      {
+        "en": "venture",
+        "zh": "敢于去(危险之地)；企业",
+        "pos": "n./v.",
+        "examples": [
+          "business venture 经营项目"
+        ]
+      }
+    ],
+    "phrases": [
+      {
+        "en": "keep/bear sth. in mind",
+        "zh": "谨记某事",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "in the long run/term",
+        "zh": "长远来看",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "come up with",
+        "zh": "想/提出(方法/对策等)",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "fight off the bloodthirsty shark",
+        "zh": "击退嗜血的鲨鱼",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "put sth. away",
+        "zh": "收拾好某物",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "hear the noise of skin and flesh ripping",
+        "zh": "听到皮肤和肉撕裂的声音",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "survive a shark attack",
+        "zh": "\\",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "close in on sb.",
+        "zh": "向某人逼近/包围",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "Sb. is faced with sth.",
+        "zh": "面临/面对某个情况",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "be tied to",
+        "zh": "被绑于/束缚于；与...挂钩",
+        "pos": "phr.",
+        "examples": []
+      }
+    ]
+  },
+  "3.24": {
+    "words": [
+      {
+        "en": "excerpt",
+        "zh": "摘录；节选",
+        "pos": "n./v.",
+        "examples": []
+      },
+      {
+        "en": "internship",
+        "zh": "实习期",
+        "pos": "n.",
+        "examples": [
+          "intern n. 实习生"
+        ]
+      },
+      {
+        "en": "donor",
+        "zh": "捐赠者",
+        "pos": "n.",
+        "examples": [
+          "donate v. 捐赠"
+        ]
+      },
+      {
+        "en": "hybrid",
+        "zh": "杂交植物/动物；混合物",
+        "pos": "n.",
+        "examples": [
+          "a hybrid car 混合动力汽车"
+        ]
+      },
+      {
+        "en": "archaeology",
+        "zh": "考古学",
+        "pos": "n.",
+        "examples": [
+          "archaeological adj. 考古学的"
+        ]
+      },
+      {
+        "en": "works",
+        "zh": "著作/作品(复数)；工厂",
+        "pos": "n.",
+        "examples": [
+          "a steel works 钢铁厂"
+        ]
+      },
+      {
+        "en": "quote",
+        "zh": "引用；引语",
+        "pos": "v./n.",
+        "examples": [
+          "quotation n. 引语"
+        ]
+      },
+      {
+        "en": "yield",
+        "zh": "产出；产量",
+        "pos": "v./n.",
+        "examples": [
+          "yield dividends 产生回报"
+        ]
+      },
+      {
+        "en": "commemorate",
+        "zh": "纪念；深切怀念",
+        "pos": "v.",
+        "examples": [
+          "端午节是为了纪念爱国诗人屈原"
+        ]
+      },
+      {
+        "en": "paralyze",
+        "zh": "使麻痹/瘫痪",
+        "pos": "v.",
+        "examples": [
+          "paralyzed with fear 吓得呆若木鸡"
+        ]
+      }
+    ],
+    "phrases": [
+      {
+        "en": "Line A crosses with line B",
+        "zh": "直线A和B相交",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "drive the spear into the shark",
+        "zh": "用尽全力把鱼叉插进鲨鱼的脑袋",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "with determination and complete hatred",
+        "zh": "怀着决心和满满的恨意",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "turn over",
+        "zh": "翻身/翻转；翻阅；交接/移交",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "on one",
+        "zh": "仰面朝天",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "three quarters",
+        "zh": "四分之三",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "be better armed",
+        "zh": "装备更精良",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "go out on the sea to fish",
+        "zh": "出海打鱼",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "It is too good to last",
+        "zh": "(光景)太好了不可能长久",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "lie quietly",
+        "zh": "静静地躺着",
+        "pos": "phr.",
+        "examples": []
+      }
+    ]
+  },
+  "3.25": {
+    "words": [
+      {
+        "en": "setback",
+        "zh": "挫折/败；阻碍",
+        "pos": "n.",
+        "examples": [
+          "despite the setback 尽管遇到挫折"
+        ]
+      },
+      {
+        "en": "mathematician",
+        "zh": "数学家",
+        "pos": "n.",
+        "examples": [
+          "mathematics n. 数学"
+        ]
+      },
+      {
+        "en": "curious",
+        "zh": "好奇/求知欲强的",
+        "pos": "adj.",
+        "examples": [
+          "be curious about 对...感到好奇"
+        ]
+      },
+      {
+        "en": "false",
+        "zh": "错误的；伪造/虚伪/假的",
+        "pos": "adj.",
+        "examples": [
+          "false alarm 虚惊一场"
+        ]
+      },
+      {
+        "en": "count",
+        "zh": "重要",
+        "pos": "v.",
+        "examples": [
+          "Hard work counts 勤奋很重要"
+        ]
+      },
+      {
+        "en": "achieve",
+        "zh": "获得；实现；完成",
+        "pos": "v.",
+        "examples": [
+          "achieve success 获得成功"
+        ]
+      },
+      {
+        "en": "afford",
+        "zh": "买得起；承担得起",
+        "pos": "v.",
+        "examples": [
+          "cannot afford to do sth. 承担不起"
+        ]
+      },
+      {
+        "en": "dedicate",
+        "zh": "奉献",
+        "pos": "v.",
+        "examples": [
+          "dedicate oneself to doing 致力于"
+        ]
+      },
+      {
+        "en": "despite",
+        "zh": "即使；尽管；虽然",
+        "pos": "prep.",
+        "examples": [
+          "despite all her efforts"
+        ]
+      },
+      {
+        "en": "prove",
+        "zh": "证明",
+        "pos": "v.",
+        "examples": [
+          "prove to be effective 证明是有效的"
+        ]
+      }
+    ],
+    "phrases": [
+      {
+        "en": "start as a failure",
+        "zh": "开始时/起初很失败",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "a late developer",
+        "zh": "大器晚成者",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "be expelled from school",
+        "zh": "被学校开除",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "become one of the most important physicists of/in the 20th century",
+        "zh": "成为二十世纪最重要的物理学家之一",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "sell for a huge amount of money",
+        "zh": "卖了一大笔钱",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "be permanently paralyzed",
+        "zh": "终生瘫痪",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "the rest is history",
+        "zh": "后来发生的事众所周知",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "the fire brigade",
+        "zh": "消防队",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "in advance",
+        "zh": "提前",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "set aside enough time",
+        "zh": "留足时间",
+        "pos": "phr.",
+        "examples": []
+      }
+    ]
+  },
+  "3.26": {
+    "words": [
+      {
+        "en": "skeleton",
+        "zh": "骨架/骨骼；骷髅",
+        "pos": "n.",
+        "examples": [
+          "a skeleton in the cupboard 不可外扬的家丑"
+        ]
+      },
+      {
+        "en": "carcass",
+        "zh": "(尤指动物)尸体",
+        "pos": "n.",
+        "examples": [
+          "corpse 多指人的尸体"
+        ]
+      },
+      {
+        "en": "scary",
+        "zh": "吓/骇人/恐怖的",
+        "pos": "adj.",
+        "examples": [
+          "a scary movie 恐怖电影"
+        ]
+      },
+      {
+        "en": "sacrifice",
+        "zh": "牺牲；舍弃",
+        "pos": "v./n.",
+        "examples": [
+          "sacrifice family life for career"
+        ]
+      },
+      {
+        "en": "opponent",
+        "zh": "对手；竞争者；反对者",
+        "pos": "n.",
+        "examples": [
+          "oppose v. 反抗"
+        ]
+      },
+      {
+        "en": "remains",
+        "zh": "残羹冷炙；遗体；残骸",
+        "pos": "n.",
+        "examples": []
+      },
+      {
+        "en": "pessimistic",
+        "zh": "悲观(主义)的",
+        "pos": "adj.",
+        "examples": [
+          "pessimist n. 悲观主义者"
+        ]
+      },
+      {
+        "en": "surgery",
+        "zh": "外科手术",
+        "pos": "n.",
+        "examples": [
+          "cosmetic/plastic surgery 整形/美容手术"
+        ]
+      },
+      {
+        "en": "tremendously",
+        "zh": "巨/极大地",
+        "pos": "adv.",
+        "examples": [
+          "tremendous adj. 巨大的"
+        ]
+      },
+      {
+        "en": "worthy",
+        "zh": "值得(尊重)的；有价值的",
+        "pos": "adj.",
+        "examples": [
+          "worthy of 值得...的"
+        ]
+      }
+    ],
+    "phrases": [
+      {
+        "en": "There were no such lines",
+        "zh": "没有这样的线条",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "get rid of",
+        "zh": "除去；摆脱",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "I wish it had been a dream",
+        "zh": "真希望是场梦",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "confess one",
+        "zh": "忏悔某人的罪过",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "in contrast",
+        "zh": "正相反；相比之下",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "It occurred to me that",
+        "zh": "突然想到",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "mistake A for B",
+        "zh": "将A错当成/误以为B",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "Legend has it that",
+        "zh": "据传说/言",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "located in=situated in=lying in",
+        "zh": "位于/坐落于",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "be attached to",
+        "zh": "依恋/依附",
+        "pos": "phr.",
+        "examples": []
+      }
+    ]
+  },
+  "4.7": {
+    "words": [
+      {
+        "en": "curiosity",
+        "zh": "好奇",
+        "pos": "n.",
+        "examples": [
+          "be curious about 对...好奇"
+        ]
+      },
+      {
+        "en": "contain",
+        "zh": "包含/含有",
+        "pos": "v.",
+        "examples": [
+          "contain errors 包含错误"
+        ]
+      },
+      {
+        "en": "journalist",
+        "zh": "记者",
+        "pos": "n.",
+        "examples": [
+          "journalism n. 新闻业"
+        ]
+      },
+      {
+        "en": "participate",
+        "zh": "参加/与",
+        "pos": "v.",
+        "examples": [
+          "participate in 参加"
+        ]
+      },
+      {
+        "en": "spot",
+        "zh": "看到/发现/留意到",
+        "pos": "v.",
+        "examples": [
+          "spot a good news story 发现好新闻"
+        ]
+      },
+      {
+        "en": "current",
+        "zh": "当前/现在的；水/电/气流",
+        "pos": "adj./n.",
+        "examples": [
+          "keep up with current events 关注时事"
+        ]
+      },
+      {
+        "en": "present",
+        "zh": "展/显示；现/存在的；礼物",
+        "pos": "v./n./adj.",
+        "examples": [
+          "present the facts 陈述事实"
+        ]
+      },
+      {
+        "en": "mentor",
+        "zh": "导师/良师益友",
+        "pos": "n.",
+        "examples": []
+      },
+      {
+        "en": "limit",
+        "zh": "限制/限度；界限",
+        "pos": "v./n.",
+        "examples": [
+          "a limit on/to the number of words 字数限制"
+        ]
+      },
+      {
+        "en": "appeal",
+        "zh": "呼吁/恳求/上诉/吸引力",
+        "pos": "v./n.",
+        "examples": [
+          "appeal to 吸引；呼吁"
+        ]
+      }
+    ],
+    "phrases": [
+      {
+        "en": "at all times",
+        "zh": "一直，始终",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "for one thing",
+        "zh": "首先，一则",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "focus on the key points",
+        "zh": "专注于关键点",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "develop this important skill",
+        "zh": "培养这一重要技能",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "come across things worth reporting",
+        "zh": "遇到值得报道的事情",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "on one",
+        "zh": "萦绕在心头；惦记着",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "in one",
+        "zh": "在脑海里",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "get to do sth.",
+        "zh": "有机会做某事",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "have something in common",
+        "zh": "有一些共同之处",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "make a good journalist",
+        "zh": "成为好的新闻记者",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "open one",
+        "zh": "使某人看清/认识到",
+        "pos": "phr.",
+        "examples": []
+      }
+    ]
+  },
+  "4.8": {
+    "words": [
+      {
+        "en": "betray",
+        "zh": "背叛/出卖；泄密",
+        "pos": "v.",
+        "examples": [
+          "betrayal n. 背叛"
+        ]
+      },
+      {
+        "en": "ecosystem",
+        "zh": "生态系统",
+        "pos": "n.",
+        "examples": [
+          "ecology n. 生态学"
+        ]
+      },
+      {
+        "en": "ignorant",
+        "zh": "无知的",
+        "pos": "adj.",
+        "examples": [
+          "be ignorant of 对...不知情"
+        ]
+      },
+      {
+        "en": "annoy",
+        "zh": "使恼怒",
+        "pos": "v.",
+        "examples": [
+          "get/be annoyed 生气"
+        ]
+      },
+      {
+        "en": "entertainer",
+        "zh": "表演者；艺人",
+        "pos": "n.",
+        "examples": [
+          "entertain v. 款待；使娱乐"
+        ]
+      },
+      {
+        "en": "superior",
+        "zh": "更好/更胜一筹的；上司",
+        "pos": "n./adj.",
+        "examples": [
+          "A is superior to B in sth."
+        ]
+      },
+      {
+        "en": "resistant",
+        "zh": "抵制/反抗的；抗...的",
+        "pos": "adj.",
+        "examples": [
+          "be resistant to 对...有抵抗力"
+        ]
+      },
+      {
+        "en": "assume",
+        "zh": "假定/假设；认为",
+        "pos": "v.",
+        "examples": [
+          "assume responsibility 承担责任"
+        ]
+      },
+      {
+        "en": "motive",
+        "zh": "动机/目的",
+        "pos": "n.",
+        "examples": [
+          "motivation n. 动力"
+        ]
+      },
+      {
+        "en": "underestimate",
+        "zh": "低估；轻视",
+        "pos": "v.",
+        "examples": [
+          "overestimate 高估"
+        ]
+      }
+    ],
+    "phrases": [
+      {
+        "en": "have purpose",
+        "zh": "有意义",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "in an objective way",
+        "zh": "客观地",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "check up on facts",
+        "zh": "核对/实事实",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "under time pressure",
+        "zh": "在时间的压力下",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "turn in the report(s) late",
+        "zh": "迟交报告",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "care about",
+        "zh": "关心，在乎",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "sources of information",
+        "zh": "信息来源",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "be late for interviews",
+        "zh": "采访迟到",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "get paid",
+        "zh": "获得报酬",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "be responsible for",
+        "zh": "对...负责",
+        "pos": "phr.",
+        "examples": []
+      }
+    ]
+  },
+  "4.9": {
+    "words": [
+      {
+        "en": "cuddle",
+        "zh": "拥抱；依偎",
+        "pos": "v./n.",
+        "examples": [
+          "hug/embrace"
+        ]
+      },
+      {
+        "en": "auction",
+        "zh": "拍卖(会)",
+        "pos": "n.",
+        "examples": [
+          "at auction 在拍卖会上"
+        ]
+      },
+      {
+        "en": "fatigue",
+        "zh": "疲劳/疲乏/疲惫",
+        "pos": "n.",
+        "examples": [
+          "driver fatigue 驾驶疲劳"
+        ]
+      },
+      {
+        "en": "failing",
+        "zh": "失败/未成功做到的",
+        "pos": "adj.",
+        "examples": [
+          "failing health 每况愈下的健康状况"
+        ]
+      },
+      {
+        "en": "communicative",
+        "zh": "爱说话/乐意沟通的",
+        "pos": "adj.",
+        "examples": [
+          "communication n. 交流"
+        ]
+      },
+      {
+        "en": "adapt",
+        "zh": "(使)适应；改编",
+        "pos": "v.",
+        "examples": [
+          "adapt to 适应"
+        ]
+      },
+      {
+        "en": "block",
+        "zh": "大块；阻碍；街区",
+        "pos": "n./v.",
+        "examples": [
+          "writer"
+        ]
+      },
+      {
+        "en": "resident",
+        "zh": "居民/住户",
+        "pos": "n.",
+        "examples": [
+          "residential area 住宅区"
+        ]
+      },
+      {
+        "en": "diagnose",
+        "zh": "诊断",
+        "pos": "v.",
+        "examples": [
+          "be diagnosed with 被诊断患有"
+        ]
+      },
+      {
+        "en": "moody",
+        "zh": "情绪多变/喜怒无常的",
+        "pos": "adj.",
+        "examples": [
+          "mood n. 情绪"
+        ]
+      }
+    ],
+    "phrases": [
+      {
+        "en": "give a rare glimpse into sth.",
+        "zh": "提供对某事物难得的观察视角",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "define one",
+        "zh": "明确自己的工作职责",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "be on sick leave",
+        "zh": "休病假",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "the literary dry spell",
+        "zh": "文学创作的低谷/干旱期",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "make heavy demands on sb.",
+        "zh": "对某人提出苛刻的要求",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "be buried in data and academic journals",
+        "zh": "被淹没在大量的数据和学术期刊之中",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "pull on the clothes",
+        "zh": "穿上衣服",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "the associate professor",
+        "zh": "副教授",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "resonate with",
+        "zh": "与...产生共鸣",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "have a bad press",
+        "zh": "有/受到负面报道；口碑不好",
+        "pos": "phr.",
+        "examples": []
+      }
+    ]
+  },
+  "4.10": {
+    "words": [
+      {
+        "en": "sociologist",
+        "zh": "社会学家",
+        "pos": "n.",
+        "examples": [
+          "sociology n. 社会学"
+        ]
+      },
+      {
+        "en": "venomous",
+        "zh": "有毒的；恶意/充满仇恨的",
+        "pos": "adj.",
+        "examples": [
+          "venom n. 毒液"
+        ]
+      },
+      {
+        "en": "underdog",
+        "zh": "弱旅；弱势群体",
+        "pos": "n.",
+        "examples": []
+      },
+      {
+        "en": "fluffy",
+        "zh": "覆盖有绒毛的；松软/蓬松的",
+        "pos": "adj.",
+        "examples": []
+      },
+      {
+        "en": "unknowingly",
+        "zh": "不知不觉/不知情地",
+        "pos": "adv.",
+        "examples": []
+      },
+      {
+        "en": "perceive",
+        "zh": "认为/理解；注意/察觉",
+        "pos": "v.",
+        "examples": [
+          "perception n. 感知"
+        ]
+      },
+      {
+        "en": "sideline",
+        "zh": "副业/兼职；边线",
+        "pos": "n./v.",
+        "examples": [
+          "on the sideline 袖手旁观"
+        ]
+      },
+      {
+        "en": "futility",
+        "zh": "徒劳；无用",
+        "pos": "n.",
+        "examples": [
+          "futile adj. 徒劳的"
+        ]
+      },
+      {
+        "en": "fuel",
+        "zh": "燃料；刺激因素",
+        "pos": "v./n.",
+        "examples": [
+          "fuel consumption 耗油量"
+        ]
+      },
+      {
+        "en": "fault",
+        "zh": "过错/失；责任；缺陷",
+        "pos": "n.",
+        "examples": [
+          "at fault 有罪/错的"
+        ]
+      }
+    ],
+    "phrases": [
+      {
+        "en": "the deputy head",
+        "zh": "副主管/副校长",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "fight-or-flight response",
+        "zh": "战斗或逃逸反应",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "As sb. puts it",
+        "zh": "正如某人所说",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "pay the ultimate price",
+        "zh": "付出最终/最大代价",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "have a respect for",
+        "zh": "尊/敬重",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "fit into nature",
+        "zh": "与自然融为一体",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "become/be critical of",
+        "zh": "对...感到不满/持批评态度",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "blame sb. for sth.",
+        "zh": "归咎于某人；因某事责备某人",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "be out of touch with modern ways",
+        "zh": "与现代(生活)方式脱节",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "feel cut off from the adult world",
+        "zh": "感觉与成年人世界隔绝了",
+        "pos": "phr.",
+        "examples": []
+      }
+    ]
+  },
+  "4.13": {
+    "words": [
+      {
+        "en": "surface",
+        "zh": "表面/层；水/地/液面",
+        "pos": "n./v.",
+        "examples": [
+          "on the surface 表面上"
+        ]
+      },
+      {
+        "en": "aim",
+        "zh": "以...为目的；瞄准/针对",
+        "pos": "v./n.",
+        "examples": [
+          "aim at (doing) sth. 旨在"
+        ]
+      },
+      {
+        "en": "polish",
+        "zh": "擦亮；磨/抛光；改善/润色",
+        "pos": "v./n.",
+        "examples": [
+          "polish shoes 擦鞋"
+        ]
+      },
+      {
+        "en": "stuff",
+        "zh": "物品/东西；塞/填满",
+        "pos": "n./v.",
+        "examples": [
+          "Don"
+        ]
+      },
+      {
+        "en": "serve",
+        "zh": "服役；为...工作；供应",
+        "pos": "v.",
+        "examples": [
+          "serve the public 为人民服务"
+        ]
+      },
+      {
+        "en": "photographer",
+        "zh": "摄影师",
+        "pos": "n.",
+        "examples": [
+          "photography n. 摄影"
+        ]
+      },
+      {
+        "en": "merely",
+        "zh": "仅仅；只不过",
+        "pos": "adv.",
+        "examples": []
+      },
+      {
+        "en": "cuisine",
+        "zh": "烹饪；风味/菜肴",
+        "pos": "n.",
+        "examples": [
+          "Italian cuisine 意式烹饪"
+        ]
+      },
+      {
+        "en": "recipe",
+        "zh": "诀窍；秘诀；食谱",
+        "pos": "n.",
+        "examples": [
+          "recipe for success 成功秘诀"
+        ]
+      },
+      {
+        "en": "province",
+        "zh": "省份；一级行政区",
+        "pos": "n.",
+        "examples": [
+          "provincial capital 省会"
+        ]
+      }
+    ],
+    "phrases": [
+      {
+        "en": "the late rice harvest",
+        "zh": "晚稻的收成/丰收",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "A Bite of China",
+        "zh": "舌尖上的中国",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "foods from different regions of China",
+        "zh": "中国不同地区的食物",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "attitude towards life",
+        "zh": "生活态度",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "a story from the second episode",
+        "zh": "第二集的故事",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "focus on",
+        "zh": "聚焦于",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "make rice cakes",
+        "zh": "做年糕",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "a staple food in meals",
+        "zh": "膳食中的主食",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "a family reunion/get-together",
+        "zh": "一次家庭聚会/重逢",
+        "pos": "phr.",
+        "examples": []
+      },
+      {
+        "en": "go on the air",
+        "zh": "被现场直播",
+        "pos": "phr.",
+        "examples": []
+      }
+    ]
+  }
+}
