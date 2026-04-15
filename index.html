@@ -465,7 +465,7 @@
 
         <div class="quiz-actions">
           <button class="btn btn-primary btn-lg" id="quiz-confirm-btn" onclick="quizConfirm()">确认答案 ↵</button>
-          <button class="btn btn-ghost" id="quiz-skip-btn" onclick="quizSkip()">跳过 →</button>
+          <button class="btn btn-ghost" id="quiz-skip-btn" onclick="quizSkip()" title="快捷键：Tab 或 S">跳过 <kbd style="font-size:.72rem;background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:monospace;">S</kbd></button>
         </div>
       </div>
 
@@ -633,26 +633,78 @@
 </div>
 
 <div class="modal-overlay" id="modal-plan">
-  <div class="modal">
-    <h3>⚙️ 学习计划设置</h3>
-    <div class="form-row"><label>每轮新增单词数（每3天）</label>
-      <select id="plan-batch-size">
-        <option value="5">5 个新词 / 3天</option>
-        <option value="10" selected>10 个新词 / 3天</option>
-        <option value="15">15 个新词 / 3天</option>
-        <option value="20">20 个新词 / 3天</option>
-        <option value="30">30 个新词 / 3天</option>
-      </select>
+  <div class="modal" style="max-width:560px;">
+    <h3>⚙️ 每日学习计划设置</h3>
+
+    <!-- 模式切换 -->
+    <div class="form-row">
+      <label>每日任务模式</label>
+      <div style="display:flex;gap:8px;">
+        <button id="plan-mode-count" class="btn btn-primary btn-sm" onclick="switchPlanMode('count')">📊 按数量</button>
+        <button id="plan-mode-group" class="btn btn-outline btn-sm" onclick="switchPlanMode('group')">📂 按分组</button>
+      </div>
+      <div style="font-size:.8rem;color:var(--muted);margin-top:6px;" id="plan-mode-desc">
+        每日固定学习新词和复习数量，超出按此限制截取。
+      </div>
     </div>
-    <div class="form-row"><label>综合练习新:复习 比例</label>
+
+    <!-- 按数量模式 -->
+    <div id="plan-section-count">
+      <div class="form-row">
+        <label>每日新词数量</label>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <input type="range" id="plan-daily-new" min="5" max="50" step="5" value="10"
+            style="flex:1;" oninput="document.getElementById('plan-daily-new-val').textContent=this.value">
+          <span id="plan-daily-new-val" style="min-width:30px;font-weight:700;color:var(--primary);">10</span> 个
+        </div>
+      </div>
+      <div class="form-row">
+        <label>每日复习数量</label>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <input type="range" id="plan-daily-review" min="5" max="100" step="5" value="20"
+            style="flex:1;" oninput="document.getElementById('plan-daily-review-val').textContent=this.value">
+          <span id="plan-daily-review-val" style="min-width:30px;font-weight:700;color:var(--purple);">20</span> 个
+        </div>
+      </div>
+    </div>
+
+    <!-- 按分组模式 -->
+    <div id="plan-section-group" style="display:none;">
+      <div class="form-row">
+        <label>选择每日学习的分组（可多选）</label>
+        <div id="plan-group-list" style="max-height:200px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;padding:8px;display:flex;flex-direction:column;gap:6px;">
+          <!-- 动态渲染 -->
+        </div>
+        <div style="font-size:.8rem;color:var(--muted);margin-top:6px;">选中分组中的所有词汇将纳入当日练习范围。</div>
+      </div>
+      <div class="form-row">
+        <label>每日复习数量（分组模式下）</label>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <input type="range" id="plan-daily-review-g" min="5" max="100" step="5" value="20"
+            style="flex:1;" oninput="document.getElementById('plan-daily-review-g-val').textContent=this.value">
+          <span id="plan-daily-review-g-val" style="min-width:30px;font-weight:700;color:var(--purple);">20</span> 个
+        </div>
+      </div>
+    </div>
+
+    <!-- 通用：混合比例 -->
+    <div class="form-row">
+      <label>综合练习新:复习 比例</label>
       <select id="plan-mix-ratio">
-        <option value="1:1" selected>1:1（各占一半）</option>
+        <option value="1:1">1:1（各占一半）</option>
         <option value="1:2">1:2（复习为主）</option>
         <option value="2:1">2:1（新词为主）</option>
+        <option value="only-new">仅新词</option>
+        <option value="only-review">仅复习</option>
       </select>
     </div>
+
     <div class="form-row"><label>本轮起始日期</label><input type="date" id="plan-start-date"></div>
-    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('modal-plan')">取消</button><button class="btn btn-primary" onclick="savePlan()">保存设置</button></div>
+
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-plan')">取消</button>
+      <button class="btn btn-primary" onclick="savePlan()">保存设置</button>
+    </div>
   </div>
 </div>
 
@@ -678,9 +730,13 @@ let db = {
   history: [],
   // 设置
   plan: {
-    batchSize: 10,    // 每轮新增数
-    mixRatio: '1:1',  // 混合比例
-    cycleStart: null  // 周期起始日期
+    batchSize: 10,       // 兼容旧版
+    mixRatio: '1:1',     // 混合比例
+    cycleStart: null,    // 周期起始日期
+    dailyMode: 'count',  // 'count' | 'group'
+    dailyNewCount: 10,   // 按数量模式：每日新词数
+    dailyReviewCount: 20,// 按数量模式：每日复习数
+    dailyGroups: []      // 按分组模式：选中的分组 id 列表
   },
   // 学习进度：{ date: { learned: [], viewed: [] } }
   studyProgress: {},
@@ -1025,7 +1081,14 @@ function initDB() {
       db = { ...db, ...parsed };
       if (!db.memData) db.memData = {};
       if (!db.history) db.history = [];
-      if (!db.plan) db.plan = { batchSize:10, mixRatio:'1:1', cycleStart:null };
+      if (!db.plan) db.plan = {};
+      if (!db.plan.batchSize) db.plan.batchSize = 10;
+      if (!db.plan.mixRatio) db.plan.mixRatio = '1:1';
+      if (!db.plan.cycleStart) db.plan.cycleStart = null;
+      if (!db.plan.dailyMode) db.plan.dailyMode = 'count';
+      if (!db.plan.dailyNewCount) db.plan.dailyNewCount = db.plan.batchSize || 10;
+      if (!db.plan.dailyReviewCount) db.plan.dailyReviewCount = 20;
+      if (!db.plan.dailyGroups) db.plan.dailyGroups = [];
       if (!db.studyProgress) db.studyProgress = {};
     } catch(e) {}
   }
@@ -1226,28 +1289,49 @@ let quiz = {
 };
 
 function startQuiz(mode) {
-  let newPool = getNewWordsForBatch();
+  // 根据学习计划模式决定新词范围
+  let newPool = [];
   let duePool = getDueWords();
+
+  if (db.plan.dailyMode === 'group' && db.plan.dailyGroups.length > 0) {
+    // 按分组模式：只取选中分组的词
+    const groupSet = new Set(db.plan.dailyGroups);
+    newPool = db.words.filter(w => groupSet.has(w.groupId) && !db.memData[w.id]?.learnDate);
+  } else {
+    // 按数量模式（默认）
+    newPool = getNewWordsForBatch();
+  }
 
   // 打乱
   newPool = shuffle(newPool);
   duePool = shuffle(duePool);
 
+  // 每日限额
+  const maxNew    = db.plan.dailyMode === 'group' ? newPool.length : (db.plan.dailyNewCount || db.plan.batchSize || 10);
+  const maxReview = db.plan.dailyReviewCount || 20;
+
   let questions = [];
 
   if (mode === 'new') {
-    questions = newPool.slice(0, db.plan.batchSize);
+    questions = newPool.slice(0, maxNew).map(w => ({...w, _type:'new'}));
   } else if (mode === 'review') {
-    questions = duePool.slice(0, 20);
+    questions = duePool.slice(0, maxReview).map(w => ({...w, _type:'review'}));
   } else { // mix
-    const [newR, reviewR] = db.plan.mixRatio.split(':').map(Number);
-    const maxNew = Math.min(newPool.length, Math.ceil(20 * newR / (newR+reviewR)));
-    const maxReview = Math.min(duePool.length, Math.ceil(20 * reviewR / (newR+reviewR)));
-    questions = [
-      ...newPool.slice(0, maxNew).map(w => ({...w, _type:'new'})),
-      ...duePool.slice(0, maxReview).map(w => ({...w, _type:'review'}))
-    ];
-    questions = shuffle(questions);
+    const ratio = db.plan.mixRatio;
+    if (ratio === 'only-new') {
+      questions = newPool.slice(0, maxNew).map(w => ({...w, _type:'new'}));
+    } else if (ratio === 'only-review') {
+      questions = duePool.slice(0, maxReview).map(w => ({...w, _type:'review'}));
+    } else {
+      const [newR, reviewR] = ratio.split(':').map(Number);
+      const total = Math.min(maxNew + maxReview, 40);
+      const sliceNew    = Math.min(newPool.length,  Math.round(total * newR    / (newR + reviewR)));
+      const sliceReview = Math.min(duePool.length,  Math.round(total * reviewR / (newR + reviewR)));
+      questions = shuffle([
+        ...newPool.slice(0, sliceNew).map(w => ({...w, _type:'new'})),
+        ...duePool.slice(0, sliceReview).map(w => ({...w, _type:'review'}))
+      ]);
+    }
   }
 
   if (questions.length === 0) {
@@ -1315,8 +1399,17 @@ function showQuestion() {
 
 function quizKeydown(e) {
   if (e.key === 'Enter') {
+    e.preventDefault();
+    if (quiz.submitted) {
+      nextQuestion();   // 已提交 → 直接下一题
+    } else {
+      quizConfirm();    // 未提交 → 确认答案
+    }
+  } else if (e.key === 'Tab' || e.key === 's' || e.key === 'S') {
+    // Tab 或 S 键 → 跳过（仅在未提交时生效）
     if (!quiz.submitted) {
-      quizConfirm();
+      e.preventDefault();
+      quizSkip();
     }
   }
 }
@@ -2181,18 +2274,87 @@ function renderStats() {
 // ================================================================
 // 计划设置
 // ================================================================
+function switchPlanMode(mode) {
+  document.getElementById('plan-section-count').style.display = mode === 'count' ? 'block' : 'none';
+  document.getElementById('plan-section-group').style.display = mode === 'group' ? 'block' : 'none';
+  document.getElementById('plan-mode-count').className = mode === 'count' ? 'btn btn-primary btn-sm' : 'btn btn-outline btn-sm';
+  document.getElementById('plan-mode-group').className = mode === 'group' ? 'btn btn-primary btn-sm' : 'btn btn-outline btn-sm';
+  document.getElementById('plan-mode-desc').textContent = mode === 'count'
+    ? '每日固定学习新词和复习数量，超出按此限制截取。'
+    : '从选中的分组中取所有未学词汇作为新词，自行掌控分组进度。';
+}
+
+function renderPlanGroupList() {
+  const container = document.getElementById('plan-group-list');
+  const selected = new Set(db.plan.dailyGroups || []);
+  const groups = [...db.groups].sort((a, b) => a.id.localeCompare(b.id));
+
+  if (!groups.length) {
+    container.innerHTML = '<div style="color:var(--muted);font-size:.85rem;">暂无分组，请先导入词汇。</div>';
+    return;
+  }
+
+  container.innerHTML = groups.map(g => {
+    const wordCount = db.words.filter(w => w.groupId === g.id).length;
+    const checked = selected.has(g.id) ? 'checked' : '';
+    return `<label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:4px 6px;border-radius:6px;${checked ? 'background:#ede9fe;' : ''}">
+      <input type="checkbox" value="${g.id}" ${checked} style="width:15px;height:15px;accent-color:var(--primary);">
+      <span style="font-weight:600;">${g.name || g.id}</span>
+      <span style="color:var(--muted);font-size:.8rem;margin-left:auto;">${wordCount} 词</span>
+    </label>`;
+  }).join('');
+}
+
 function openPlanModal() {
-  document.getElementById('plan-batch-size').value = db.plan.batchSize;
-  document.getElementById('plan-mix-ratio').value = db.plan.mixRatio;
-  document.getElementById('plan-start-date').value = db.plan.cycleStart || today();
+  const p = db.plan;
+
+  // 数量模式滑块
+  const newSlider = document.getElementById('plan-daily-new');
+  const reviewSlider = document.getElementById('plan-daily-review');
+  newSlider.value = p.dailyNewCount || 10;
+  reviewSlider.value = p.dailyReviewCount || 20;
+  document.getElementById('plan-daily-new-val').textContent = newSlider.value;
+  document.getElementById('plan-daily-review-val').textContent = reviewSlider.value;
+
+  // 分组模式复习数
+  const reviewGSlider = document.getElementById('plan-daily-review-g');
+  reviewGSlider.value = p.dailyReviewCount || 20;
+  document.getElementById('plan-daily-review-g-val').textContent = reviewGSlider.value;
+
+  // 混合比例
+  document.getElementById('plan-mix-ratio').value = p.mixRatio || '1:1';
+
+  // 起始日期
+  document.getElementById('plan-start-date').value = p.cycleStart || today();
+
+  // 渲染分组列表
+  renderPlanGroupList();
+
+  // 切换到当前模式
+  switchPlanMode(p.dailyMode || 'count');
+
   openModal('modal-plan');
 }
 
 function savePlan() {
-  db.plan.batchSize = parseInt(document.getElementById('plan-batch-size').value);
+  const mode = document.getElementById('plan-mode-count').classList.contains('btn-primary') ? 'count' : 'group';
+
+  db.plan.dailyMode = mode;
+  db.plan.dailyNewCount = parseInt(document.getElementById('plan-daily-new').value);
+  db.plan.batchSize = db.plan.dailyNewCount; // 兼容旧逻辑
+
+  if (mode === 'group') {
+    const checkboxes = document.querySelectorAll('#plan-group-list input[type=checkbox]');
+    db.plan.dailyGroups = [...checkboxes].filter(c => c.checked).map(c => c.value);
+    db.plan.dailyReviewCount = parseInt(document.getElementById('plan-daily-review-g').value);
+  } else {
+    db.plan.dailyReviewCount = parseInt(document.getElementById('plan-daily-review').value);
+  }
+
   db.plan.mixRatio = document.getElementById('plan-mix-ratio').value;
   const start = document.getElementById('plan-start-date').value;
   if (start) db.plan.cycleStart = start;
+
   saveDB();
   closeModal('modal-plan');
   renderDashboard();
