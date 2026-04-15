@@ -431,6 +431,7 @@
         💡 批量导入：
         <button class="btn btn-ghost btn-sm" onclick="openModal('modal-batch')">文本导入</button>
         <button class="btn btn-ghost btn-sm" onclick="openModal('modal-import-file')">文档导入</button>
+        <button class="btn btn-ghost btn-sm" onclick="openModal('modal-csv-import')">CSV导入</button>
         <button class="btn btn-ghost btn-sm" onclick="openModal('modal-json-import')">JSON导入</button>
         &nbsp;|&nbsp;
         <button class="btn btn-ghost btn-sm" onclick="openModal('modal-plan')">设置周期</button>
@@ -593,6 +594,40 @@
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('modal-json-import')">取消</button>
       <button class="btn btn-primary" onclick="doJsonImport()">导入 JSON</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-csv-import">
+  <div class="modal">
+    <h3>📊 导入 CSV 词汇</h3>
+    <div class="form-row">
+      <label>CSV 格式说明</label>
+      <div style="font-size:.85rem;color:var(--muted);line-height:1.8;background:#f8fafc;padding:10px;border-radius:8px;">
+        以逗号 <b>,</b> 为分隔符，字段顺序：<b>分组,英文,词性,中文</b><br>
+        示例：<br>
+        <code style="font-size:.8rem;background:#eef;padding:2px 6px;border-radius:4px;">3.9,recognize,v.,认识/识别出</code><br>
+        <code style="font-size:.8rem;background:#eef;padding:2px 6px;border-radius:4px;">4.1,be distinguished from,phr.,与...区分开</code><br>
+        • 第一行如为标题行（含"分组"或"英文"）将自动跳过<br>
+        • 英文内容相同的词条会自动跳过（保证唯一性）
+      </div>
+    </div>
+    <div class="form-row">
+      <label>选择 CSV 文件</label>
+      <input type="file" id="csv-file-input" accept=".csv,text/csv" style="padding:6px;border:1px solid var(--border);border-radius:8px;width:100%;box-sizing:border-box;" onchange="onCSVFileChange(this)">
+    </div>
+    <div class="form-row">
+      <label>或直接粘贴 CSV 内容</label>
+      <textarea id="csv-text-input" rows="8" placeholder="3.9,recognize,v.,认识/识别出&#10;3.9,recognition,n.,识别；认可&#10;4.1,be distinguished from,phr.,与...区分开"></textarea>
+    </div>
+    <div id="csv-preview" style="display:none;">
+      <div style="font-size:.85rem;font-weight:600;margin-bottom:6px;color:var(--primary);">📋 预览（前 5 条）</div>
+      <div id="csv-preview-content" style="font-size:.8rem;background:#f8fafc;padding:10px;border-radius:8px;max-height:140px;overflow-y:auto;"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-csv-import');resetCSVModal()">取消</button>
+      <button class="btn btn-outline" onclick="previewCSV()">预览</button>
+      <button class="btn btn-primary" onclick="doCSVImport()">导入</button>
     </div>
   </div>
 </div>
@@ -1819,6 +1854,214 @@ function doJsonImport() {
   } catch (e) {
     alert('JSON 解析失败：' + e.message);
   }
+}
+
+// ================================================================
+// CSV 导入
+// ================================================================
+
+// 解析 CSV 文本 → [{group, en, pos, zh}, ...]
+function parseCSVContent(text) {
+  const rows = [];
+  const lines = text.split('\n');
+
+  for (let i = 0; i < lines.length; i++) {
+    const raw = lines[i];
+    const trimmed = raw.trim();
+    if (!trimmed) continue;
+
+    // 解析一行 CSV（支持字段用引号包裹）
+    const fields = parseCSVRow(trimmed);
+    if (fields.length < 2) continue;
+
+    // 第一行是标题行时跳过
+    if (i === 0) {
+      const f0 = fields[0].toLowerCase();
+      if (f0 === '分组' || f0 === 'group' || f0 === '英文' || f0 === 'en' || f0 === 'english') continue;
+    }
+
+    let group = '', en = '', pos = '', zh = '';
+
+    if (fields.length >= 4) {
+      // 标准格式：分组,英文,词性,中文
+      group = fields[0].trim();
+      en    = fields[1].trim();
+      pos   = fields[2].trim();
+      zh    = fields[3].trim();
+    } else if (fields.length === 3) {
+      // 兼容：英文,词性,中文（无分组）
+      en  = fields[0].trim();
+      pos = fields[1].trim();
+      zh  = fields[2].trim();
+    } else if (fields.length === 2) {
+      // 兼容：英文,中文
+      en = fields[0].trim();
+      zh = fields[1].trim();
+    }
+
+    if (!en || !zh) continue;
+
+    // 标准化词性
+    if (!pos) pos = en.includes(' ') ? 'phr.' : 'n.';
+
+    rows.push({ group: group || 'csv', en, pos, zh });
+  }
+
+  return rows;
+}
+
+// 解析单行 CSV（处理引号包裹的字段）
+function parseCSVRow(line) {
+  const fields = [];
+  let current = '';
+  let inQuote = false;
+  let quoteChar = '';
+
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+
+    if (inQuote) {
+      if (ch === quoteChar) {
+        // 检查是否是转义引号（连续两个引号）
+        if (i + 1 < line.length && line[i + 1] === quoteChar) {
+          current += ch;
+          i++;
+        } else {
+          inQuote = false;
+        }
+      } else {
+        current += ch;
+      }
+    } else {
+      if (ch === '"' || ch === "'") {
+        inQuote = true;
+        quoteChar = ch;
+      } else if (ch === ',') {
+        fields.push(current);
+        current = '';
+      } else {
+        current += ch;
+      }
+    }
+  }
+  fields.push(current);
+  return fields;
+}
+
+// 预览 CSV
+function previewCSV() {
+  const text = getCSVText();
+  if (!text) { alert('请选择文件或粘贴 CSV 内容！'); return; }
+
+  const rows = parseCSVContent(text);
+  if (!rows.length) { alert('未解析到有效数据，请检查格式！'); return; }
+
+  const preview5 = rows.slice(0, 5);
+  let html = '<table style="width:100%;border-collapse:collapse;font-size:.78rem;">';
+  html += '<tr style="background:#e8f0fe;"><th style="padding:4px 6px;text-align:left;">分组</th><th>英文</th><th>词性</th><th>中文</th></tr>';
+  for (const r of preview5) {
+    html += `<tr style="border-bottom:1px solid #eee;"><td style="padding:3px 6px;">${r.group}</td><td>${r.en}</td><td>${r.pos}</td><td>${r.zh}</td></tr>`;
+  }
+  html += '</table>';
+  if (rows.length > 5) html += `<div style="margin-top:6px;color:var(--muted);">...共 ${rows.length} 条</div>`;
+
+  document.getElementById('csv-preview-content').innerHTML = html;
+  document.getElementById('csv-preview').style.display = 'block';
+}
+
+// 读取 CSV 文件内容到内存
+function onCSVFileChange(input) {
+  const file = input.files[0];
+  if (!file) { window._csvFileContent = ''; return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    window._csvFileContent = e.target.result;
+    // 清空手动输入框，避免冲突
+    document.getElementById('csv-text-input').value = '';
+    // 自动预览
+    previewCSV();
+  };
+  reader.readAsText(file, 'UTF-8');
+}
+
+// 获取 CSV 文本（优先文件，其次文本框）
+function getCSVText() {
+  const textarea = document.getElementById('csv-text-input').value.trim();
+  if (textarea) return textarea;
+  // 文件读取已在 onchange 时缓存
+  return window._csvFileContent || '';
+}
+
+// 执行 CSV 导入
+function doCSVImport() {
+  const text = getCSVText();
+  if (!text) { alert('请选择文件或粘贴 CSV 内容！'); return; }
+
+  const rows = parseCSVContent(text);
+  if (!rows.length) { alert('未解析到有效数据，请检查格式！'); return; }
+
+  // 建立已有英文单词集合（小写，用于唯一性检查）
+  const existingEnSet = new Set(db.words.map(w => w.en.toLowerCase().trim()));
+
+  let addedCount = 0;
+  let skippedCount = 0;
+
+  // 按分组处理
+  const groupMap = {};
+  for (const row of rows) {
+    const gKey = row.group || 'csv';
+    if (!groupMap[gKey]) groupMap[gKey] = [];
+    groupMap[gKey].push(row);
+  }
+
+  for (const [gKey, items] of Object.entries(groupMap)) {
+    // 确保分组存在
+    if (!db.groups.find(g => g.id === gKey)) {
+      db.groups.push({ id: gKey, name: gKey, source: 'csv' });
+    }
+
+    for (const item of items) {
+      const enKey = item.en.toLowerCase().trim();
+
+      // 英文唯一性检查
+      if (existingEnSet.has(enKey)) {
+        skippedCount++;
+        continue;
+      }
+
+      // 生成 ID
+      const type = item.en.includes(' ') ? 'p' : 'w';
+      const idx = db.words.filter(w => w.groupId === gKey).length + 1;
+      const id = genUniqueId(gKey, idx, type);
+
+      db.words.push({
+        id,
+        groupId: gKey,
+        en: item.en,
+        zh: item.zh,
+        pos: item.pos,
+        examples: [],
+        source: 'csv'
+      });
+
+      existingEnSet.add(enKey);
+      addedCount++;
+    }
+  }
+
+  saveDB();
+  closeModal('modal-csv-import');
+  resetCSVModal();
+  renderWordList();
+  alert(`CSV 导入完成！\n新增：${addedCount} 条\n跳过（重复）：${skippedCount} 条`);
+}
+
+// 重置 CSV 弹窗状态
+function resetCSVModal() {
+  document.getElementById('csv-file-input').value = '';
+  document.getElementById('csv-text-input').value = '';
+  document.getElementById('csv-preview').style.display = 'none';
+  window._csvFileContent = '';
 }
 
 // ================================================================
