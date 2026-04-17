@@ -3,296 +3,1138 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>英语默写练习</title>
+<title>英语默写 · WordFlow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
 <style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  :root{
-    --primary:#4f46e5;--primary-dark:#4338ca;
-    --success:#10b981;--danger:#ef4444;
-    --warn:#f59e0b;--purple:#7c3aed;
-    --bg:#f0f4f8;--card:#fff;--text:#1e293b;
-    --muted:#64748b;--border:#e2e8f0;
-  }
-  body{font-family:'Segoe UI','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+/* ================================================================
+   设计令牌 — 马卡龙卡通风格（优化版）
+================================================================ */
+:root {
+  /* 手写字体 */
+  --font: 'Ma Shan Zheng', 'ZCOOL XiaoWei', 'PingFang SC', system-ui, sans-serif;
 
-  /* 顶部 */
-  .nav{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(79,70,229,.35);position:sticky;top:0;z-index:50}
-  .nav h1{font-size:1.2rem;font-weight:700;letter-spacing:.5px}
-  .nav-tabs{display:flex;gap:6px}
-  .nav-tab{background:rgba(255,255,255,.15);border:none;color:#fff;padding:5px 14px;border-radius:16px;cursor:pointer;font-size:.85rem;transition:background .2s;font-weight:500}
-  .nav-tab:hover,.nav-tab.active{background:rgba(255,255,255,.3)}
+  /* 背景色系 — 柔和渐变 */
+  --bg: #FDF6F0;
+  --bg-2: #FFFFFF;
+  --bg-3: #FEF9F6;
+  --surface: rgba(255,127,80,0.06);
+  --surface-hover: rgba(255,127,80,0.1);
+  --border: rgba(160,120,100,0.25);
+  --border-bright: rgba(160,120,100,0.45);
 
-  .container{max-width:900px;margin:0 auto;padding:20px 16px 40px}
+  /* 主色调 — 马卡龙柔和色 */
+  --primary: #FFAA85;
+  --primary-glow: rgba(255,170,133,0.25);
+  --primary-light: #FFC4A8;
+  --accent: #FFB5C5;
+  --accent-glow: rgba(255,181,197,0.25);
 
-  /* 页面切换 */
-  .page{display:none}
-  .page.active{display:block}
+  /* 语义色 — 柔和版 */
+  --success: #7EDCD2;
+  --success-glow: rgba(126,220,210,0.2);
+  --danger: #FFB3B3;
+  --danger-glow: rgba(255,179,179,0.2);
+  --warn: #FFE5A0;
+  --warn-glow: rgba(255,229,160,0.25);
+  --info: #A8E6CF;
+  --info-glow: rgba(168,230,207,0.2);
 
-  /* 卡片 */
-  .card{background:var(--card);border-radius:14px;padding:20px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.07);border:1px solid var(--border)}
+  /* 文字色 — 清晰易读版 */
+  --text: #4A3F5C;
+  --text-2: #6B5B7A;
+  --text-3: #9B8AAA;
 
-  /* 按钮 */
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 20px;border-radius:8px;border:none;cursor:pointer;font-size:.9rem;font-weight:600;transition:all .2s;text-nowrap}
-  .btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-dark)}
-  .btn-success{background:var(--success);color:#fff}.btn-success:hover{background:#059669}
-  .btn-danger{background:var(--danger);color:#fff}.btn-danger:hover{background:#dc2626}
-  .btn-warn{background:var(--warn);color:#fff}.btn-warn:hover{background:#d97706}
-  .btn-outline{background:#fff;color:var(--primary);border:2px solid var(--primary)}.btn-outline:hover{background:#eef2ff}
-  .btn-ghost{background:transparent;color:var(--muted);border:1.5px solid var(--border)}.btn-ghost:hover{background:#f8fafc;color:var(--text)}
-  .btn-lg{padding:12px 28px;font-size:1rem;border-radius:10px}
-  .btn-sm{padding:4px 12px;font-size:.8rem}
+  /* 圆角 — 更大更圆 */
+  --r-sm: 16px;
+  --r-md: 22px;
+  --r-lg: 32px;
 
-  /* 按钮图标 */
-  .icon-btn{width:30px;height:30px;border:none;border-radius:7px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:.85rem;transition:all .15s}
-  .icon-btn-del{background:#fee2e2;color:var(--danger)}.icon-btn-del:hover{background:#fecaca}
-  .icon-btn-edit{background:#e0e7ff;color:var(--primary)}.icon-btn-edit:hover{background:#c7d2fe}
+  /* 导航高度 */
+  --nav-h: 60px;
+  --bottom-h: 68px;
+}
 
-  /* 表单 */
-  input[type=text],select,textarea{width:100%;padding:9px 13px;border:1.5px solid var(--border);border-radius:8px;font-size:.95rem;outline:none;transition:border .2s,box-shadow .2s;background:#fff}
-  input[type=text]:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(79,70,229,.1)}
-  label{display:block;font-size:.82rem;font-weight:600;color:var(--muted);margin-bottom:4px}
-  .form-row{margin-bottom:12px}
-  textarea{resize:vertical;font-family:inherit}
+/* ================================================================
+   全局重置
+================================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* 导航标签 */
-  .filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
-  .filter-chip{padding:4px 14px;border-radius:16px;border:1.5px solid var(--border);background:#fff;color:var(--muted);font-size:.82rem;cursor:pointer;transition:all .15s}
-  .filter-chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}
-  .filter-chip:hover:not(.active){border-color:var(--primary);color:var(--primary)}
+html { scroll-behavior: smooth; }
 
-  /* ===== DASHBOARD ===== */
-  .dash-date{font-size:.85rem;color:var(--muted);margin-bottom:16px;text-align:center}
-  .dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-  @media(max-width:480px){.dash-grid{grid-template-columns:1fr}}
+/* ================================================================
+   全局重置 & 背景
+================================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  .dash-card{background:#fff;border-radius:14px;padding:18px;border:1px solid var(--border);cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
-  .dash-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
-  .dash-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
-  .dash-card.new::before{background:linear-gradient(90deg,#4f46e5,#7c3aed)}
-  .dash-card.review::before{background:linear-gradient(90deg,#10b981,#059669)}
-  .dash-card.mix::before{background:linear-gradient(90deg,#f59e0b,#d97706)}
-  .dash-card.study::before{background:linear-gradient(90deg,#ec4899,#be185d)}
-  .dash-card-icon{font-size:1.8rem;margin-bottom:6px}
-  .dash-card-title{font-size:.85rem;color:var(--muted);margin-bottom:4px}
-  .dash-card-count{font-size:2rem;font-weight:800}
-  .dash-card-count.blue{color:var(--primary)}.dash-card-count.green{color:var(--success)}.dash-card-count.orange{color:var(--warn)}.dash-card-count.pink{color:#ec4899}
-  .dash-card-sub{font-size:.78rem;color:var(--muted);margin-top:2px}
+html { scroll-behavior: smooth; }
 
-  .dash-tip{background:#f8faff;border:1px solid #e0e7ff;border-radius:10px;padding:12px 16px;font-size:.85rem;color:var(--muted);line-height:1.7}
-  .dash-tip strong{color:var(--primary)}
+body {
+  font-family: var(--font);
+  background: linear-gradient(
+    160deg,
+    #FDF6F0 0%,
+    #FEF4F0 30%,
+    #FFF8F5 60%,
+    #FFF0F5 100%
+  );
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: var(--bottom-h);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+}
 
-  /* 批次信息 */
-  .batch-info{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
-  .batch-stat{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
-  .batch-stat .num{font-size:1.5rem;font-weight:800;color:var(--primary)}
-  .batch-stat .label{font-size:.75rem;color:var(--muted);margin-top:2px}
+/* 漂浮装饰卡通云朵 */
+body::before {
+  content: '☁️';
+  position: fixed;
+  top: 12vh;
+  right: 8vw;
+  font-size: 5rem;
+  opacity: 0.28;
+  pointer-events: none;
+  z-index: 0;
+  animation: floatCloud 8s ease-in-out infinite;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.06));
+}
+body::after {
+  content: '☁️';
+  position: fixed;
+  bottom: 18vh;
+  left: 6vw;
+  font-size: 3.5rem;
+  opacity: 0.18;
+  pointer-events: none;
+  z-index: 0;
+  animation: floatCloud 10s ease-in-out infinite reverse;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.06));
+}
+@keyframes floatCloud {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-15px) rotate(3deg); }
+}
 
-  /* ===== LEARNING PAGE (NEW!) ===== */
-  .study-date-header{
-    display:flex;justify-content:space-between;align-items:center;
-    margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--border);
-  }
-  .study-date-header h2{font-size:1.1rem;color:var(--primary)}
-  .study-date-badge{
-    background:linear-gradient(135deg,#ec4899,#be185d);color:#fff;
-    padding:4px 14px;border-radius:16px;font-size:.82rem;font-weight:700;
-  }
-  
-  .study-toggle-bar{
-    display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;
-  }
-  .study-toggle-btn{
-    padding:6px 14px;border-radius:8px;border:1.5px solid var(--border);
-    background:#fff;color:var(--muted);font-size:.82rem;cursor:pointer;
-    transition:all .15s;
-  }
-  .study-toggle-btn:hover{border-color:var(--primary);color:var(--primary)}
-  .study-toggle-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
-  .study-toggle-btn span{opacity:.7;font-size:.75rem}
+/* 顶部柔和阳光装饰 */
+.sun-deco {
+  position: fixed;
+  top: -80px;
+  left: -80px;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(255,220,160,0.35) 0%, rgba(255,190,140,0.15) 40%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
 
-  .study-word-card{
-    background:#fff;border:1px solid var(--border);border-radius:10px;
-    padding:14px 16px;margin-bottom:10px;position:relative;
-    transition:all .2s;
-  }
-  .study-word-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.08)}
-  .study-word-card .en{font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:4px}
-  .study-word-card .pos{
-    display:inline-block;background:#e0e7ff;color:#1e40af;
-    padding:1px 8px;border-radius:6px;font-size:.72rem;margin-left:8px;
-  }
-  .study-word-card .phrase-hint{
-    display:inline-block;background:#ede9fe;color:var(--purple);
-    padding:1px 8px;border-radius:6px;font-size:.72rem;margin-left:8px;
-  }
-  .study-word-card .zh{color:var(--muted);font-size:.88rem;margin-top:6px}
-  .study-word-card .examples{
-    margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);
-    font-size:.8rem;color:#64748b;
-  }
-  .study-word-card.hidden-en .en{filter:blur(5px);user-select:none}
-  .study-word-card.hidden-pos .pos,.study-word-card.hidden-pos .phrase-hint{opacity:.3}
-  .study-word-card.hidden-zh .zh{filter:blur(5px);user-select:none}
-  .study-word-card .toggle-hint{
-    position:absolute;top:8px;right:10px;font-size:.72rem;color:#94a3b8;
-    opacity:0;transition:opacity .2s;
-  }
-  .study-word-card:hover .toggle-hint{opacity:1}
+/* ================================================================
+   顶部导航
+================================================================ */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--nav-h);
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  box-shadow: 0 2px 20px rgba(200,150,130,0.08);
+}
 
-  .study-actions{
-    display:flex;gap:10px;justify-content:center;flex-wrap:wrap;
-    margin-top:20px;padding-top:16px;border-top:1px solid var(--border);
-  }
+.nav h1 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #FFAA85, #FFB5C5, #A8E6CF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  flex: 1;
+}
 
-  /* 学习进度 */
-  .study-progress-bar{
-    background:var(--border);border-radius:8px;height:8px;margin-bottom:16px;overflow:hidden;
-  }
-  .study-progress{height:100%;background:linear-gradient(90deg,#ec4899,#be185d);border-radius:8px;transition:width .4s ease}
-  .study-progress-text{font-size:.82rem;color:var(--muted);text-align:center;margin-bottom:12px}
+.nav-tabs { display: none; } /* 顶部导航隐藏，改为底部 */
 
-  /* ===== QUIZ ===== */
-  .quiz-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:.82rem;color:var(--muted)}
-  .quiz-progress-bar{background:var(--border);border-radius:8px;height:6px;margin-bottom:20px;overflow:hidden}
-  .quiz-progress{height:100%;background:linear-gradient(90deg,var(--primary),var(--purple));border-radius:8px;transition:width .4s ease}
+/* ================================================================
+   底部导航栏
+================================================================ */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: var(--bottom-h);
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  gap: 4px;
+  box-shadow: 0 -4px 24px rgba(200,150,130,0.08);
+}
 
-  .quiz-question{background:linear-gradient(135deg,#f0f4ff,#faf5ff);border:2px solid #c7d2fe;border-radius:16px;padding:28px 24px;margin-bottom:20px;text-align:center}
-  .quiz-question-tag{font-size:.72rem;color:var(--purple);font-weight:700;letter-spacing:1px;margin-bottom:10px;text-transform:uppercase}
-  .quiz-question-text{font-size:1.55rem;font-weight:700;color:var(--text);line-height:1.4}
-  .quiz-question-hint{font-size:.82rem;color:#94a3b8;margin-top:8px}
+.bot-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 4px;
+  border: none;
+  background: transparent;
+  color: var(--text-3);
+  cursor: pointer;
+  border-radius: var(--r-sm);
+  transition: all 0.2s ease;
+  font-family: var(--font);
+  -webkit-tap-highlight-color: transparent;
+}
 
-  .quiz-type-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:12px;font-size:.75rem;font-weight:600;margin-bottom:12px}
-  .quiz-type-badge.new{background:#ede9fe;color:var(--purple)}
-  .quiz-type-badge.review{background:#d1fae5;color:#065f46}
+.bot-tab .tab-icon { font-size: 1.6rem; transition: transform 0.2s; }
+.bot-tab .tab-label { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.3px; }
 
-  .quiz-input-wrap{position:relative;margin-bottom:12px}
-  .quiz-input{font-size:1.15rem;padding:13px 16px;border-radius:10px;text-align:center;letter-spacing:.5px}
-  .quiz-input.correct{border-color:var(--success);background:#f0fdf4;color:#065f46;font-weight:700}
-  .quiz-input.wrong{border-color:var(--danger);background:#fef2f2;color:#991b1b;text-decoration:line-through}
+.bot-tab:hover { color: var(--primary); background: rgba(255,170,133,0.1); }
+.bot-tab.active {
+  color: var(--primary);
+  background: linear-gradient(180deg, rgba(255,170,133,0.15) 0%, rgba(255,181,197,0.1) 100%);
+}
+.bot-tab.active .tab-icon { transform: scale(1.2); }
 
-  .quiz-feedback{margin-bottom:16px;padding:14px 16px;border-radius:10px;font-size:.95rem;font-weight:600;display:none;line-height:1.5}
-  .quiz-feedback.show{display:block}
-  .quiz-feedback.correct{background:#d1fae5;color:#065f46;border:1.5px solid #6ee7b7}
-  .quiz-feedback.wrong{background:#fee2e2;color:#991b1b;border:1.5px solid #fca5a5}
+/* ================================================================
+   容器与页面
+================================================================ */
+.container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 20px 16px 24px;
+  position: relative;
+  z-index: 1;
+}
 
-  .quiz-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.page { display: none; }
+.page.active {
+  display: block;
+  animation: fadeSlideIn 0.3s ease;
+}
 
-  /* 得分圆 */
-  .result-circle{width:130px;height:130px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 6px 24px rgba(79,70,229,.35)}
-  .result-circle .pct{font-size:2.4rem;font-weight:800;line-height:1}
-  .result-circle .lbl{font-size:.78rem;opacity:.85;margin-top:2px}
-  .result-stats{display:flex;justify-content:center;gap:28px;margin:16px 0}
-  .result-stats .item{text-align:center}
-  .result-stats .num{font-size:1.6rem;font-weight:800}
-  .result-stats .num.green{color:var(--success)}.result-stats .num.red{color:var(--danger)}
-  .result-stats .lbl{font-size:.78rem;color:var(--muted)}
-  .result-detail-list{max-height:320px;overflow-y:auto;margin-top:16px}
-  .result-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
-  .result-item:last-child{border-bottom:none}
-  .result-item .emoji{font-size:1.2rem;flex-shrink:0}
-  .result-item .en{font-weight:700;color:var(--text);font-size:.95rem}
-  .result-item .zh{color:var(--muted);font-size:.82rem;margin-top:2px}
-  .result-item .user{color:var(--danger);font-size:.82rem;margin-top:2px}
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
-  /* ===== WORD LIST ===== */
-  .word-list{max-height:480px;overflow-y:auto}
-  .word-item{display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-bottom:1px solid var(--border)}
-  .word-item:last-child{border-bottom:none}
-  .word-num{width:26px;height:26px;background:#eef2ff;color:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0;margin-top:2px}
-  .word-info{flex:1;min-width:0}
-  .word-en{font-weight:700;color:var(--text);font-size:.95rem;word-break:break-all}
-  .word-zh{color:var(--muted);font-size:.83rem;margin-top:3px}
-  .word-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
-  .word-tag{font-size:.72rem;padding:1px 7px;border-radius:8px;font-weight:600}
-  .word-tag.group{background:#ede9fe;color:var(--purple)}
-  .word-tag.level-0{background:#f1f5f9;color:var(--muted)}
-  .word-tag.level-1{background:#dbeafe;color:#1e40af}
-  .word-tag.level-2{background:#d1fae5;color:#065f46}
-  .word-tag.level-3{background:#fef3c7;color:#92400e}
-  .word-tag.due{background:#fee2e2;color:var(--danger)}
-  .word-actions{display:flex;gap:5px;flex-shrink:0;margin-top:2px}
+/* ================================================================
+   卡片 — 清晰边框版
+================================================================ */
+.card {
+  background: var(--bg-2);
+  border: 2px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 20px;
+  margin-bottom: 14px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(160,120,100,0.1), 0 2px 6px rgba(160,120,100,0.06);
+  transition: all 0.2s ease;
+}
+.card:hover {
+  border-color: var(--border-bright);
+  box-shadow: 0 8px 24px rgba(160,120,100,0.15), 0 4px 10px rgba(160,120,100,0.08);
+  transform: translateY(-2px);
+}
 
-  /* 搜索 */
-  .search-bar{margin-bottom:12px}
-  .search-bar input{background:#f8fafc}
+.card-glow {
+  background: linear-gradient(135deg, rgba(255,170,133,0.06) 0%, rgba(168,230,207,0.05) 100%);
+}
 
-  /* 添加表单 */
-  .add-form{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end}
-  @media(max-width:600px){.add-form{grid-template-columns:1fr}}
+/* ================================================================
+   通用按钮 — 卡通柔和风格
+================================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 22px;
+  border-radius: var(--r-sm);
+  border: 2px solid transparent;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: var(--font);
+  transition: all 0.18s ease;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
 
-  /* ===== WRONG BOOK ===== */
-  .wrong-book-item{padding:14px;background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;margin-bottom:10px;position:relative}
-  .wrong-book-item .top{display:flex;justify-content:space-between;align-items:flex-start}
-  .wrong-book-item .en{font-weight:700;color:var(--text);font-size:.95rem}
-  .wrong-book-item .zh{color:var(--muted);font-size:.82rem;margin-top:3px}
-  .wrong-book-item .meta{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
-  .wrong-book-priority{position:absolute;top:10px;right:10px;background:var(--danger);color:#fff;font-size:.72rem;padding:2px 8px;border-radius:8px;font-weight:700}
-  .wrong-book-streak{background:#fef3c7;color:#92400e;font-size:.72rem;padding:2px 8px;border-radius:8px;font-weight:700}
+.btn:active { transform: scale(0.95); }
 
-  /* ===== STATS ===== */
-  .stats-overview{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
-  @media(max-width:500px){.stats-overview{grid-template-columns:repeat(2,1fr)}}
-  .stats-card{background:#f8faff;border:1px solid #e0e7ff;border-radius:12px;padding:14px;text-align:center}
-  .stats-card .big{font-size:1.8rem;font-weight:800;color:var(--primary)}
-  .stats-card .desc{font-size:.78rem;color:var(--muted);margin-top:3px}
-  .mastery-bar-wrap{background:#e2e8f0;border-radius:6px;height:8px;overflow:hidden;margin-top:4px}
-  .mastery-bar{height:100%;border-radius:6px;transition:width .5s}
-  .mastery-legend{display:flex;gap:12px;flex-wrap:wrap;font-size:.8rem;color:var(--muted);margin-top:8px}
+.btn-primary {
+  background: linear-gradient(135deg, #FFAA85, #FFB5C5);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(255,170,133,0.3);
+}
+.btn-primary:hover { 
+  box-shadow: 0 6px 22px rgba(255,170,133,0.4); 
+  transform: translateY(-2px); 
+  filter: brightness(1.03);
+}
 
-  /* ===== MODAL ===== */
-  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center}
-  .modal-overlay.open{display:flex}
-  .modal{background:#fff;border-radius:16px;padding:24px;width:90%;max-width:520px;box-shadow:0 20px 60px rgba(0,0,0,.2);max-height:90vh;overflow-y:auto}
-  .modal h3{font-size:1.1rem;margin-bottom:16px;color:var(--primary)}
-  .modal-footer{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+.btn-success {
+  background: linear-gradient(135deg, #7EDCD2, #A8E6CF);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(126,220,210,0.3);
+}
+.btn-success:hover { 
+  filter: brightness(1.03);
+  box-shadow: 0 6px 22px rgba(126,220,210,0.4);
+  transform: translateY(-2px);
+}
 
-  /* ===== EMPTY ===== */
-  .empty-state{text-align:center;padding:48px 20px;color:var(--muted)}
-  .empty-state .icon{font-size:3rem;margin-bottom:10px;opacity:.5}
-  .empty-state p{font-size:.95rem}
+.btn-danger {
+  background: linear-gradient(135deg, #FFB3B3, #FFD0D0);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(255,179,179,0.3);
+}
+.btn-danger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255,179,179,0.4);
+}
 
-  /* ===== LEARNING PLAN ===== */
-  .plan-timeline{position:relative;padding-left:24px}
-  .plan-timeline::before{content:'';position:absolute;left:7px;top:0;bottom:0;width:2px;background:var(--border)}
-  .plan-day{margin-bottom:20px;position:relative}
-  .plan-day::before{content:'';position:absolute;left:-22px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--primary);border:2px solid #fff;box-shadow:0 0 0 2px var(--primary)}
-  .plan-day.done::before{background:var(--success);box-shadow:0 0 0 2px var(--success)}
-  .plan-day.active::before{background:var(--warn);box-shadow:0 0 0 3px var(--warn);transform:scale(1.2)}
-  .plan-day-label{font-size:.82rem;font-weight:700;color:var(--muted);margin-bottom:6px}
-  .plan-day.active .plan-day-label{color:var(--warn)}
-  .plan-day.done .plan-day-label{color:var(--success)}
-  .plan-day-content{background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:.85rem}
+.btn-warn {
+  background: linear-gradient(135deg, #FFE5A0, #FFECC9);
+  color: #7A6840;
+  box-shadow: 0 4px 12px rgba(255,229,160,0.3);
+}
+.btn-warn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255,229,160,0.4);
+}
 
-  /* 响应式 */
-  @media(max-width:480px){
-    .nav h1{font-size:1rem}
-    .nav-tab{padding:4px 10px;font-size:.78rem}
-    .quiz-question-text{font-size:1.25rem}
-    .quiz-question{padding:22px 16px}
-  }
+.btn-outline {
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid rgba(255,170,133,0.4);
+}
+.btn-outline:hover { 
+  background: rgba(255,170,133,0.1); 
+  border-color: var(--primary);
+}
+
+.btn-ghost {
+  background: var(--surface);
+  color: var(--text-2);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover { 
+  background: rgba(255,170,133,0.08); 
+  color: var(--primary); 
+  border-color: rgba(255,170,133,0.3);
+}
+
+.btn-lg { padding: 14px 36px; font-size: 1.1rem; border-radius: 18px; }
+.btn-sm { padding: 6px 14px; font-size: 0.9rem; border-radius: 12px; }
+
+/* 图标按钮 */
+.icon-btn {
+  width: 32px; height: 32px;
+  border: none; border-radius: 12px;
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 0.85rem;
+  transition: all 0.15s;
+}
+.icon-btn-del { background: rgba(255,179,179,0.15); color: #E09090; }
+.icon-btn-del:hover { background: rgba(255,179,179,0.25); }
+.icon-btn-edit { background: rgba(255,170,133,0.15); color: var(--primary); }
+.icon-btn-edit:hover { background: rgba(255,170,133,0.25); }
+
+/* ================================================================
+   表单元素 — 清晰版
+================================================================ */
+input[type=text], input[type=date], select, textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid var(--border);
+  border-radius: var(--r-sm);
+  font-size: 1rem;
+  font-family: var(--font);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: var(--bg-2);
+  color: var(--text);
+}
+input[type=text]::placeholder, textarea::placeholder { color: var(--text-3); }
+input[type=text]:focus, select:focus, textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(255,127,80,0.2);
+}
+select option { background: var(--bg-2); color: var(--text); }
+label { display: block; font-size: 0.9rem; font-weight: 600; color: var(--text-2); margin-bottom: 6px; }
+.form-row { margin-bottom: 16px; }
+textarea { resize: vertical; font-family: var(--font); }
+input[type=range] { accent-color: var(--primary); }
+
+/* ================================================================
+   分组筛选栏 — 清晰边框版
+================================================================ */
+.filter-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+.filter-chip {
+  padding: 7px 16px;
+  border-radius: 20px;
+  border: 2px solid var(--border);
+  background: var(--bg-2);
+  color: var(--text-2);
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(160,120,100,0.08);
+}
+.filter-chip:hover { border-color: var(--primary); color: var(--primary); background: rgba(255,170,133,0.1); }
+.filter-chip.active {
+  background: linear-gradient(135deg, #FFAA85, #FFB5C5);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 3px 12px rgba(255,170,133,0.35);
+}
+
+/* ================================================================
+   DASHBOARD 首页
+================================================================ */
+.dash-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.dash-date {
+  font-size: 0.95rem;
+  color: var(--text-3);
+}
+.dash-greeting {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+@media(max-width: 420px) { .dash-grid { grid-template-columns: 1fr; } }
+
+.dash-card {
+  border-radius: var(--r-md);
+  padding: 18px;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid transparent;
+  box-shadow: 0 4px 16px rgba(160,120,100,0.1);
+}
+.dash-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+  border-radius: var(--r-md) var(--r-md) 0 0;
+}
+.dash-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(160,120,100,0.15); }
+.dash-card:active { transform: translateY(-2px) scale(0.99); }
+
+.dash-card.new::before { background: linear-gradient(90deg, #FFAA85, #FFB5C5); }
+.dash-card.new {
+  background: linear-gradient(145deg, #FFF8F5 0%, #FFF5F8 100%);
+  border-color: rgba(255,170,133,0.3);
+}
+.dash-card.review::before { background: linear-gradient(90deg, #7EDCD2, #A8E6CF); }
+.dash-card.review {
+  background: linear-gradient(145deg, #F5FDFB 0%, #F0FAF7 100%);
+  border-color: rgba(126,220,210,0.3);
+}
+.dash-card.mix::before { background: linear-gradient(90deg, #FFE5A0, #FFAA85, #FFB5C5); }
+.dash-card.mix {
+  background: linear-gradient(145deg, #FFFBF5 0%, #FFF8F0 100%);
+  border-color: rgba(255,229,160,0.35);
+  grid-column: 1 / -1;
+}
+.dash-card.study::before { background: linear-gradient(90deg, #FFB5C5, #FFD0D0); }
+.dash-card.study {
+  background: linear-gradient(145deg, #FFF8F8 0%, #FFF5F5 100%);
+  border-color: rgba(255,181,197,0.3);
+}
+
+.dash-card-icon { font-size: 2rem; margin-bottom: 10px; }
+.dash-card-title { font-size: 0.9rem; color: var(--text-2); margin-bottom: 8px; font-weight: 600; letter-spacing: 0.3px; }
+.dash-card-count {
+  font-size: 2.8rem;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 6px;
+  letter-spacing: -1px;
+}
+.dash-card-count.blue { color: var(--primary); }
+.dash-card-count.green { color: var(--success); }
+.dash-card-count.orange { color: #E5A060; }
+.dash-card-count.pink { color: var(--accent); }
+.dash-card-sub { font-size: 0.88rem; color: var(--text-3); }
+
+.dash-tip {
+  background: linear-gradient(135deg, rgba(255,170,133,0.06), rgba(168,230,207,0.05));
+  border: 1px solid rgba(255,170,133,0.15);
+  border-radius: var(--r-sm);
+  padding: 12px 16px;
+  font-size: 0.84rem;
+  color: var(--text-2);
+  line-height: 1.75;
+  border-left: 3px solid var(--primary);
+}
+.dash-tip strong { color: var(--primary); }
+
+/* ================================================================
+   学习计划时间线 — 清晰版
+================================================================ */
+.plan-timeline { position: relative; padding-left: 28px; }
+.plan-timeline::before {
+  content: '';
+  position: absolute;
+  left: 9px; top: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, #FFAA85 0%, #A8E6CF 100%);
+  opacity: 0.4;
+}
+.plan-day { margin-bottom: 20px; position: relative; }
+.plan-day::before {
+  content: '';
+  position: absolute;
+  left: -24px; top: 6px;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--text-3);
+  border: 3px solid var(--bg-2);
+}
+.plan-day.done::before { background: var(--success); }
+.plan-day.active::before {
+  background: #FFE5A0;
+  box-shadow: 0 0 0 5px rgba(255,229,160,0.25);
+  animation: pulseDot 1.8s infinite;
+}
+@keyframes pulseDot {
+  0%, 100% { box-shadow: 0 0 0 5px rgba(255,229,160,0.25); }
+  50% { box-shadow: 0 0 0 10px rgba(255,229,160,0.08); }
+}
+.plan-day-label { font-size: 0.92rem; font-weight: 700; color: var(--text-3); margin-bottom: 6px; }
+.plan-day.active .plan-day-label { color: #B07040; }
+.plan-day.done .plan-day-label { color: var(--success); }
+.plan-day-content {
+  background: var(--bg-2);
+  border: 2px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  color: var(--text-2);
+  box-shadow: 0 3px 10px rgba(160,120,100,0.08);
+}
+
+/* ================================================================
+   学习页 — 清晰版
+================================================================ */
+.study-date-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--border);
+}
+.study-date-header h2 { font-size: 1.2rem; color: var(--text); font-weight: 700; }
+.study-date-badge {
+  background: linear-gradient(135deg, #FFAA85, #FFB5C5);
+  color: #fff;
+  padding: 5px 16px;
+  border-radius: 20px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  box-shadow: 0 3px 10px rgba(255,170,133,0.35);
+}
+
+.study-toggle-bar { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+.study-toggle-btn {
+  padding: 8px 16px;
+  border-radius: 14px;
+  border: 2px solid var(--border);
+  background: var(--bg-2);
+  color: var(--text-2);
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: var(--font);
+  box-shadow: 0 2px 8px rgba(160,120,100,0.08);
+}
+.study-toggle-btn:hover { border-color: var(--primary); color: var(--primary); background: rgba(255,170,133,0.1); }
+.study-toggle-btn.active {
+  background: linear-gradient(135deg, #FFAA85, #FFB5C5);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 3px 12px rgba(255,170,133,0.35);
+}
+.study-toggle-btn span { opacity: 0.9; font-size: 0.85rem; }
+
+.study-progress-bar { background: var(--border); border-radius: 8px; height: 8px; margin-bottom: 16px; overflow: hidden; }
+.study-progress { height: 100%; background: linear-gradient(90deg, #FFAA85, #FFB5C5, #A8E6CF); border-radius: 8px; transition: width 0.5s ease; }
+.study-progress-text { font-size: 0.92rem; color: var(--text-3); text-align: right; margin-bottom: 10px; }
+
+.study-word-card {
+  background: var(--bg-2);
+  border: 2px solid var(--border);
+  border-radius: 18px;
+  padding: 16px 18px;
+  margin-bottom: 10px;
+  transition: all 0.2s;
+  box-shadow: 0 3px 12px rgba(160,120,100,0.08);
+}
+.study-word-card:hover {
+  border-color: rgba(255,170,133,0.3);
+  box-shadow: 0 6px 20px rgba(255,170,133,0.12);
+  transform: translateX(4px);
+}
+.study-word-card .en { font-size: 1.2rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.study-word-card .pos {
+  display: inline-block;
+  background: linear-gradient(135deg, rgba(255,170,133,0.15), rgba(255,181,197,0.12));
+  color: #B07050;
+  padding: 2px 10px; border-radius: 12px; font-size: 0.82rem; margin-left: 10px;
+  font-weight: 600;
+}
+.study-word-card .phrase-hint {
+  display: inline-block;
+  background: rgba(255,181,197,0.15);
+  color: #B06070;
+  padding: 2px 10px; border-radius: 12px; font-size: 0.82rem; margin-left: 8px;
+  font-weight: 600;
+}
+.study-word-card .zh { color: var(--text-2); font-size: 1rem; margin-top: 6px; line-height: 1.6; }
+.study-word-card .examples { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); font-size: 0.9rem; color: var(--text-3); }
+.study-word-card.hidden-en .en { filter: blur(6px); user-select: none; }
+.study-word-card.hidden-pos .pos, .study-word-card.hidden-pos .phrase-hint { opacity: 0.2; }
+.study-word-card.hidden-zh .zh { filter: blur(6px); user-select: none; }
+
+.study-actions {
+  display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+  margin-top: 22px; padding-top: 18px; border-top: 2px solid var(--border);
+}
+
+/* ================================================================
+   默写答题页 — 沉浸式
+================================================================ */
+#page-quiz { padding-bottom: 0; }
+#quiz-card {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.quiz-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+  color: var(--text-3);
+}
+
+.quiz-progress-bar {
+  background: var(--border);
+  border-radius: 6px;
+  height: 6px;
+  margin-bottom: 28px;
+  overflow: hidden;
+}
+.quiz-progress {
+  height: 100%;
+  background: linear-gradient(90deg, #FFAA85, #FFB5C5, #A8E6CF);
+  border-radius: 6px;
+  transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: 0 0 10px rgba(255,170,133,0.35);
+}
+
+.quiz-type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  letter-spacing: 0.3px;
+}
+.quiz-type-badge.new { background: linear-gradient(135deg, rgba(255,170,133,0.15), rgba(255,181,197,0.12)); color: #B07050; }
+.quiz-type-badge.review { background: rgba(126,220,210,0.15); color: #4A9890; }
+
+.quiz-question {
+  background: var(--bg-2);
+  border: 2px solid var(--border);
+  border-radius: 24px;
+  padding: 36px 28px;
+  margin-bottom: 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba(160,120,100,0.1);
+}
+.quiz-question::before {
+  content: '💫';
+  position: absolute;
+  top: -20px; right: -5px;
+  font-size: 5rem;
+  opacity: 0.1;
+  pointer-events: none;
+}
+.quiz-question-tag {
+  font-size: 0.82rem;
+  color: var(--text-3);
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+}
+.quiz-question-text {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.45;
+  margin-bottom: 12px;
+}
+.quiz-question-hint {
+  font-size: 0.95rem;
+  color: var(--text-3);
+}
+
+.quiz-input-wrap { position: relative; margin-bottom: 16px; }
+.quiz-input {
+  font-size: 1.25rem;
+  padding: 16px 20px;
+  border-radius: 18px;
+  text-align: center;
+  letter-spacing: 1px;
+  background: var(--bg-2);
+  color: var(--text);
+  border: 2px solid var(--border);
+  transition: all 0.2s;
+  font-family: 'Consolas', var(--font);
+}
+.quiz-input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(255,170,133,0.2); }
+.quiz-input.correct {
+  border-color: var(--success);
+  background: rgba(126,220,210,0.12);
+  color: #4A9890;
+  font-weight: 700;
+  box-shadow: 0 0 0 4px var(--success-glow);
+}
+.quiz-input.wrong {
+  border-color: var(--danger);
+  background: rgba(255,179,179,0.12);
+  color: #B06060;
+  text-decoration: line-through;
+  box-shadow: 0 0 0 4px var(--danger-glow);
+}
+
+.quiz-feedback {
+  display: none;
+  margin-bottom: 20px;
+  padding: 16px 20px;
+  border-radius: 18px;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.6;
+  animation: feedbackIn 0.25s ease;
+}
+@keyframes feedbackIn {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct {
+  background: linear-gradient(135deg, rgba(126,220,210,0.12), rgba(168,230,207,0.1));
+  color: #4A9890;
+  border: 2px solid rgba(126,220,210,0.35);
+}
+.quiz-feedback.wrong {
+  background: rgba(255,179,179,0.12);
+  color: #B06060;
+  border: 2px solid rgba(255,179,179,0.35);
+}
+
+.quiz-actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+
+/* 结果页 — 清晰版 */
+.result-circle {
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FFAA85, #FFB5C5, #A8E6CF);
+  color: #fff;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  margin: 0 auto 28px;
+  box-shadow: 0 10px 36px rgba(255,170,133,0.35);
+  position: relative;
+}
+.result-circle::before {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FFAA85, #FFB5C5);
+  opacity: 0.3;
+  z-index: -1;
+  animation: ringPulse 2s ease-in-out infinite;
+}
+@keyframes ringPulse {
+  0%, 100% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.08); opacity: 0.15; }
+}
+.result-circle .pct { font-size: 2.8rem; font-weight: 800; line-height: 1; }
+.result-circle .lbl { font-size: 0.88rem; opacity: 0.9; margin-top: 4px; }
+
+.result-stats { display: flex; justify-content: center; gap: 40px; margin: 20px 0 24px; }
+.result-stats .item { text-align: center; }
+.result-stats .num { font-size: 2rem; font-weight: 800; }
+.result-stats .num.green { color: var(--success); }
+.result-stats .num.red { color: var(--danger); }
+.result-stats .lbl { font-size: 0.88rem; color: var(--text-3); margin-top: 4px; }
+
+.result-detail-list { max-height: 340px; overflow-y: auto; margin-top: 18px; }
+.result-item { display: flex; align-items: flex-start; gap: 14px; padding: 12px 0; border-bottom: 2px solid var(--border); }
+.result-item:last-child { border-bottom: none; }
+.result-item .emoji { font-size: 1.25rem; flex-shrink: 0; margin-top: 3px; }
+.result-item .en { font-weight: 700; color: var(--text); font-size: 1.05rem; }
+.result-item .zh { color: var(--text-3); font-size: 0.92rem; margin-top: 3px; }
+.result-item .user { color: var(--danger); font-size: 0.92rem; margin-top: 3px; }
+
+/* 结果分级表情 */
+.result-emoji-big {
+  font-size: 4rem;
+  text-align: center;
+  margin-bottom: 10px;
+  animation: bounceIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes bounceIn {
+  from { transform: scale(0.3); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+.result-msg {
+  text-align: center;
+  font-size: 1.05rem;
+  color: var(--text-2);
+  margin-bottom: 18px;
+  font-style: italic;
+}
+
+/* ================================================================
+   词库页 — 清晰版
+================================================================ */
+.word-list { max-height: 580px; overflow-y: auto; }
+.word-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px;
+  margin-bottom: 4px;
+  border-bottom: 2px solid var(--border);
+  transition: background 0.15s;
+  border-radius: 10px;
+}
+.word-item:hover {
+  background: rgba(255,127,80,0.08);
+  border-color: var(--border-bright);
+}
+.word-item:last-child { border-bottom: none; }
+.word-num {
+  width: 30px; height: 30px;
+  background: rgba(255,170,133,0.15);
+  color: var(--primary);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; font-weight: 700;
+  flex-shrink: 0; margin-top: 2px;
+}
+.word-info { flex: 1; min-width: 0; }
+.word-en { font-weight: 700; color: var(--text); font-size: 1.05rem; word-break: break-all; }
+.word-zh { color: var(--text-3); font-size: 0.92rem; margin-top: 4px; }
+.word-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.word-tag {
+  font-size: 0.82rem; padding: 3px 10px;
+  border-radius: 8px; font-weight: 600;
+}
+.word-tag.group { background: rgba(255,107,157,0.15); color: var(--accent); }
+.word-tag.level-0 { background: var(--surface); color: var(--text-3); }
+.word-tag.level-1 { background: rgba(255,170,133,0.15); color: var(--primary); }
+.word-tag.level-2 { background: rgba(126,220,210,0.15); color: var(--success); }
+.word-tag.level-3 { background: rgba(255,229,160,0.15); color: var(--warn); }
+.word-tag.due { background: rgba(255,179,179,0.15); color: var(--danger); }
+.word-actions { display: flex; gap: 6px; flex-shrink: 0; margin-top: 2px; }
+
+.search-bar { margin-bottom: 14px; }
+.add-form { display: grid; grid-template-columns: 1fr 1fr auto; gap: 12px; align-items: end; }
+@media(max-width: 600px) { .add-form { grid-template-columns: 1fr; } }
+
+/* ================================================================
+   错题本 — 清晰版
+================================================================ */
+.wrong-book-item {
+  padding: 16px 18px;
+  background: rgba(255,179,179,0.08);
+  border: 2px solid rgba(255,179,179,0.25);
+  border-radius: 14px;
+  margin-bottom: 12px;
+  position: relative;
+}
+.wrong-book-item .top { display: flex; justify-content: space-between; align-items: flex-start; }
+.wrong-book-item .en { font-weight: 700; color: var(--text); font-size: 1.05rem; }
+.wrong-book-item .zh { color: var(--text-3); font-size: 0.92rem; margin-top: 4px; }
+.wrong-book-item .meta { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.wrong-book-priority {
+  position: absolute; top: 12px; right: 12px;
+  background: var(--danger); color: #fff;
+  font-size: 0.82rem; padding: 3px 10px; border-radius: 10px; font-weight: 700;
+}
+.wrong-book-streak {
+  background: rgba(255,229,160,0.15); color: var(--warn);
+  font-size: 0.82rem; padding: 3px 10px; border-radius: 10px; font-weight: 700;
+}
+
+/* ================================================================
+   统计页 — 清晰版
+================================================================ */
+.stats-overview { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 18px; }
+@media(max-width: 480px) { .stats-overview { grid-template-columns: repeat(2,1fr); } }
+.stats-card {
+  background: var(--bg-3);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+.stats-card:hover { border-color: var(--border-bright); }
+.stats-card .big { font-size: 2rem; font-weight: 800; color: var(--primary); }
+.stats-card .desc { font-size: 0.88rem; color: var(--text-3); margin-top: 4px; }
+.mastery-bar-wrap { background: var(--surface); border-radius: 8px; height: 10px; overflow: hidden; margin-top: 6px; }
+.mastery-bar { height: 100%; border-radius: 8px; transition: width 0.6s ease; display: inline-block; }
+.mastery-legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 0.9rem; color: var(--text-3); margin-top: 10px; }
+
+/* ================================================================
+   模态框
+================================================================ */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(8px);
+  z-index: 300;
+  align-items: center;
+  justify-content: center;
+  animation: overlayIn 0.2s ease;
+}
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.modal-overlay.open { display: flex; }
+
+.modal {
+  background: var(--bg-2);
+  border: 2px solid var(--border-bright);
+  border-radius: var(--r-lg);
+  padding: 28px;
+  width: 92%;
+  max-width: 540px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+  max-height: 88vh;
+  overflow-y: auto;
+  animation: modalIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.92) translateY(16px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.modal h3 { font-size: 1.2rem; margin-bottom: 20px; color: var(--text); font-weight: 700; }
+.modal-footer { display: flex; justify-content: flex-end; gap: 12px; margin-top: 22px; }
+
+/* ================================================================
+   空状态
+================================================================ */
+.empty-state { text-align: center; padding: 52px 20px; color: var(--text-3); }
+.empty-state .icon { font-size: 3rem; margin-bottom: 10px; opacity: 0.5; }
+.empty-state p { font-size: 0.9rem; }
+
+/* ================================================================
+   卡片标题
+================================================================ */
+.card-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.card-title::before {
+  content: '';
+  display: block;
+  width: 3px; height: 1em;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+  border-radius: 2px;
+}
+
+/* ================================================================
+   键盘标签
+================================================================ */
+kbd {
+  font-size: 0.7rem;
+  background: var(--bg-3);
+  color: var(--text-3);
+  padding: 1px 5px;
+  border-radius: 4px;
+  border: 1px solid var(--border-bright);
+  font-family: 'Consolas', monospace;
+}
+
+/* ================================================================
+   滚动条
+================================================================ */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-3); }
+
+/* ================================================================
+   响应式
+================================================================ */
+@media(max-width: 480px) {
+  .quiz-question-text { font-size: 1.45rem; }
+  .quiz-question { padding: 28px 18px; }
+  .result-circle { width: 140px; height: 140px; }
+  .result-circle .pct { font-size: 2.4rem; }
+}
+
+/* ================================================================
+   学习计划弹窗内样式
+================================================================ */
+#plan-daily-new, #plan-daily-review, #plan-daily-review-g {
+  cursor: pointer;
+}
+
+/* ================================================================
+   微交互动画
+================================================================ */
+/* 答对 — 柔和薄荷光环扩散 */
+@keyframes correctPulse {
+  0%   { outline: 0px solid rgba(126,220,210,0.6); outline-offset: 0; }
+  50%  { outline: 6px solid rgba(126,220,210,0.12); outline-offset: 4px; }
+  100% { outline: 0px solid rgba(126,220,210,0); outline-offset: 8px; }
+}
+.quiz-input.correct-anim { animation: correctPulse 0.6s ease forwards; }
+
+/* 答错 — 水平抖动 */
+@keyframes shakeX {
+  0%,100% { transform: translateX(0); }
+  15%     { transform: translateX(-7px); }
+  30%     { transform: translateX(7px); }
+  45%     { transform: translateX(-5px); }
+  60%     { transform: translateX(5px); }
+  75%     { transform: translateX(-3px); }
+  90%     { transform: translateX(3px); }
+}
+.quiz-input.wrong-anim { animation: shakeX 0.5s ease forwards; }
+
+/* 结果分数圆圈 — 弹入（由 JS 动态添加 class） */
+@keyframes scorePopIn {
+  0%   { transform: scale(0.5); opacity: 0; }
+  65%  { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); }
+}
+.result-circle.pop-in { animation: scorePopIn 0.65s cubic-bezier(0.34,1.56,0.64,1) both; }
+
+/* 满分烟花粒子（canvas 由 JS 驱动） */
+#confetti-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 500;
+}
 </style>
 </head>
 <body>
 
-<!-- 导航 -->
+<!-- 青春朝阳装饰 -->
+<div class="sun-deco"></div>
+
+<!-- 满分烟花 canvas -->
+<canvas id="confetti-canvas"></canvas>
+
+<!-- 顶部导航 -->
 <div class="nav">
-  <h1>📝 英语默写练习</h1>
-  <div class="nav-tabs">
-    <button class="nav-tab active" onclick="showPage('page-home')">首页</button>
-    <button class="nav-tab" onclick="showPage('page-study')">📖 学习</button>
-    <button class="nav-tab" onclick="showPage('page-library')">词库</button>
-    <button class="nav-tab" onclick="showPage('page-wrong')">错题本</button>
-    <button class="nav-tab" onclick="showPage('page-stats')">统计</button>
-  </div>
+  <h1>🌅 WordFlow</h1>
+</div>
+
+<!-- 底部导航 -->
+<div class="bottom-nav">
+  <button class="bot-tab active" onclick="showPage('page-home')" data-page="page-home">
+    <span class="tab-icon">🏠</span>
+    <span class="tab-label">首页</span>
+  </button>
+  <button class="bot-tab" onclick="showPage('page-study')" data-page="page-study">
+    <span class="tab-icon">📖</span>
+    <span class="tab-label">学习</span>
+  </button>
+  <button class="bot-tab" onclick="showPage('page-library')" data-page="page-library">
+    <span class="tab-icon">📚</span>
+    <span class="tab-label">词库</span>
+  </button>
+  <button class="bot-tab" onclick="showPage('page-wrong')" data-page="page-wrong">
+    <span class="tab-icon">🔥</span>
+    <span class="tab-label">错题</span>
+  </button>
+  <button class="bot-tab" onclick="showPage('page-stats')" data-page="page-stats">
+    <span class="tab-icon">📊</span>
+    <span class="tab-label">统计</span>
+  </button>
 </div>
 
 <div class="container">
 
   <!-- ===== 首页/仪表盘 ===== -->
   <div id="page-home" class="page active">
-    <div class="card">
-      <div class="dash-date" id="dash-date"></div>
+    <div class="card card-glow">
+      <div class="dash-header">
+        <div>
+          <div class="dash-greeting" id="dash-greeting">早上好 👋</div>
+          <div class="dash-date" id="dash-date"></div>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="openPlanModal()">⚙️ 设置</button>
+      </div>
+
       <div class="dash-grid">
+        <!-- 今日学习 -->
+        <div class="dash-card study" onclick="goToStudy()">
+          <div class="dash-card-icon">📖</div>
+          <div class="dash-card-title">今日学习</div>
+          <div class="dash-card-count pink" id="dash-study-count">0</div>
+          <div class="dash-card-sub" id="dash-study-sub">查看今日单词</div>
+        </div>
         <!-- 新词 -->
         <div class="dash-card new" id="dash-new-card" onclick="startQuiz('new')">
           <div class="dash-card-icon">🆕</div>
@@ -307,46 +1149,43 @@
           <div class="dash-card-count green" id="dash-review-count">0</div>
           <div class="dash-card-sub" id="dash-review-sub">没有待复习单词</div>
         </div>
-        <!-- 学习模块 -->
-        <div class="dash-card study" onclick="goToStudy()">
-          <div class="dash-card-icon">📖</div>
-          <div class="dash-card-title">今日学习</div>
-          <div class="dash-card-count pink" id="dash-study-count">0</div>
-          <div class="dash-card-sub" id="dash-study-sub">查看今日单词</div>
-        </div>
         <!-- 综合 -->
-        <div class="dash-card mix" onclick="startQuiz('mix')" style="grid-column:1/-1">
+        <div class="dash-card mix" onclick="startQuiz('mix')">
           <div class="dash-card-icon">🎯</div>
           <div class="dash-card-title">综合练习（推荐）</div>
           <div class="dash-card-count orange" id="dash-mix-count">0</div>
           <div class="dash-card-sub" id="dash-mix-sub">新词 + 复习 混合练习</div>
         </div>
       </div>
+
       <div class="dash-tip" id="dash-tip"></div>
     </div>
 
     <!-- 3天周期计划 -->
     <div class="card">
-      <h2 style="font-size:1rem;margin-bottom:14px;color:var(--primary);">📅 学习计划（每3天一个周期）</h2>
+      <div class="card-title">📅 学习周期</div>
       <div id="plan-timeline" class="plan-timeline"></div>
     </div>
 
-    <!-- 历史快捷 -->
+    <!-- 最近练习 -->
     <div class="card" id="recent-card" style="display:none;">
-      <h2 style="font-size:1rem;margin-bottom:12px;color:var(--primary);">🕐 最近练习</h2>
+      <div class="card-title">🕐 最近练习</div>
       <div id="recent-list"></div>
     </div>
   </div>
 
-  <!-- ===== 学习页（新增） ===== -->
+
+  <!-- ===== 学习页 ===== -->
   <div id="page-study" class="page">
     <div class="card">
       <div class="study-date-header">
         <h2 id="study-page-title">📖 今日学习</h2>
         <span class="study-date-badge" id="study-date-badge">3.9</span>
       </div>
-      
-      <div class="study-progress-text" id="study-progress-text">0 / 0 已学习</div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <span class="study-progress-text" id="study-progress-text">0 / 0 已学习</span>
+      </div>
       <div class="study-progress-bar">
         <div class="study-progress" id="study-progress" style="width:0%"></div>
       </div>
@@ -373,7 +1212,7 @@
           开始默写 ✍️
         </button>
         <button class="btn btn-ghost" onclick="selectStudyDate()">
-          选择日期 📅
+          切换日期 📅
         </button>
       </div>
     </div>
@@ -382,20 +1221,20 @@
   <!-- ===== 词库页 ===== -->
   <div id="page-library" class="page">
     <div class="card">
-      <h2 style="font-size:1rem;margin-bottom:14px;color:var(--primary);">📚 词库管理</h2>
+      <div class="card-title">📚 词库管理</div>
       <div id="group-bar" class="filter-bar"></div>
       <div class="search-bar">
-        <input type="text" id="search-input" placeholder="搜索单词或中文..." oninput="renderWordList()">
+        <input type="text" id="search-input" placeholder="🔍 搜索单词或中文..." oninput="renderWordList()">
       </div>
       <div id="word-list" class="word-list"></div>
     </div>
     <div class="card">
-      <h2 style="font-size:1rem;margin-bottom:14px;color:var(--primary);">➕ 添加单词</h2>
+      <div class="card-title">➕ 添加单词</div>
       <div class="form-row">
         <label>分组</label>
         <div style="display:flex;gap:8px;">
           <select id="add-group" style="flex:1;"></select>
-          <button class="btn btn-outline btn-sm" onclick="openModal('modal-group')">新建分组</button>
+          <button class="btn btn-outline btn-sm" onclick="openModal('modal-group')">+ 新建</button>
         </div>
       </div>
       <div class="add-form">
@@ -409,7 +1248,7 @@
         </div>
         <div class="form-field" style="min-width:100px;">
           <label>词性（可选）</label>
-          <select id="add-pos" style="height:40px;">
+          <select id="add-pos" style="height:42px;">
             <option value="">—</option>
             <option value="n.">n. 名词</option>
             <option value="v.">v. 动词</option>
@@ -426,25 +1265,25 @@
           </select>
         </div>
       </div>
-      <div style="margin-top:8px;text-align:right;"><button class="btn btn-primary" onclick="addWord()">添加单词</button></div>
-      <div style="margin-top:10px;font-size:.82rem;color:var(--muted);">
-        💡 批量导入：
+      <div style="margin-top:8px;text-align:right;">
+        <button class="btn btn-primary" onclick="addWord()">添加单词</button>
+      </div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:.82rem;color:var(--text-3);">
+        批量导入：
         <button class="btn btn-ghost btn-sm" onclick="openModal('modal-batch')">文本导入</button>
         <button class="btn btn-ghost btn-sm" onclick="openModal('modal-import-file')">文档导入</button>
-        <button class="btn btn-ghost btn-sm" onclick="openModal('modal-csv-import')">CSV导入</button>
-        <button class="btn btn-ghost btn-sm" onclick="openModal('modal-json-import')">JSON导入</button>
-        &nbsp;|&nbsp;
-        <button class="btn btn-ghost btn-sm" onclick="openModal('modal-plan')">设置周期</button>
+        <button class="btn btn-ghost btn-sm" onclick="openModal('modal-csv-import')">CSV 导入</button>
+        <button class="btn btn-ghost btn-sm" onclick="openModal('modal-json-import')">JSON 导入</button>
       </div>
     </div>
   </div>
 
   <!-- ===== 默写页（答题区域） ===== -->
   <div id="page-quiz" class="page">
-    <div class="card" id="quiz-card">
+    <div class="card" id="quiz-card" style="background:transparent;border:none;padding:0;">
       <div class="quiz-meta">
         <span id="quiz-meta-left"></span>
-        <span id="quiz-meta-right"></span>
+        <span id="quiz-meta-right" style="color:var(--text-3);"></span>
       </div>
       <div class="quiz-progress-bar"><div class="quiz-progress" id="quiz-progress" style="width:0%"></div></div>
 
@@ -452,29 +1291,36 @@
       <div id="quiz-area">
         <div id="quiz-type-badge" class="quiz-type-badge"></div>
         <div class="quiz-question">
-          <div class="quiz-question-tag">请写出对应的英文</div>
+          <div class="quiz-question-tag">· 请写出对应的英文 ·</div>
           <div class="quiz-question-text" id="quiz-zh"></div>
           <div class="quiz-question-hint" id="quiz-hint"></div>
         </div>
 
         <div class="quiz-input-wrap">
-          <input type="text" class="quiz-input" id="quiz-input" placeholder="输入英文答案后按 Enter 确认" onkeydown="quizKeydown(event)" autocomplete="off" spellcheck="false">
+          <input type="text" class="quiz-input" id="quiz-input"
+            placeholder="输入英文，按 Enter 确认"
+            onkeydown="quizKeydown(event)"
+            autocomplete="off" spellcheck="false">
         </div>
 
         <div class="quiz-feedback" id="quiz-feedback"></div>
 
         <div class="quiz-actions">
           <button class="btn btn-primary btn-lg" id="quiz-confirm-btn" onclick="quizConfirm()">确认答案 ↵</button>
-          <button class="btn btn-ghost" id="quiz-skip-btn" onclick="quizSkip()" title="快捷键：Tab 或 S">跳过 <kbd style="font-size:.72rem;background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:monospace;">S</kbd></button>
+          <button class="btn btn-ghost" id="quiz-skip-btn" onclick="quizSkip()" title="快捷键：Tab 或 S">
+            跳过 <kbd>S</kbd>
+          </button>
         </div>
       </div>
 
       <!-- 结果区 -->
       <div id="quiz-result" style="display:none;text-align:center;">
-        <div class="result-circle">
+        <div class="result-emoji-big" id="result-emoji">🎉</div>
+        <div class="result-circle" id="result-circle-el">
           <div class="pct" id="result-pct">0%</div>
           <div class="lbl">得分率</div>
         </div>
+        <div class="result-msg" id="result-msg"></div>
         <div class="result-stats">
           <div class="item"><div class="num green" id="result-correct">0</div><div class="lbl">答对</div></div>
           <div class="item"><div class="num red" id="result-wrong">0</div><div class="lbl">答错/跳过</div></div>
@@ -482,8 +1328,8 @@
         </div>
         <div id="result-detail-list" class="result-detail-list"></div>
         <div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-          <button class="btn btn-primary" onclick="quizReplay()">再来一轮</button>
-          <button class="btn btn-outline" onclick="quizReviewOnly()">专练错题</button>
+          <button class="btn btn-primary" onclick="quizReplay()">再来一轮 🔄</button>
+          <button class="btn btn-outline" onclick="quizReviewOnly()">专练错题 💪</button>
           <button class="btn btn-ghost" onclick="showPage('page-home')">返回首页</button>
         </div>
       </div>
@@ -494,8 +1340,8 @@
   <div id="page-wrong" class="page">
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-        <h2 style="font-size:1rem;color:var(--primary);">❌ 错题本（按遗忘程度排序）</h2>
-        <button class="btn btn-danger btn-sm" onclick="clearAllWrong()">清空记录</button>
+        <div class="card-title" style="margin-bottom:0;">🔥 高频错题</div>
+        <button class="btn btn-ghost btn-sm" onclick="clearAllWrong()" style="color:var(--danger);border-color:rgba(255,95,126,0.3);">清空记录</button>
       </div>
       <div id="wrong-list"></div>
     </div>
@@ -504,13 +1350,13 @@
   <!-- ===== 统计页 ===== -->
   <div id="page-stats" class="page">
     <div class="card">
-      <h2 style="font-size:1rem;margin-bottom:14px;color:var(--primary);">📊 学习统计</h2>
+      <div class="card-title">📊 学习统计</div>
       <div class="stats-overview" id="stats-overview"></div>
       <div id="stats-mastery"></div>
       <div id="stats-groups" style="margin-top:16px;"></div>
     </div>
     <div class="card">
-      <h2 style="font-size:1rem;margin-bottom:14px;color:var(--primary);">📈 每日练习记录</h2>
+      <div class="card-title">📈 练习记录</div>
       <div id="stats-history"></div>
     </div>
   </div>
@@ -530,7 +1376,7 @@
   <div class="modal">
     <h3>批量导入单词</h3>
     <div class="form-row"><label>选择分组</label><select id="batch-group"></select></div>
-    <div class="form-row"><label>每行一条，格式：<b>英文 | 中文 | 词性（可选）</b></label><textarea id="batch-text" rows="8" placeholder="focus on the key points | 专注于关键点 | phr.&#10;curiosity | 好奇心 | n.&#10;..."></textarea></div>
+    <div class="form-row"><label>每行一条，格式：<b style="color:var(--primary-light);">英文 | 中文 | 词性（可选）</b></label><textarea id="batch-text" rows="8" placeholder="focus on the key points | 专注于关键点 | phr.&#10;curiosity | 好奇心 | n.&#10;..."></textarea></div>
     <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('modal-batch')">取消</button><button class="btn btn-primary" onclick="doBatchImport()">导入</button></div>
   </div>
 </div>
@@ -540,10 +1386,10 @@
     <h3>📂 从文件导入词汇</h3>
     <div class="form-row">
       <label>支持格式</label>
-      <div style="font-size:.85rem;color:var(--muted);line-height:1.6;">
-        <b>Word 文档 (.docx)</b>：复制粘贴文档内容即可自动解析<br>
-        <b>纯文本 (.txt)</b>：每行一条词汇，格式同上<br>
-        <b>JSON 文件 (.json)</b>：已内置的词汇库格式
+      <div style="font-size:.85rem;color:var(--text-2);line-height:1.7;">
+        <b style="color:var(--primary-light);">Word 文档</b>：复制粘贴文档内容即可自动解析<br>
+        <b style="color:var(--primary-light);">纯文本</b>：每行一条词汇，格式同上<br>
+        <b style="color:var(--primary-light);">JSON</b>：已内置的词汇库格式
       </div>
     </div>
     <div class="form-row">
@@ -553,16 +1399,6 @@
     <div class="form-row">
       <label>日期标识（如：3.9、4.7 等，用于自动分组）</label>
       <input type="text" id="import-date-key" placeholder="如：3.9 或 4.15">
-    </div>
-    <div class="form-row">
-      <label style="color:var(--purple);">💡 解析说明</label>
-      <div style="font-size:.82rem;color:var(--muted);padding:8px;background:#f8fafc;border-radius:8px;">
-        自动识别以下格式：<br>
-        • <b>recognize v.</b> 认识/识别出<br>
-        • <b>recognition n.</b> 认识/识别出（派生词自动拆分）<br>
-        • <b>beyond recognition</b> 难以/无法识别（短语自动拆分）<br>
-        同一行中的多个词条会自动拆分独立添加
-      </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('modal-import-file')">取消</button>
@@ -576,7 +1412,7 @@
     <h3>📦 导入 JSON 词汇库</h3>
     <div class="form-row">
       <label>说明</label>
-      <div style="font-size:.85rem;color:var(--muted);line-height:1.6;">
+      <div style="font-size:.85rem;color:var(--text-2);line-height:1.6;">
         支持导入标准格式的词汇 JSON 文件，可用于备份恢复或导入他人分享的词库。
       </div>
     </div>
@@ -603,26 +1439,23 @@
     <h3>📊 导入 CSV 词汇</h3>
     <div class="form-row">
       <label>CSV 格式说明</label>
-      <div style="font-size:.85rem;color:var(--muted);line-height:1.8;background:#f8fafc;padding:10px;border-radius:8px;">
-        以逗号 <b>,</b> 为分隔符，字段顺序：<b>分组,英文,词性,中文</b><br>
-        示例：<br>
-        <code style="font-size:.8rem;background:#eef;padding:2px 6px;border-radius:4px;">3.9,recognize,v.,认识/识别出</code><br>
-        <code style="font-size:.8rem;background:#eef;padding:2px 6px;border-radius:4px;">4.1,be distinguished from,phr.,与...区分开</code><br>
-        • 第一行如为标题行（含"分组"或"英文"）将自动跳过<br>
-        • 英文内容相同的词条会自动跳过（保证唯一性）
+      <div style="font-size:.84rem;color:var(--text-2);line-height:1.9;background:var(--bg-3);padding:10px 12px;border-radius:8px;border:1px solid var(--border);">
+        以逗号 <b style="color:var(--primary-light);">,</b> 为分隔符，字段：<b style="color:var(--primary-light);">分组,英文,词性,中文</b><br>
+        <code style="font-size:.78rem;background:rgba(108,99,255,0.1);padding:2px 6px;border-radius:4px;color:var(--primary-light);">3.9,recognize,v.,认识/识别出</code><br>
+        <code style="font-size:.78rem;background:rgba(108,99,255,0.1);padding:2px 6px;border-radius:4px;color:var(--primary-light);">4.1,be distinguished from,phr.,与...区分开</code>
       </div>
     </div>
     <div class="form-row">
       <label>选择 CSV 文件</label>
-      <input type="file" id="csv-file-input" accept=".csv,text/csv" style="padding:6px;border:1px solid var(--border);border-radius:8px;width:100%;box-sizing:border-box;" onchange="onCSVFileChange(this)">
+      <input type="file" id="csv-file-input" accept=".csv,text/csv" style="padding:8px;border:1px solid var(--border);border-radius:8px;width:100%;box-sizing:border-box;color:var(--text-2);background:var(--bg-3);" onchange="onCSVFileChange(this)">
     </div>
     <div class="form-row">
       <label>或直接粘贴 CSV 内容</label>
-      <textarea id="csv-text-input" rows="8" placeholder="3.9,recognize,v.,认识/识别出&#10;3.9,recognition,n.,识别；认可&#10;4.1,be distinguished from,phr.,与...区分开"></textarea>
+      <textarea id="csv-text-input" rows="7" placeholder="3.9,recognize,v.,认识/识别出&#10;3.9,recognition,n.,识别；认可&#10;4.1,be distinguished from,phr.,与...区分开"></textarea>
     </div>
     <div id="csv-preview" style="display:none;">
-      <div style="font-size:.85rem;font-weight:600;margin-bottom:6px;color:var(--primary);">📋 预览（前 5 条）</div>
-      <div id="csv-preview-content" style="font-size:.8rem;background:#f8fafc;padding:10px;border-radius:8px;max-height:140px;overflow-y:auto;"></div>
+      <div style="font-size:.84rem;font-weight:700;margin-bottom:6px;color:var(--primary-light);">📋 预览（前 5 条）</div>
+      <div id="csv-preview-content" style="font-size:.78rem;background:var(--bg-3);border:1px solid var(--border);padding:10px;border-radius:8px;max-height:130px;overflow-y:auto;"></div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('modal-csv-import');resetCSVModal()">取消</button>
@@ -634,16 +1467,16 @@
 
 <div class="modal-overlay" id="modal-plan">
   <div class="modal" style="max-width:560px;">
-    <h3>⚙️ 每日学习计划设置</h3>
+    <h3>⚙️ 每日学习计划</h3>
 
     <!-- 模式切换 -->
     <div class="form-row">
-      <label>每日任务模式</label>
+      <label>任务模式</label>
       <div style="display:flex;gap:8px;">
         <button id="plan-mode-count" class="btn btn-primary btn-sm" onclick="switchPlanMode('count')">📊 按数量</button>
         <button id="plan-mode-group" class="btn btn-outline btn-sm" onclick="switchPlanMode('group')">📂 按分组</button>
       </div>
-      <div style="font-size:.8rem;color:var(--muted);margin-top:6px;" id="plan-mode-desc">
+      <div style="font-size:.8rem;color:var(--text-3);margin-top:6px;" id="plan-mode-desc">
         每日固定学习新词和复习数量，超出按此限制截取。
       </div>
     </div>
@@ -652,18 +1485,18 @@
     <div id="plan-section-count">
       <div class="form-row">
         <label>每日新词数量</label>
-        <div style="display:flex;align-items:center;gap:10px;">
+        <div style="display:flex;align-items:center;gap:12px;">
           <input type="range" id="plan-daily-new" min="5" max="50" step="5" value="10"
             style="flex:1;" oninput="document.getElementById('plan-daily-new-val').textContent=this.value">
-          <span id="plan-daily-new-val" style="min-width:30px;font-weight:700;color:var(--primary);">10</span> 个
+          <span id="plan-daily-new-val" style="min-width:30px;font-weight:700;color:var(--primary-light);">10</span> 个
         </div>
       </div>
       <div class="form-row">
         <label>每日复习数量</label>
-        <div style="display:flex;align-items:center;gap:10px;">
+        <div style="display:flex;align-items:center;gap:12px;">
           <input type="range" id="plan-daily-review" min="5" max="100" step="5" value="20"
             style="flex:1;" oninput="document.getElementById('plan-daily-review-val').textContent=this.value">
-          <span id="plan-daily-review-val" style="min-width:30px;font-weight:700;color:var(--purple);">20</span> 个
+          <span id="plan-daily-review-val" style="min-width:30px;font-weight:700;color:var(--accent);">20</span> 个
         </div>
       </div>
     </div>
@@ -673,23 +1506,22 @@
       <div class="form-row">
         <label>选择每日学习的分组（可多选）</label>
         <div id="plan-group-list" style="max-height:200px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;padding:8px;display:flex;flex-direction:column;gap:6px;">
-          <!-- 动态渲染 -->
         </div>
-        <div style="font-size:.8rem;color:var(--muted);margin-top:6px;">选中分组中的所有词汇将纳入当日练习范围。</div>
+        <div style="font-size:.8rem;color:var(--text-3);margin-top:6px;">选中分组中的所有词汇将纳入当日练习范围。</div>
       </div>
       <div class="form-row">
         <label>每日复习数量（分组模式下）</label>
-        <div style="display:flex;align-items:center;gap:10px;">
+        <div style="display:flex;align-items:center;gap:12px;">
           <input type="range" id="plan-daily-review-g" min="5" max="100" step="5" value="20"
             style="flex:1;" oninput="document.getElementById('plan-daily-review-g-val').textContent=this.value">
-          <span id="plan-daily-review-g-val" style="min-width:30px;font-weight:700;color:var(--purple);">20</span> 个
+          <span id="plan-daily-review-g-val" style="min-width:30px;font-weight:700;color:var(--accent);">20</span> 个
         </div>
       </div>
     </div>
 
     <!-- 通用：混合比例 -->
     <div class="form-row">
-      <label>综合练习新:复习 比例</label>
+      <label>综合练习 新词:复习 比例</label>
       <select id="plan-mix-ratio">
         <option value="1:1">1:1（各占一半）</option>
         <option value="1:2">1:2（复习为主）</option>
@@ -752,7 +1584,7 @@ const genUniqueId = (dateKey, index, type) => {
   return `${dateNorm}_${type}${String(index).padStart(3, '0')}`;
 };
 
-const BUILT_IN_DATA = {"3.9": {"words": [{"en": "recognize", "zh": "认识/识别出；承人/认可/接受recognize A as B把A 认(可)为B", "pos": "v.", "examples": []}, {"en": "recognition", "zh": "beyond recognition 难以/无法识别；面目全非", "pos": "n.", "examples": []}, {"en": "overall", "zh": "/", "pos": "adj.", "examples": []}, {"en": "ad", "zh": "全面/总体的/地；综合的/地 overall performance 总体表现", "pos": "v.", "examples": []}, {"en": "distinguish", "zh": "区别；辩别；分清 be distinguished from 与......区分开；有别于", "pos": "v.", "examples": []}, {"en": "distinguished", "zh": "著名的；卓越的；高贵的 distinguished career 辉煌(职业)生涯 distinguished guest 贵宾", "pos": "adj.", "examples": []}, {"en": "distinguishable", "zh": "可识别的", "pos": "adj.", "examples": []}, {"en": "classify", "zh": "把......分/归类；划分(A as B)；定为机密 classified files 机密文件", "pos": "v.", "examples": []}, {"en": "moral", "zh": "(有)道德(上)的；品行端正的 a moral dilemma 道德困境moral values 道德观念 moral code 道德准则 moral kidnapping道德绑架", "pos": "adj.", "examples": []}, {"en": "morality", "zh": "道/美德；品行", "pos": "n.", "examples": []}, {"en": "hazardous", "zh": "危险/有害的", "pos": "adj.", "examples": []}, {"en": "hazard", "zh": "危害/危险；冒险 hazard analysis 危害分析", "pos": "n./v.", "examples": []}, {"en": "xenophobia", "zh": "仇外心理/情绪 claustrophobia幽闭恐惧症 trypo-phobia 密集恐惧症=intensive phobia  该词汇真正要掌握的是词根", "pos": "n.", "examples": []}, {"en": "phobia", "zh": "恐惧 在其前加个n.或adj.就是各种恐惧如social phobia=socio-phobia社会；school phobia学校；cyber phobia 网络", "pos": "n.", "examples": []}, {"en": "vowel", "zh": "元音(字母)", "pos": "n.", "examples": []}, {"en": "consonant", "zh": "辅音(字母)", "pos": "n.", "examples": []}, {"en": "syllable", "zh": "音节", "pos": "n.", "examples": []}, {"en": "outlast", "zh": "比......更长久 He can outlast anyone on the dance floor. 在舞场上他比谁都能跳 类似结构词汇：outlive活得比......更长；outweigh比......重；重要性或意义超过；outnumber数量上超过；outperform表现得更好/胜过；outplay打败；胜过 outpace速度或节奏等超过；outrun 跑得过/胜过某人outwit/out-master 智胜", "pos": "v.", "examples": []}, {"en": "machinery", "zh": "机械(总称) 永单", "pos": "n.", "examples": []}, {"en": "machines", "zh": "机器的复数形式 表示永单的词汇还有：poetry诗集；equipment 设备；clothing衣物；furniture家具；jewelry/jewellery珠宝", "pos": "n.", "examples": []}], "phrases": [{"en": "be engaged", "zh": "in从事；参与；忙着", "pos": "phr.", "examples": []}, {"en": "raise one’s awareness of sth.", "zh": "提高某人对......的认识/意识", "pos": "phr.", "examples": []}, {"en": "challenge social regulations", "zh": "挑战社会规范/规则", "pos": "phr.", "examples": []}, {"en": "lead sb. to do sth.=lead to one’s doing sth.", "zh": "导致某人做某事", "pos": "phr.", "examples": []}, {"en": "be intended to", "zh": "do旨在做某事；想要/打算", "pos": "phr.", "examples": []}, {"en": "(=intend to", "zh": "但后者主语只能是人)", "pos": "phr.", "examples": []}, {"en": "be tied to sth.", "zh": "与某事绑定/联系在一块儿", "pos": "phr.", "examples": []}, {"en": "fight poverty", "zh": "扶贫；摆脱/反贫穷/困", "pos": "phr.", "examples": []}, {"en": "a bout of", "zh": "laughter一阵大笑", "pos": "phr.", "examples": []}, {"en": "head/lead a research team", "zh": "领导一个研究团队", "pos": "phr.", "examples": []}, {"en": "on a regular basis", "zh": "定期地；经常；常态化=regularly", "pos": "phr.", "examples": []}]}, "3.10": {"words": [{"en": "Anglo-Saxon", "zh": "英国人；央格鲁撒克逊人(+s则是复数形式)", "pos": "n.", "examples": []}, {"en": "excessive", "zh": "过度/多/过分的excessive drinking 酗酒；excessive spending 过度消费", "pos": "adj.", "examples": []}, {"en": "diverse", "zh": "多元的；不同/各色各样的", "pos": "adj.", "examples": []}, {"en": "diversity", "zh": "多样性", "pos": "n.", "examples": []}, {"en": "biodiversity", "zh": "生物多样性", "pos": "n.", "examples": []}, {"en": "definition", "zh": "定义", "pos": "n.", "examples": []}, {"en": "define", "zh": "define A as B 把A定义为", "pos": "v.", "examples": []}, {"en": "Bdefinite", "zh": "definitely", "pos": "adj.", "examples": []}, {"en": "influence", "zh": "影响；左右(某人决策等) influence sb.=have influence on sb. 对某人有影响", "pos": "v./n.", "examples": []}, {"en": "influential", "zh": "有影响力/举足轻重的", "pos": "adj.", "examples": []}, {"en": "compare", "zh": "对比；比较(compare A with/to B)", "pos": "v.", "examples": []}, {"en": "comparison", "zh": "by comparison 相比之下=in/by comparison with sb./sth.", "pos": "n.", "examples": []}, {"en": "major", "zh": "主要的；重大的；主修；专攻；少校 majority；a majority of=most", "pos": "v./n./adj.", "examples": []}, {"en": "minority", "zh": "national minority 少数民族", "pos": "n.", "examples": []}, {"en": "workaholic", "zh": "工作狂 alcoholic 酒鬼 choc-o-holic巧克力迷；exercise-a-holic运动狂热者；loveaholic恋爱狂；ego-holic；自恋癖者/狂 shopaholic 购物狂", "pos": "n.", "examples": []}, {"en": "spread", "zh": "传播/散步；流传；蔓延/扩散；伸展/铺开；涂/敷The bird spread (out) its wings 鸟儿张开双翅/翅膀 spread a cloth on the table 把桌布铺在桌上 spread butter on bread 面包上涂黄油 spread fast across the world 火速传遍全球 (ppt: spread-spread)", "pos": "v./n.", "examples": []}, {"en": "range", "zh": "范围；种类；区间；系列；变化/不等in a wide range of areas在广泛的领域中；mountain ranges山系；price range价格范围；within the range of the gunfire 枪炮/炮火射程范围之内 This species of flower ranges in color from pure white to deep purple这种花从纯白到深紫色价格不等 range in ... from A to B 在......之间变化 再如：She’s had a variety of jobs，ranging from chef to swimming instructors. 她做过许多工作从厨师到游泳教练", "pos": "v./n.", "examples": []}], "phrases": [{"en": "Cultural", "zh": "focus词汇：", "pos": "phr.", "examples": []}, {"en": "have come to stay=be here to stay", "zh": "继续存在；普遍认可", "pos": "phr.", "examples": []}, {"en": "Whether you like it or not，social media is here to stay", "zh": "无论你喜欢与否，社交媒体必将继续存在/得到普遍认可", "pos": "phr.", "examples": []}, {"en": "mother tongue；native language", "zh": "母语", "pos": "phr.", "examples": []}, {"en": "native speakers", "zh": "(说)母语者", "pos": "phr.", "examples": []}, {"en": "the Germanic", "zh": "language日耳曼语", "pos": "phr.", "examples": []}, {"en": "electronic products", "zh": "电子产品", "pos": "phr.", "examples": []}, {"en": "an electric fan", "zh": "电风扇", "pos": "phr.", "examples": []}, {"en": "electrical appliances", "zh": "电器", "pos": "phr.", "examples": []}, {"en": "maintain social distance/distancing", "zh": "保持社交距离", "pos": "phr.", "examples": []}, {"en": "less fast", "zh": "没那么快；慢一点", "pos": "phr.", "examples": []}, {"en": "make", "zh": "up组/构成；弥补；化妆；编造/虚构；和解/言归于好", "pos": "phr.", "examples": []}, {"en": "app store(s)", "zh": "应用商店(复数在后面加s)", "pos": "phr.", "examples": []}, {"en": "independent", "zh": "learning独立学习；自学", "pos": "phr.", "examples": []}, {"en": "be independent of", "zh": "不依赖", "pos": "phr.", "examples": []}, {"en": "be dependent on", "zh": "依赖=depend", "pos": "phr.", "examples": []}, {"en": "Parents can easily become over-protective of their children", "zh": "父母容易过度保护孩子", "pos": "phr.", "examples": []}]}, "3.11": {"words": [{"en": "harsh", "zh": "恶劣/艰苦的；严酷/厉/苛的；刺耳/难听的；刺激性的 harsh voice 刺耳的嗓音；harsh color 扎眼的色彩；harsh wind 凛冽的寒风；harsh treatment 虐待", "pos": "adj.", "examples": []}, {"en": "identify", "zh": "辨/指认/显示身份identify with认同/共鸣", "pos": "v.", "examples": []}, {"en": "combat", "zh": "搏斗；战斗combat child labor 打击(使用)童工现象", "pos": "v./n.", "examples": []}, {"en": "ensure", "zh": "ensure that+句子；assure sb. that+句子；ensure sb. sth.; assure sb. of sth.", "pos": "v.", "examples": []}, {"en": "highlight", "zh": "突出；强调；做醒目标志/标出(最精彩部分)", "pos": "v./n.", "examples": []}, {"en": "sustainable", "zh": "不破坏生态平衡的；可持续的", "pos": "adj.", "examples": []}, {"en": "sustainability", "zh": "可持续性", "pos": "n.", "examples": []}, {"en": "access", "zh": "机会/权利；路/途径；到达/进入；登录/访问 access s.p. 登录/访问/进入某地=get access to s.p.", "pos": "v./n.", "examples": []}, {"en": "accessible", "zh": "(to sb.) These documents are not accessible to the public. 公众无法看到这些文件", "pos": "adj.", "examples": []}, {"en": "depression", "zh": "抑郁(症)；沮丧/消沉；萧条/衰退", "pos": "n.", "examples": []}, {"en": "status", "zh": "地位；身份；状况/态 social status 社会地位 She updated her Facebook status to “in a relationship”她将脸书状态更新为“恋爱中”", "pos": "n.", "examples": []}, {"en": "evaluate", "zh": "评价/评估", "pos": "v.", "examples": []}, {"en": "obligation", "zh": "义务；责任/职责", "pos": "n.", "examples": []}], "phrases": [{"en": "drug addiction", "zh": "药物成瘾；不断嗑药", "pos": "phr.", "examples": []}, {"en": "stimulate the blood", "zh": "flow促进/刺激血液循环", "pos": "phr.", "examples": []}, {"en": "such....as to do", "zh": "如此以至于", "pos": "phr.", "examples": []}, {"en": "go through", "zh": "通过；经受；完成；进行到底", "pos": "phr.", "examples": []}, {"en": "stream some", "zh": "radio播放一些广播节目", "pos": "phr.", "examples": []}, {"en": "live streaming", "zh": "直播(流媒体)", "pos": "phr.", "examples": []}, {"en": "obey one’s", "zh": "demands满足某人要求obedient", "pos": "phr.", "examples": []}, {"en": "arouse feelings of guilt in", "zh": "sb.使某人产生内疚感", "pos": "phr.", "examples": []}, {"en": "meet/satisfy one’s needs", "zh": "满足某人需求", "pos": "phr.", "examples": []}, {"en": "emotional blackmail", "zh": "情感勒索；感情敲诈", "pos": "phr.", "examples": []}]}, "3.12": {"words": [{"en": "dialect", "zh": "方言；土话", "pos": "n.", "examples": []}, {"en": "nightmare", "zh": "噩梦；梦魇；可怕的经历", "pos": "n.", "examples": []}, {"en": "brainstorm", "zh": "突发灵感/妙计 v. 头脑风暴/集思广益", "pos": "n.", "examples": []}, {"en": "wipe", "zh": "擦；拭；抹；消除 wipe sth. off 擦掉；抹去", "pos": "v.", "examples": []}, {"en": "revolution", "zh": "大变革；巨变", "pos": "n.", "examples": []}, {"en": "jewelry", "zh": "珠宝；首饰 永单 (这类词有好几个之前刚刚讲过不再重复)", "pos": "n.", "examples": []}, {"en": "genre", "zh": "体裁；类型literary genre 文学体裁 the horror genre 恐怖类型", "pos": "n.", "examples": []}, {"en": "feather", "zh": "羽/翎毛 a feather pillow 羽绒枕头Birds of a feather flock together物以类聚人以群分", "pos": "n.", "examples": []}, {"en": "tragedy", "zh": "悲剧/悲哀；惨祸", "pos": "n.", "examples": []}, {"en": "tragedian", "zh": "悲剧作家/演员 对应词汇", "pos": "n.", "examples": []}, {"en": "comedy", "zh": "喜剧", "pos": "n.", "examples": []}, {"en": "comic", "zh": "喜剧/滑稽的 n. 连环漫画(书)", "pos": "adj.", "examples": []}, {"en": "comedian", "zh": "喜剧演员", "pos": "n.", "examples": []}, {"en": "subheading", "zh": "副标题=subtitle sub-health亚健康；sub-station分站；subtropical亚热带的；subset子集；subculture 亚文化", "pos": "n.", "examples": []}, {"en": "subordinate", "zh": "下属/级；次要/从属的；subway 地铁；submarine 潜艇；substandard 低于正常水准的；subscribe 订购/买下(to)", "pos": "n./adj.", "examples": []}], "phrases": [{"en": "cardiovascular", "zh": "system心血管系统(人体循环系统)", "pos": "phr.", "examples": []}, {"en": "brush one's needs", "zh": "aside将个人需求置之脑后", "pos": "phr.", "examples": []}, {"en": "in favor", "zh": "of支持；赞同；偏向于；对......有利(多用作状语或定语)", "pos": "phr.", "examples": []}, {"en": "by means", "zh": "of凭借；通过；借助于", "pos": "phr.", "examples": []}, {"en": "negotiate with", "zh": "和......妥协/协商/谈判", "pos": "phr.", "examples": []}, {"en": "The ball is in your court", "zh": "轮到你做决定了；该你行动了", "pos": "phr.", "examples": []}, {"en": "borrowed", "zh": "word/language外来语", "pos": "phr.", "examples": []}, {"en": "be pressured into", "zh": "doing被迫做某事", "pos": "phr.", "examples": []}, {"en": "under/in no", "zh": "circumstance(s)绝不", "pos": "phr.", "examples": []}, {"en": "Under no circumstances will I speak ill of", "zh": "you在任何情况下我都不会说你坏话", "pos": "phr.", "examples": []}, {"en": "leave sb. feeling guilty", "zh": "让某人感到内疚", "pos": "phr.", "examples": []}, {"en": "left untreated，the patient will die", "zh": "如不及时治疗，该病人将死于非命。同理leave", "pos": "phr.", "examples": []}, {"en": "sb. lost in thought", "zh": "使某人陷入沉思", "pos": "phr.", "examples": []}]}, "3.13": {"words": [{"en": "compromise", "zh": "妥协；折中；让步", "pos": "n./v.", "examples": []}, {"en": "pollution-free", "zh": "无污染/无公害的；洁净的", "pos": "adj.", "examples": []}, {"en": "monitor", "zh": "监视/监控(器/员)；班长；监测/听", "pos": "v./n.", "examples": []}, {"en": "resentful", "zh": "气愤/憎/怨恨的 a resentful look 怨恨的眼神", "pos": "adj.", "examples": []}, {"en": "foreseeable", "zh": "可预知/预料/预见的=predictable", "pos": "adj.", "examples": []}, {"en": "foresight", "zh": "先见之明", "pos": "n.", "examples": []}, {"en": "acknowledge", "zh": "承认；认可 类似于", "pos": "v.", "examples": []}, {"en": "recognize", "zh": "(后者意思更多而已)", "pos": "v.", "examples": []}, {"en": "acknowledged", "zh": "公认/普遍认可的", "pos": "adj.", "examples": []}, {"en": "desert", "zh": "沙漠；荒原；抛/离/遗弃", "pos": "v./n.", "examples": []}, {"en": "desertion", "zh": "注意有另一个拼写很相似的单词", "pos": "n.", "examples": []}, {"en": "dessert", "zh": "甜点 不要混淆啦", "pos": "n.", "examples": []}, {"en": "trigger", "zh": "(枪械等)扳机；诱因；触发/引爆(器)；发动 trigger (off) an alarm 触发警报器 Stress may act as a trigger for these illnesses 压力也许是引发这些疾病的一个原因", "pos": "v./n.", "examples": []}, {"en": "means", "zh": "方法/手段/财富(单复同形词) a leading means of city travel 城市游的主要方式 means of communication 交流方式 a man of means 有钱人 beyond one’s means 超出某人的经济能力/财力 by no means 绝不=under no circumstance", "pos": "n.", "examples": []}, {"en": "alternative", "zh": "可供选择的事物；替代物；可替代的；非传统/另类的 alternative therapy 替代疗法；an alternative lifestyle 非传统生活方式 Fruit juice is provided as an alternative to alcoholic drinks 备有/好果汁作为酒精饮料以外的选择 要注意的是该名词后的介词搭配往往是to而不是of之类的介词，这样的名词还有不少如：have an access to可以使用/访问/登录/得到；approach to......的方法；靠近；exit to......的出口；monument to......纪念碑；obstacle to阻碍；clue to线索；solution to解决 等等等等", "pos": "n./adj.", "examples": []}, {"en": "power", "zh": ")；动力汽车(", "pos": "v.", "examples": []}, {"en": "power", "zh": ")", "pos": "n.", "examples": []}], "phrases": [{"en": "implied", "zh": "meaning隐含/含蓄意义；寓意；潜在意思", "pos": "phr.", "examples": []}, {"en": "the automated", "zh": "system自动系统", "pos": "phr.", "examples": []}, {"en": "reserve space for the car", "zh": "为汽车预留空间", "pos": "phr.", "examples": []}, {"en": "fall into", "zh": "disuse逐渐不再使用/逐步/逐渐废弃；弃而不用", "pos": "phr.", "examples": []}, {"en": "remain an honest man", "zh": "依然是个诚实的人；保持诚信", "pos": "phr.", "examples": []}, {"en": "head for s.p.=be headed for s.p.", "zh": "前往/去某地", "pos": "phr.", "examples": []}, {"en": "There goes the", "zh": "bell打铃了/下课了", "pos": "phr.", "examples": []}, {"en": "It is whispered that", "zh": "据说", "pos": "phr.", "examples": []}, {"en": "dial instructions about one's position", "zh": "(拨打电话)告知某人所在位置", "pos": "phr.", "examples": []}]}, "3.16": {"words": [{"en": "tension", "zh": "焦虑/烦躁；紧张(指关系或局势)；矛盾；肌肉等拉紧状态 relieve/ease tension and stress 缓解紧张和压力 There's mounting tension along the border 边境局势日趋紧张 muscular tension 肌肉绷紧 adj. tense 紧张的；担心的", "pos": "n.", "examples": []}, {"en": "rewind", "zh": "倒带；回放", "pos": "v./n.", "examples": []}, {"en": "browse", "zh": "随意浏览", "pos": "v./n.", "examples": []}, {"en": "innovative", "zh": "创新/新颖的；富有革新精神的", "pos": "adj.", "examples": []}, {"en": "victim", "zh": "受害者", "pos": "n.", "examples": []}, {"en": "colleague", "zh": "同事/同仁=coworker", "pos": "n.", "examples": []}, {"en": "unintentional", "zh": "无意的", "pos": "adj.", "examples": []}, {"en": "resistance", "zh": "抵制/抵抗", "pos": "n.", "examples": []}, {"en": "resistant", "zh": "(to)", "pos": "adj.", "examples": []}, {"en": "entrepreneur", "zh": "创业者；企业家", "pos": "n.", "examples": []}, {"en": "persistent", "zh": "坚持不懈/持续的 persistent pressure 持续压力 persist(v.) in 坚持", "pos": "adj.", "examples": []}], "phrases": [{"en": "take turns doing sth.", "zh": "轮流做某事", "pos": "phr.", "examples": []}, {"en": "expand one's", "zh": "presence扩大影响力/增强存在感", "pos": "phr.", "examples": []}, {"en": "bring in", "zh": "funding筹集资金", "pos": "phr.", "examples": []}, {"en": "leaf through the", "zh": "pages翻阅书页；浏览", "pos": "phr.", "examples": []}, {"en": "lift the ban on sth.", "zh": "解除对......的禁令", "pos": "phr.", "examples": []}, {"en": "bring to light the truth=bring the truth to light", "zh": "揭露/示真相", "pos": "phr.", "examples": []}, {"en": "be not in line with", "zh": "与......不符/不一致", "pos": "phr.", "examples": []}, {"en": "marvel", "zh": "at对......(感到)惊奇；惊叹于", "pos": "phr.", "examples": []}, {"en": "be reflective of", "zh": "反映/表现出", "pos": "phr.", "examples": []}, {"en": "advance the", "zh": "cause推动/促进事业for", "pos": "phr.", "examples": []}, {"en": "more humane", "zh": "exhibits推进人道主义展览事业发展", "pos": "phr.", "examples": []}]}, "3.17": {"words": [{"en": "proverb", "zh": "谚语；格言 as the proverb goes 俗话说；正如谚语所言", "pos": "n.", "examples": []}, {"en": "ad", "zh": "显而易见地", "pos": "v.", "examples": []}, {"en": "apparent", "zh": "for no apparent reason 莫名其妙地", "pos": "adj.", "examples": []}, {"en": "distracted", "zh": "分心/思想不集中/心不在焉/心烦意乱的", "pos": "adj.", "examples": []}, {"en": "distract", "zh": "(from)", "pos": "v.", "examples": []}, {"en": "astronaut", "zh": "宇航员/太空人", "pos": "n.", "examples": []}, {"en": "astronomy", "zh": "天文", "pos": "n.", "examples": []}, {"en": "astronomer", "zh": "天文学家astronomic(al) adj.", "pos": "n.", "examples": []}, {"en": "elasticity", "zh": "柔韧性；弹性/弹力 近义词", "pos": "n.", "examples": []}, {"en": "flexibility", "zh": "灵活性；柔韧/弹性 二者的adj. 分别为 elastic和flexible 非常接近", "pos": "n.", "examples": []}, {"en": "exterminator", "zh": "灭虫师/专家；灭鼠药", "pos": "n.", "examples": []}, {"en": "exterminate", "zh": "消灭/根除", "pos": "v.", "examples": []}, {"en": "terminator", "zh": "终结者", "pos": "n.", "examples": []}, {"en": "bow", "zh": "鞠躬；垂首；弯曲；蝴蝶结；弓He finally bowed to pressure from the public 他们终于在公众压力下让步/屈服了/迫于无奈bow and scrape卑躬屈膝/点头哈腰/跪舔", "pos": "v./n.", "examples": []}, {"en": "ignore", "zh": "忽略/无视/不理会；视若/佯装未见 不同于", "pos": "v.", "examples": []}, {"en": "neglect", "zh": "疏忽；忽视/不重视 neglect one's duty 渎职/玩忽职守", "pos": "v./n.", "examples": []}, {"en": "ignorance", "zh": "无/不知；愚昧 ignorance is bliss 无知是福/不知者不心烦", "pos": "n.", "examples": []}, {"en": "ignorant", "zh": "be ignorant of 对......不知情/不了解/无知", "pos": "adj.", "examples": []}, {"en": "desperate", "zh": "迫不及待/不顾一切的；拼命的 本意：绝望的；孤注一掷/铤而走险的 Sb. is desperate for sth./to do sth. 非常想要得到/做sth.  Desperate Housewives 绝望主妇(美剧名)", "pos": "adj.", "examples": []}, {"en": "desperation", "zh": "绝望/铤而走险(的行为)", "pos": "n.", "examples": []}, {"en": "desperado", "zh": "亡命之徒", "pos": "n.", "examples": []}, {"en": "vacancy", "zh": "空缺/空职/空额；空房；空虚/空空如也 Sorry，we have no vacancies for now 对不起我们(宾馆)暂时客满/无空房间了 high office vacancy rates 写字楼高空置率 job vacancies 职位空缺", "pos": "n.", "examples": []}, {"en": "vacant", "zh": "空着/未被占用的；空缺的；空洞的a vacant look 呆滞的目光Is the seat next to you vacant？您旁边有人吗？反义词汇可以是", "pos": "adj.", "examples": []}, {"en": "occupied", "zh": "被占用的；忙着的", "pos": "adj.", "examples": []}], "phrases": [{"en": "safe and sound", "zh": "安然无恙", "pos": "phr.", "examples": []}, {"en": "the truth came out", "zh": "真相大白", "pos": "phr.", "examples": []}, {"en": "compared with", "zh": "males相比于男性", "pos": "phr.", "examples": []}, {"en": "be stressed", "zh": "out感到压力山大/过于紧张", "pos": "phr.", "examples": []}, {"en": "blow off sb.", "zh": "不理睬；终止与某人的关系", "pos": "phr.", "examples": []}, {"en": "object to (one’s) doing", "zh": "反对(某人)做某事", "pos": "phr.", "examples": []}, {"en": "cut time", "zh": "short缩短时间", "pos": "phr.", "examples": []}, {"en": "the commitment of time and thought to doing sth.", "zh": "全身心地投入到......之中", "pos": "phr.", "examples": []}, {"en": "commit to doing", "zh": "承诺/致力于做某事", "pos": "phr.", "examples": []}, {"en": "be to blame", "zh": "应该受到责备/承担责任；是......的罪魁祸首/始作俑者=should", "pos": "phr.", "examples": []}, {"en": "be blamed", "zh": "属于主代被现象", "pos": "phr.", "examples": []}, {"en": "sb. for sth.=blame sth. on sb.", "zh": "归咎于某人/因某事责怪某人", "pos": "phr.", "examples": []}, {"en": "be", "zh": "seated就座；坐下=seat", "pos": "phr.", "examples": []}, {"en": "oneself", "zh": "再次说明：seat是vt.自然不能和sit", "pos": "phr.", "examples": []}, {"en": "sb. lost in", "zh": "thought使某人陷入沉思；He's", "pos": "phr.", "examples": []}, {"en": "a little carried away", "zh": "他有点忘乎所以/过于激动了", "pos": "phr.", "examples": []}, {"en": "He's an established man", "zh": "他是个有名望的人/有所建树者", "pos": "phr.", "examples": []}]}, "3.18": {"words": [{"en": "legacy", "zh": "遗产；遗留问题/后遗症", "pos": "n.", "examples": []}, {"en": "echo", "zh": "回声；附和；回应/音；呼应；共鸣", "pos": "v./n.", "examples": []}, {"en": "catalyst", "zh": "/催化剂；诱因 (for)", "pos": "n.", "examples": []}, {"en": "originate", "zh": "起源/发端vi.于", "pos": "v.", "examples": []}, {"en": "origin", "zh": "与", "pos": "n.", "examples": []}, {"en": "source", "zh": "来源 不同哦！", "pos": "n.", "examples": []}, {"en": "vary", "zh": "不同/有别；变化/变更", "pos": "v.", "examples": []}, {"en": "variety", "zh": "a large variety of=various 各种各样的；迥异的", "pos": "n.", "examples": []}, {"en": "snap", "zh": "照片；咔嚓/吧嗒声；断裂；拍照/摄影；怒气冲冲地说 snap back at sb. 反唇相讥", "pos": "n./v.", "examples": []}, {"en": "mainstay", "zh": "中流砥柱/顶梁柱 economic mainstay 经济支柱 mainstay TV host 王牌主播 mainstay industry 支柱产业", "pos": "n.", "examples": []}, {"en": "haunt", "zh": "(鬼魂等)出没；萦绕在脑际/难以忘却；困扰/缠绕 a haunted place 闹鬼的地方 a haunting melody 难以忘怀的优美乐曲", "pos": "v.", "examples": []}, {"en": "cringe", "zh": "畏缩；怯退；感到难为情/难堪/局促不安 a child cringing in terror 吓得直退缩的小孩 i cringe the moment i think of the poems i wrote每当我想起那时自己写的诗就感到很难堪/难为情/不安", "pos": "v.", "examples": []}, {"en": "strike", "zh": "击/打/撞；罢工；突然想/意识到；袭/攻击；爆发 strike back at/against sb. 反击某人 strike while the iron is hot 趁热打铁 We were struck by his enthusiasm被他的热情迷住/打动了 It strikes that nobody is really in favor of the changes 突觉没人真正赞成这些变动=That nobody is really in favor of the changes strikes me. (典型的主从前置) An awful thought has just struck me 刚脑子里突然闪现一可怕念头。I was struck by his resemblance to my brother 猛然发现他和我兄弟长得很像 earthquake-stricken area 地震灾区 strike-struck-struck stricken延续古代的用法并不常见", "pos": "v./n.", "examples": []}], "phrases": [{"en": "come in", "zh": "handy派上用场/迟早有用", "pos": "phr.", "examples": []}, {"en": "get promoted", "zh": "升职；晋/提升", "pos": "phr.", "examples": []}, {"en": "shave one's beard", "zh": "off刮/剃掉胡子；修面", "pos": "phr.", "examples": []}, {"en": "make ends meet with one's salary", "zh": "靠薪水维持生计", "pos": "phr.", "examples": []}, {"en": "cannot make ends meet", "zh": "入不敷出/捉襟见肘", "pos": "phr.", "examples": []}, {"en": "get tied up in", "zh": "traffic陷入交通拥堵之中", "pos": "phr.", "examples": []}, {"en": "log off", "zh": "登出；与计算机或系统断开连接；注销", "pos": "phr.", "examples": []}, {"en": "pass", "zh": "away(文语)仙逝；驾鹤西去；薨；驾崩", "pos": "phr.", "examples": []}, {"en": "digital", "zh": "footprints数字足迹(互联网上的数字证据)", "pos": "phr.", "examples": []}, {"en": "shuffle off the mortal coil", "zh": "摆脱尘世的束缚", "pos": "phr.", "examples": []}, {"en": "compete in doubles", "zh": "参加双打比赛", "pos": "phr.", "examples": []}]}, "3.19": {"words": [{"en": "matinee", "zh": "下午/午后场", "pos": "n.", "examples": []}, {"en": "showcase", "zh": "展示 display；exhibit", "pos": "v.", "examples": []}, {"en": "ethical", "zh": "伦理的；道德上的；合乎道德的", "pos": "adj.", "examples": []}, {"en": "artifact", "zh": "(指有文化或历史价值的)手工艺/人工制品；历史文物=artefact", "pos": "n.", "examples": []}, {"en": "layout", "zh": "布局；(版面)设计 page layout 页面设置 lay out 则为动词词组", "pos": "n.", "examples": []}, {"en": "late", "zh": "已故的 late husband 亡夫 The late emperor’s period 先皇时期", "pos": "adj.", "examples": []}, {"en": "mature", "zh": "成熟(的)；变得明智/有判断力", "pos": "adj./v.", "examples": []}, {"en": "immature", "zh": "不成熟的", "pos": "adj.", "examples": []}, {"en": "accompanying", "zh": "陪伴/附带的 accompanying adverbial 伴随状语", "pos": "adj.", "examples": []}, {"en": "accompany", "zh": "陪伴", "pos": "v.", "examples": []}, {"en": "habitat", "zh": "栖息地/生活环境 natural habitat 野生环境；天然栖息地 (in)", "pos": "n.", "examples": []}, {"en": "habitant", "zh": "居民；栖息动物", "pos": "n.", "examples": []}, {"en": "ecology", "zh": "生态(学) ecologic(al) adj.", "pos": "n.", "examples": []}, {"en": "ecologist", "zh": "生态学家/者 ecology environment 生态环境 landscape ecology 景观生态学/园林生态", "pos": "n.", "examples": []}, {"en": "eligible", "zh": "有资格的；合乎条件的；中意的 When are you eligible to vote in your country？你们国家人几岁才有资格投票竞选呢？He's the most eligible bachelor in the country 钻石王老五/令人中意/完美的单身汉", "pos": "adj.", "examples": []}], "phrases": [{"en": "fundamental", "zh": "fault根本性错误；基层断裂", "pos": "phr.", "examples": []}, {"en": "give new insight into sth.", "zh": "对某事有新的见解/理解", "pos": "phr.", "examples": []}, {"en": "graphic", "zh": "designer平面设计师", "pos": "phr.", "examples": []}, {"en": "standby", "zh": "ticket候补(机)票；余票", "pos": "phr.", "examples": []}, {"en": "pay", "zh": "off偿清债务；某行为带来回报；有效用", "pos": "phr.", "examples": []}, {"en": "brag", "zh": "about吹嘘；夸耀；炫", "pos": "phr.", "examples": []}, {"en": "food court", "zh": "美食广场", "pos": "phr.", "examples": []}, {"en": "(Really) speeds things up", "zh": "真是事半功倍啊", "pos": "phr.", "examples": []}, {"en": "Learned that the hard way", "zh": "我吃过苦头/知道那行不通", "pos": "phr.", "examples": []}]}, "3.20": {"words": [{"en": "apprentice", "zh": "徒弟；学徒", "pos": "n.", "examples": []}, {"en": "preachy", "zh": "说教的；劝诫的；爱讲道理/唠叨的", "pos": "adj.", "examples": []}, {"en": "bait", "zh": "下/放诱饵/鱼饵 take the bait 上当；中圈套", "pos": "n./v.", "examples": []}, {"en": "entertaining", "zh": "使人愉快的；娱乐性/有趣的 entertain sb. with=treat sb. to 用......款待某人", "pos": "adj.", "examples": []}, {"en": "blockbuster", "zh": "一鸣惊人的事物；非常成功的/畅销书籍或电影大片 (往往引起轰动效应) 类似词汇：hit", "pos": "n.", "examples": []}, {"en": "portray", "zh": "描绘/画/写；刻画；扮演He portrays himself as a know-all 他说自己是个万事通；把自己描绘成/自称懂王。portray religious message 传达宗教信息", "pos": "v.", "examples": []}, {"en": "tame", "zh": "驯化/服/养；驾驭/制服；驯化的；温顺的 Lions can never be completely tamed永远甭能被完全训话 tame one’s anger 压制怒火", "pos": "v./adj.", "examples": []}, {"en": "dissuade", "zh": "劝阻；劝止 与persuade对应 用法也一样不再赘述", "pos": "v.", "examples": []}, {"en": "devour", "zh": "吞噬/吞食；狼吞虎咽地吃；如饥似渴地阅读 Flames devoured the house 大火吞噬了这栋物房屋 She was devoured by envy and hatred 她内心充满嫉妒和憎恨 She devoured everything she could lay her hands on一切能到手的读物她都看得津津有味", "pos": "v.", "examples": []}, {"en": "visuallyad", "zh": "视觉上地；直观地 visual arts 视觉艺术 visual effects 视觉效果visually handicapped/impaired 视觉有障碍/受损的", "pos": "v.", "examples": []}, {"en": "vision", "zh": "视野/力；幻想/梦幻/画面/愿景；极美之人；远见卓识 She’s a vision in white 她穿白色美若天仙 She had vision and determination 有远见和决心 Cats have good night vision 猫的夜视能力很强 We all have a vision of a world where there would be no more wars. 我们都有一个梦想活在一个再也没有战争的世界", "pos": "n.", "examples": []}, {"en": "visionary", "zh": "有远见卓识的；(或这样的人)", "pos": "adj./n.", "examples": []}, {"en": "envision", "zh": "想象/展望；设想 We envision an equal society，free of poverty and disease 我们向往一个没有贫穷和疾病的平等社会", "pos": "v.", "examples": []}, {"en": "epic", "zh": "史诗般的；宏伟壮丽的；叙事诗，史诗；壮举", "pos": "adj./n.", "examples": []}, {"en": "dedicated", "zh": "全心投入/专心致志的；专用的 dedicated office 专用办公室", "pos": "adj.", "examples": []}], "phrases": [{"en": "count", "zh": "on依靠/指望", "pos": "phr.", "examples": []}, {"en": "for financial", "zh": "purposes出于财务方面的考虑/目的", "pos": "phr.", "examples": []}, {"en": "in the blink of an", "zh": "eye立刻/转瞬之间/一眨眼的功夫", "pos": "phr.", "examples": []}, {"en": "the adventure", "zh": "film冒险片；惊险片", "pos": "phr.", "examples": []}, {"en": "on one's own route/way to doing", "zh": "按照自己的方式/行事路线去做某事(很明显to是介词)", "pos": "phr.", "examples": []}, {"en": "let up on sb./sth.", "zh": "对某人宽容或减少/缓和某事let", "pos": "phr.", "examples": []}, {"en": "up on doing", "zh": "sth.停止做某事", "pos": "phr.", "examples": []}, {"en": "set out to do=set about doing", "zh": "开始/着手做某事", "pos": "phr.", "examples": []}, {"en": "make a dash for", "zh": "freedom奋力争取自由", "pos": "phr.", "examples": []}]}, "3.23": {"words": [{"en": "illegible", "zh": "难以辨认/无法识别的；字迹模糊的", "pos": "adj.", "examples": []}, {"en": "speciallyad", "zh": "专门地；特意especially", "pos": "v.", "examples": []}, {"en": "ad", "zh": "尤其；特别", "pos": "v.", "examples": []}, {"en": "panick", "zh": "=panic 惊慌失措；恐慌 in panic 惊慌的 panic disorder 恐慌症", "pos": "v./n./adj.", "examples": []}, {"en": "defeat", "zh": "击败；战胜；难倒 Man is not made for defeat 人不是为失败而生 A man can be destroyed but not defeated 一个人可以被毁灭但不能被打败", "pos": "v./n.", "examples": []}, {"en": "wound", "zh": "受(枪/刀)伤/伤口；(心灵上)创伤 Time heals all wounds 时间能抚平一切创伤 近义词", "pos": "v./n.", "examples": []}, {"en": "injure", "zh": "/", "pos": "v.", "examples": []}, {"en": "hurt", "zh": "You're hurting me 你弄疼我了/It hurts很疼", "pos": "v./n.", "examples": []}, {"en": "likelihoodad", "zh": "可能性", "pos": "v.", "examples": []}, {"en": "likely", "zh": "/", "pos": "adj.", "examples": []}, {"en": "ad", "zh": "It’s likely that sb. will do sth.=Sb. Is likely to do sth. 某人很可能做某事 但没有It's likely for sb. to do哦，因为该句型的", "pos": "v.", "examples": []}, {"en": "likely", "zh": "往往被possible所替代。即It's possible for sb. to do", "pos": "adj.", "examples": []}, {"en": "target", "zh": "目/指标；靶子/攻击对象 The campaign is clearly targeted at the young 这个宣传计划显然是针对青年人的。targeted audience/readers 目标受众/读者target of attack 攻击对象", "pos": "v./n.", "examples": []}, {"en": "approach", "zh": "走/靠/接近；处理/解决；方式different approaches to gathering information 收集信息的不同方法 approach an issue 处理一个问题 adopt a new approach to discipline problems 采用一新方法解决纪律问题 approach sb. 接/走近某人", "pos": "v./n.", "examples": []}, {"en": "wrap", "zh": "包装；包；裹；缠绕；披肩/围巾；包装材料He wrapped the baby (up) in a blanket=He wrapped a blanket around the baby. 他用毯子把婴儿裹了起来。wrap the shark in the rope 把鲨鱼用绳子捆起来 be wrapped up in sth. 全神贯注/专心致志于", "pos": "v.", "examples": []}, {"en": "venture", "zh": "敢于去(危险之地或行冒险之事)；冒着......危险；企业/商业活动 Nothing ventured，nothing gained 不入虎穴焉得虎子；风险越高获益越大 vi/vt. 比如：venture an opinion (敢于)亮明观点 He ventured (to say): What if i say no? 他试探着说到“如果我说不呢(你会拿我怎么样)？” He's never ventured abroad in his life他一生从不敢出国 business venture 经营项目 joint venture 合资/合营企业", "pos": "n./v.", "examples": []}, {"en": "tie", "zh": "绑；系；领带；联系；束缚；平局", "pos": "v./n.", "examples": []}], "phrases": [{"en": "keep/bear sth. in mind", "zh": "谨记某事", "pos": "phr.", "examples": []}, {"en": "in the long", "zh": "run/term长远来看", "pos": "phr.", "examples": []}, {"en": "come up", "zh": "with想/提出(方法/对策等)", "pos": "phr.", "examples": []}, {"en": "fight off the bloodthirsty shark", "zh": "击退嗜血的鲨鱼", "pos": "phr.", "examples": []}, {"en": "put sth.", "zh": "away收拾好某物(以备将来再使用)", "pos": "phr.", "examples": []}, {"en": "hear the noise of skin and flesh ripping", "zh": "听到皮肤和肉撕裂的声音", "pos": "phr.", "examples": []}, {"en": "survive a shark", "zh": "attack“鲨”口逃生", "pos": "phr.", "examples": []}, {"en": "close in on sb.", "zh": "向某人逼近/包围", "pos": "phr.", "examples": []}, {"en": "Before the thief could flee，the police closed in on", "zh": "him在小偷逃离之前警察包围了他", "pos": "phr.", "examples": []}, {"en": "Sb. is faced with sth.=Sb. faces sth.=Sth. faces", "zh": "sb.面临/面对某个情况", "pos": "phr.", "examples": []}]}, "3.24": {"words": [{"en": "excerpt", "zh": "摘录；节选", "pos": "n./v.", "examples": []}, {"en": "internship", "zh": "实习期", "pos": "n.", "examples": []}, {"en": "intern", "zh": "实习生", "pos": "n.", "examples": []}, {"en": "donor", "zh": "捐赠者", "pos": "n.", "examples": []}, {"en": "hybrid", "zh": "杂交植物/动物；混合物 a hybrid car 混合动力汽车", "pos": "n.", "examples": []}, {"en": "archaeology", "zh": "考古学", "pos": "n.", "examples": []}, {"en": "archaeologist", "zh": "考古学家", "pos": "n.", "examples": []}, {"en": "works", "zh": "著作/作品(复数work单数)；工厂(单复同形) a steel works 钢铁厂", "pos": "n.", "examples": []}, {"en": "quote", "zh": "引用；引语/文；引述quote the words from Hamlet 引用哈姆雷特里的话", "pos": "v./n.", "examples": []}, {"en": "quotation", "zh": "quotation mark(s) (双)引号", "pos": "n.", "examples": []}, {"en": "yield", "zh": "产出；产量 Making health a priority now can yield a dividend红利/股息=pay off in the future 现在将健康作为优先事项将来可以产生回报", "pos": "v./n.", "examples": []}, {"en": "commemorate", "zh": "纪念；深切怀念 The Dragon Boat Festival is to commemorate the patriotic poet Qu Yuan龙舟节/端午节是为了纪念爱国诗人屈原", "pos": "v.", "examples": []}, {"en": "paralyze", "zh": "使麻痹/瘫痪=paralyse The accident left him paralyzed from the waist", "pos": "v.", "examples": []}, {"en": "dow", "zh": "那场车祸使他腰部以下都瘫痪了。He stood there，paralyzed with fear. 他站在那里吓得呆若木鸡", "pos": "n.", "examples": []}], "phrases": [{"en": "Line A crosses with line", "zh": "B直线A和B相交", "pos": "phr.", "examples": []}, {"en": "drive the spear into the shark's brain with all his strength", "zh": "用尽全力把鱼叉插进鲨鱼的脑袋", "pos": "phr.", "examples": []}, {"en": "drive forward in the meat just above the tail", "zh": "在尾部上方的位置扎/刺入鱼身", "pos": "phr.", "examples": []}, {"en": "with determination and complete hatred", "zh": "怀着决心和慢慢的恨意", "pos": "phr.", "examples": []}, {"en": "turn over", "zh": "翻身/翻转；翻阅；交接/移交(to)", "pos": "phr.", "examples": []}, {"en": "on one's back", "zh": "仰面朝天", "pos": "phr.", "examples": []}, {"en": "three", "zh": "quarters四分之三=three", "pos": "phr.", "examples": []}, {"en": "be better armed", "zh": "装备更精良=be", "pos": "phr.", "examples": []}, {"en": "go out on the sea to fish", "zh": "出海打鱼", "pos": "phr.", "examples": []}, {"en": "It is too good to last", "zh": "(光景)太好了不可能长久；好得难以持续下去", "pos": "phr.", "examples": []}, {"en": "lie quietly", "zh": "静静地躺着", "pos": "phr.", "examples": []}]}, "3.25": {"words": [{"en": "setback", "zh": "挫折/败；阻碍 despite the setback 尽管遇到挫折", "pos": "n.", "examples": []}, {"en": "mathematician", "zh": "数学家 mathematic(al) adj.", "pos": "n.", "examples": []}, {"en": "mathematics", "zh": "数学=math=maths", "pos": "n.", "examples": []}, {"en": "curious", "zh": "好奇/求知欲强的be curious about对......感到好奇", "pos": "adj.", "examples": []}, {"en": "false", "zh": "错误的；伪造/虚伪/假的 false smile 假笑 false passport 假/伪造的护照 a false start 一个错误的开端 a false alarm 虚惊一场；假警报 false modesty 假谦虚", "pos": "adj.", "examples": []}, {"en": "count", "zh": "重要=matter 举例：Hard work counts 勤奋很重要；What counts is how you do it instead of why you need to do it重要的是你如何做而不是为何要做", "pos": "v.", "examples": []}, {"en": "achieve", "zh": "获得；实现；完成 achieve success 获得成功 achieve one’s goal 达成目标", "pos": "v.", "examples": []}, {"en": "afford", "zh": "买得起；承担得起afford a new car 买得起一辆新车 cannot afford to complete one's education 没钱完成学业 cannot afford to offend sb. 不敢得罪某人", "pos": "v.", "examples": []}, {"en": "dedicate", "zh": "奉献 a dedicated teacher 有奉献/献身精神的老师 a dedicated chapter 专门的章节 dedicate oneself to doing sth.=be dedicated to doing sth.致力于做某事 当然，也可以dedicate sth. to doing sth.把时间等贡献在做某事上", "pos": "v.", "examples": []}, {"en": "dedication", "zh": "近义词：devote；devotion；commit；commitment", "pos": "n.", "examples": []}, {"en": "despite", "zh": "即使；尽管；虽然=in spite of 用法小结：Despite all her efforts to control it，her voice was shaking尽管她尽力控制她的声音仍在颤抖 Despite applying for hundreds of jobs，he is still out of work. 尽管申请了数百个工作他仍在失业中 Despite the fact that she found it boring，She was good at physics. 尽管她认为物理枯燥无味却学得很好", "pos": "prep.", "examples": []}, {"en": "prove", "zh": "He (has) proved a good man in the end. 最后/事实证明他是个好人 It has proved that he is a good", "pos": "v.", "examples": []}, {"en": "ma", "zh": "The theory he’s stuck to proves/has proved to us that earthquakes can be forecast. 他所坚持的这一理论向我们证明了地震是可以预测的 再次说明prove一般只考主动用法。Reading extensively (has) proved to be an effective way of learning English. 事实证明泛读是英语学习的有效途径/方式=It (has) proved that reading extensively is (was对应proved) an effective way of learning English", "pos": "n.", "examples": []}], "phrases": [{"en": "Cultural", "zh": "focus词汇：", "pos": "phr.", "examples": []}, {"en": "start as a", "zh": "failure开始时/起初很失败", "pos": "phr.", "examples": []}, {"en": "a late", "zh": "developer大器晚成者", "pos": "phr.", "examples": []}, {"en": "be expelled from", "zh": "school被学校开除", "pos": "phr.", "examples": []}, {"en": "become one of the most important physicists of/in the 20th century", "zh": "成为二十世纪最重要的物理学家之一", "pos": "phr.", "examples": []}, {"en": "sell for a huge amount of money", "zh": "卖了一大笔钱", "pos": "phr.", "examples": []}, {"en": "be permanently paralyzed", "zh": "终生瘫痪", "pos": "phr.", "examples": []}, {"en": "the rest is history", "zh": "后来发生的事众所周知", "pos": "phr.", "examples": []}, {"en": "the fire brigade", "zh": "消防队", "pos": "phr.", "examples": []}, {"en": "in", "zh": "advance提前", "pos": "phr.", "examples": []}, {"en": "set aside enough time", "zh": "留足时间", "pos": "phr.", "examples": []}]}, "3.26": {"words": [{"en": "skeleton", "zh": "骨架/骨骼；骷髅 dinosaur skeleton 恐龙骨架 human skeleton 人体骨骼 a skeleton in the cupboard 不可外扬的家丑；不可告人的隐私", "pos": "n.", "examples": []}, {"en": "carcass", "zh": "(尤指动物)尸体 而corpse 多指人的尸体；死尸", "pos": "n.", "examples": []}, {"en": "scary", "zh": "吓/骇人/恐怖的 a scary movie恐怖电影 a scary moment恐怖时分", "pos": "v./adj.", "examples": []}, {"en": "sacrifice", "zh": "牺牲；舍弃；献祭；祭祀；祭品 sacrifice family life to/for one's career 为了事业牺牲家庭", "pos": "v./n.", "examples": []}, {"en": "opponent", "zh": "对手；竞争者=adversary/competitor/rival；反对者=opposer", "pos": "n.", "examples": []}, {"en": "oppose", "zh": "反抗；阻挠", "pos": "v.", "examples": []}, {"en": "remains", "zh": "残羹冷炙；遗体；动植物残骸(p.l.) ruins往往指遗迹 另外课上总结的remain作为动词的用法永远是重点哦！“保持”；“有待”；“剩下”", "pos": "n.", "examples": []}, {"en": "pessimistic", "zh": "悲观(主义)的", "pos": "adj.", "examples": []}, {"en": "optimistic", "zh": "乐观(主义)的", "pos": "adj.", "examples": []}, {"en": "pessimist", "zh": "悲观主义者", "pos": "n.", "examples": []}, {"en": "optimist", "zh": "乐观主义者", "pos": "n.", "examples": []}, {"en": "pessimism", "zh": "悲观主义", "pos": "n.", "examples": []}, {"en": "optimism", "zh": "乐观主义", "pos": "n.", "examples": []}, {"en": "surgery", "zh": "外科手术 major/minor surgery 大/小手术cosmetic/plastic surgery 整形美容手术", "pos": "n.", "examples": []}, {"en": "surgical", "zh": "外科/手术上的a surgical ward 手术病房", "pos": "adj.", "examples": []}, {"en": "surgeon", "zh": "外科医生", "pos": "n.", "examples": []}, {"en": "tremendouslyad", "zh": "巨/极大地", "pos": "v.", "examples": []}, {"en": "tremendous", "zh": "a tremendous explosion/pressure 巨大的爆炸声/压力 a tremendous amount of experience 大量的经验", "pos": "adj.", "examples": []}, {"en": "worthy", "zh": "值得(尊重)的；有价值的a worthy opponent 一个实力强劲/值得尊重的对手 a worthy champion 当之无愧的冠军 He's not worthy of you 他配不上你 a worthy cause 崇高的事业", "pos": "adj.", "examples": []}, {"en": "worth", "zh": "一般不能作(前置)定语。另外，二者后接非谓语的用法再总结一次：be worth doing=be worthy of being done=be worthy to be done", "pos": "adj.", "examples": []}], "phrases": [{"en": "There were no such lines", "zh": "没有这样的线条", "pos": "phr.", "examples": []}, {"en": "any such thing；many such", "zh": "people；不同于so", "pos": "phr.", "examples": []}, {"en": "many people；so much", "zh": "water哦！", "pos": "phr.", "examples": []}, {"en": "get rid", "zh": "of除去；摆脱", "pos": "phr.", "examples": []}, {"en": "I wish it had been a dream", "zh": "真希望是场梦", "pos": "phr.", "examples": []}, {"en": "confess one's", "zh": "sins忏悔某人的罪过", "pos": "phr.", "examples": []}, {"en": "in", "zh": "contrast正相反；相比之下", "pos": "phr.", "examples": []}, {"en": "It occurred to me that", "zh": "突然想到", "pos": "phr.", "examples": []}, {"en": "mistake A for", "zh": "B将A错当成/误以为B", "pos": "phr.", "examples": []}, {"en": "Legend has it that......", "zh": "据传说/言", "pos": "phr.", "examples": []}, {"en": "Word came that he was", "zh": "injured.有消息说他受伤了", "pos": "phr.", "examples": []}, {"en": "located in=situated in=lying in", "zh": "位于/坐落于", "pos": "phr.", "examples": []}, {"en": "The Oriental Pearl TV Tower is located on/along the Huangpu River.", "zh": "东方明珠电视塔位于黄浦江畔", "pos": "phr.", "examples": []}, {"en": "be attached to", "zh": "依恋/依附：指对某人或某物产生强烈的喜爱或依赖。The", "pos": "phr.", "examples": []}, {"en": "house has a garage attached to", "zh": "it.这房子附有一个车库。Aid", "pos": "phr.", "examples": []}, {"en": "should be given to developing countries with no strings", "zh": "attached.援助应该不带附加条件地被提供给发展中国家", "pos": "phr.", "examples": []}]}, "4.7": {"words": [{"en": "curiosity", "zh": "好奇be curious about对...好奇", "pos": "n.", "examples": []}, {"en": "contain", "zh": "包含/含有contain errors包含错误", "pos": "v.", "examples": []}, {"en": "journalist", "zh": "记者a journalist on the job一名在职记者", "pos": "n.", "examples": []}, {"en": "journalism", "zh": "新闻业", "pos": "n.", "examples": []}, {"en": "participate", "zh": "参加/与participate in the annual Career Day 参加年度职业日", "pos": "v.", "examples": []}, {"en": "spot", "zh": "看到/发现/留意到spot the symptoms of such infection 识别这种感染的症状spot a good news story发现一则好新闻故事 spot somebody doing 发现在做", "pos": "v.", "examples": []}, {"en": "current", "zh": "当前/现在的；通用/流行的；水/电/气流；潮流 keep up with current events关注时事 against the current 逆流 ocean current 洋流 AC：alternating current 交流电 (DC:直流电) conduct electric current 传导电流", "pos": "adj./n.", "examples": []}, {"en": "present", "zh": "/v. 展/显示；把…交给/颁发/授予；现/存在的(前定)/出席的(后定~ at) 现在；礼物present the facts in a fair way以公正的方式陈述事实live in the present", "pos": "adj./n.", "examples": []}, {"en": "mentor", "zh": "导师/良师益友；指导者 近似词汇：instructor", "pos": "n.", "examples": []}, {"en": "guider", "zh": "指导", "pos": "v.", "examples": []}, {"en": "mentoring", "zh": "指导", "pos": "n.", "examples": []}, {"en": "mentee", "zh": "门生；受指导者 interviewer；interviewee；employer；employee；trainer；trainee；attender；attendee；assigner；assignee；grantor；grantee；lesser；lessee；fiance；fiancee；refugee；returnee；patentee", "pos": "n.", "examples": []}, {"en": "limit", "zh": "限制/限度；界限/范围a limit on/to the number of words字数限制upper limit 上限 within limits =to some extent/degree 在一定程度上/限度内", "pos": "v./n.", "examples": []}, {"en": "off-limits", "zh": "禁止入内的 push sb. to one’s limits 迫使某人达到极限状态Families are limited to four free tickets each. 每户人家限发四张免费票", "pos": "adj.", "examples": []}, {"en": "appeal", "zh": "呼吁/恳求/上诉/吸引(力) appeal to readers’ emotions唤起读者感情appeal to one's sense of justice 激发正义感 The design has to appeal to all ages and social groups 设计要老少皆宜雅俗共赏。holds little appeal for me 对我没什么吸引力 file an appeal to a higher court.向上级法院申/上诉 appeal for/to sb. to do sth. 呼吁某人做某事", "pos": "v./n.", "examples": []}], "phrases": [{"en": "at all", "zh": "times一直，始终", "pos": "phr.", "examples": []}, {"en": "for one", "zh": "thing首先，一则", "pos": "phr.", "examples": []}, {"en": "focus on the key", "zh": "points专注于关键点", "pos": "phr.", "examples": []}, {"en": "develop this important", "zh": "skill培养这一重要技能", "pos": "phr.", "examples": []}, {"en": "come across things worth", "zh": "reporting遇到值得报道的事情", "pos": "phr.", "examples": []}, {"en": "on one’s", "zh": "mind萦绕在心头；惦记着；担心着。与in", "pos": "phr.", "examples": []}, {"en": "one's", "zh": "mind在脑海里", "pos": "phr.", "examples": []}, {"en": "get to do", "zh": "sth.有机会做某事", "pos": "phr.", "examples": []}, {"en": "get to apply theoretical knowledge to real-world problems", "zh": "有机会将理论知识应用到实践中去", "pos": "phr.", "examples": []}, {"en": "have something in", "zh": "common有一些共同之处have", "pos": "phr.", "examples": []}, {"en": "nothing in", "zh": "common毫无相同之处have", "pos": "phr.", "examples": []}, {"en": "a lot in", "zh": "common有很多共同之处", "pos": "phr.", "examples": []}, {"en": "make a good", "zh": "journalist成为好的新闻记者She", "pos": "phr.", "examples": []}, {"en": "will make a good politician because of her honesty, integrity, and a genuine desire to serve the", "zh": "public.因为她的诚实、正直以及真正为公众服务的意愿，她将是一个好政治家", "pos": "phr.", "examples": []}, {"en": "open one's eyes to sth.", "zh": "使某人看清/认识/意识到/大开眼界", "pos": "phr.", "examples": []}, {"en": "Traveling in a developing country really opened my eyes to the realities of global", "zh": "poverty.在发展中国家旅行真的让我认识到了全球贫困的现实。keep", "pos": "phr.", "examples": []}, {"en": "your eyes and ears", "zh": "open眼观六路耳听八方", "pos": "phr.", "examples": []}]}, "4.8": {"words": [{"en": "betray", "zh": "背叛/出卖；泄密", "pos": "v.", "examples": []}, {"en": "betrayer", "zh": "背叛者；背信弃义者", "pos": "n.", "examples": []}, {"en": "ecosystem", "zh": "生态系统", "pos": "n.", "examples": []}, {"en": "ecotourism", "zh": "生态游", "pos": "n.", "examples": []}, {"en": "ecology", "zh": "生态学", "pos": "n.", "examples": []}, {"en": "ignorant", "zh": "无知的；对......不了解的(of)", "pos": "adj.", "examples": []}, {"en": "annoy", "zh": "使恼怒 get/be annoyed 生气", "pos": "v.", "examples": []}, {"en": "annoyance", "zh": "令人讨厌/恼火的人或事", "pos": "n.", "examples": []}, {"en": "annoying", "zh": "令人恼火的", "pos": "adj.", "examples": []}, {"en": "entertainer", "zh": "表演者；艺人", "pos": "n.", "examples": []}, {"en": "entertain", "zh": "招/款待；使娱乐", "pos": "v.", "examples": []}, {"en": "entertaining", "zh": "娱乐性/令人愉快的", "pos": "adj.", "examples": []}, {"en": "superior", "zh": "更好/更胜一筹的；级别或职位更高的；上司/上级 A is superior to B in sth. A在某方面比B更...... 反义词汇", "pos": "n./adj.", "examples": []}, {"en": "superiority", "zh": "优越(性)", "pos": "n.", "examples": []}, {"en": "resistant", "zh": "抵制/反抗的；抗/防......的", "pos": "adj.", "examples": []}, {"en": "water-resistant", "zh": "防水的", "pos": "adj.", "examples": []}, {"en": "heat-resistant", "zh": "耐热的be resistant to 对......有抵抗力的", "pos": "adj.", "examples": []}, {"en": "assume", "zh": "假定/假设；认为；承担(责任等) assume responsibility/liability for 承担......责任；It's (generally) assumed that 普遍认为", "pos": "v.", "examples": []}, {"en": "motive", "zh": "动机/目的 近义词", "pos": "n.", "examples": []}, {"en": "motivation", "zh": "(驱)动力；干劲/积极性", "pos": "n.", "examples": []}, {"en": "motivational", "zh": "励志的", "pos": "adj.", "examples": []}, {"en": "motivate", "zh": "激发/激励；推动；成为......的动机", "pos": "v.", "examples": []}, {"en": "highly-motivated", "zh": "有上进心的；高度自我激励的", "pos": "adj.", "examples": []}, {"en": "underestimate", "zh": "低估；轻视/认识不足 近义词汇：underrate反义词汇 overestimate/overrate 更多 examples", "pos": "v.", "examples": []}, {"en": "underachiever", "zh": "后进生/成绩暂时落后者", "pos": "n.", "examples": []}, {"en": "overachiever", "zh": "高成就者/优秀/特优生", "pos": "n.", "examples": []}, {"en": "under-dose", "zh": "计量不足", "pos": "n.", "examples": []}, {"en": "overdose", "zh": "用药等过量", "pos": "n.", "examples": []}, {"en": "overwhelming", "zh": "压倒性/无法抗拒的", "pos": "adj.", "examples": []}, {"en": "underwhelming", "zh": "未留下深刻印象/平庸/索然无味的", "pos": "adj.", "examples": []}, {"en": "under-ripe", "zh": "不够成熟的", "pos": "adj.", "examples": []}, {"en": "overripe", "zh": "过熟的", "pos": "adj.", "examples": []}, {"en": "underdog", "zh": "弱者/弱势群体/弱旅/不被看好者", "pos": "n.", "examples": []}, {"en": "overdog", "zh": "占优势/上风者；特权阶层", "pos": "n.", "examples": []}, {"en": "origin", "zh": "起源", "pos": "n.", "examples": []}], "phrases": [{"en": "have", "zh": "purpose有意义=be", "pos": "phr.", "examples": []}, {"en": "significanthave personal", "zh": "value有个人价值", "pos": "phr.", "examples": []}, {"en": "in an objective", "zh": "way客观地", "pos": "phr.", "examples": []}, {"en": "check up on", "zh": "facts核对/实事实", "pos": "phr.", "examples": []}, {"en": "under time", "zh": "pressure在时间的压力下", "pos": "phr.", "examples": []}, {"en": "turn in the report(s)", "zh": "late迟交报告", "pos": "phr.", "examples": []}, {"en": "care", "zh": "about关心，在乎", "pos": "phr.", "examples": []}, {"en": "with", "zh": "care小心翼翼地", "pos": "phr.", "examples": []}, {"en": "be late for", "zh": "interviews采访迟到be", "pos": "phr.", "examples": []}, {"en": "late with", "zh": "对......拖拉/拖延", "pos": "phr.", "examples": []}, {"en": "get", "zh": "paid获得报酬", "pos": "phr.", "examples": []}, {"en": "+", "zh": "vt-ed的用法无论如何要把握好", "pos": "phr.", "examples": []}, {"en": "moved", "zh": "感动", "pos": "phr.", "examples": []}, {"en": "get approved", "zh": "获得批准", "pos": "phr.", "examples": []}, {"en": "get motivated", "zh": "激发动力", "pos": "phr.", "examples": []}, {"en": "spanked/beaten", "zh": "挨打了/被打败", "pos": "phr.", "examples": []}, {"en": "get offended/annoyed", "zh": "生气了/被冒犯了", "pos": "phr.", "examples": []}, {"en": "be responsible for=take responsibility for", "zh": "对......负责；承担责任", "pos": "phr.", "examples": []}]}, "4.9": {"words": [{"en": "cuddle", "zh": "拥抱；依偎 hug；embrace", "pos": "v./n.", "examples": []}, {"en": "auction", "zh": "拍卖(会) Sth. is put up for auction某物将被拍卖 at auction在拍卖会上", "pos": "n.", "examples": []}, {"en": "fatigue", "zh": "=exhaustion；tiredness疲劳/疲乏/疲惫driver fatigue 驾驶(员)疲劳/疲劳驾驶physical and mental fatigue 精疲力竭", "pos": "n.", "examples": []}, {"en": "failing", "zh": "失败/未成功做到的；变弱/差的；衰退的 failing health 每况愈下的健康状况", "pos": "adj.", "examples": []}, {"en": "fail", "zh": "fail to do sth. 未能做到某事 fail in sth. 在某事上失败", "pos": "v.", "examples": []}, {"en": "communicative", "zh": "爱说话/乐意沟通的；健谈/善于交际的", "pos": "adj.", "examples": []}, {"en": "communicate", "zh": "communicate sth. to sb.向某人传达某事 communicate with sb.与某人交流", "pos": "v.", "examples": []}, {"en": "adapt", "zh": "(使)适应(to)；改编/写 It took him a while to adapt (himself) to the new surroundings 过了一阵子才适应新环境Three of her novels have been adapted for television她的小说中有三部已经登上电视屏幕", "pos": "v.", "examples": []}, {"en": "adaptability", "zh": "适应性", "pos": "n.", "examples": []}, {"en": "block", "zh": "大块；方体；大楼；街区；阻碍/阻挡；屏蔽/拦截 writer’s block 作家瓶颈；神/文思枯竭 类似于“江郎才尽” struggle with writer’s block努力突破瓶颈；struggle with anxiety 奋力解除/消除焦虑", "pos": "n./v.", "examples": []}, {"en": "resident", "zh": "居民/住户；(美国)住院实习医生", "pos": "n.", "examples": []}, {"en": "residential", "zh": "住宅的；提供住宿的 residential area 住宅区 residential courses 住校式培训课程", "pos": "adj.", "examples": []}, {"en": "residence", "zh": "住处/房/宅；居住资格 (temporary) residence permit/card 居住证(暂住证) former residence 故居residence booklet 户口簿/本residence community住宅小区reside vi. 居住；定居", "pos": "n.", "examples": []}, {"en": "diagnose", "zh": "诊断；找出......的原因be diagnosed with 被诊断患有......疾病 be diagnosed as 被诊断为 He has recently been diagnosed with angina 他最近被诊断出患有心绞痛 The illness was diagnosed as cancer 经诊断此病为癌 I quickly diagnosed the problem as a faulty battery 我很快判断出问题在于电池故障", "pos": "v.", "examples": []}, {"en": "moody", "zh": "情绪多变/喜怒无常的；情绪化/闷闷不乐的；令人伤感的", "pos": "adj.", "examples": []}, {"en": "mood", "zh": "语气；情绪；心境；氛围in a good/bad mood 心情好/坏not in the mood 没心情/心思(for) subjunctive mood 虚拟语气 indicative mood 陈述/直陈语气imperative mood 祈使句", "pos": "n.", "examples": []}], "phrases": [{"en": "give a rare glimpse into sth.", "zh": "提供对某事物难得的观察视角", "pos": "phr.", "examples": []}, {"en": "define one's work", "zh": "明确自己的工作职责", "pos": "phr.", "examples": []}, {"en": "be on sick", "zh": "leave休病假", "pos": "phr.", "examples": []}, {"en": "the literary dry spell", "zh": "文学创作的低谷/干旱期", "pos": "phr.", "examples": []}, {"en": "make heavy demands on sb.", "zh": "对某人提出苛刻的要求", "pos": "phr.", "examples": []}, {"en": "be buried in data and academic journals", "zh": "被淹没在大量的数据和学术期刊之中", "pos": "phr.", "examples": []}, {"en": "pull on the", "zh": "clothes穿上衣服=put", "pos": "phr.", "examples": []}, {"en": "on；wear", "zh": "反义词组：take", "pos": "phr.", "examples": []}, {"en": "the associate", "zh": "professor副教授", "pos": "phr.", "examples": []}, {"en": "resonate", "zh": "with与......产生共鸣", "pos": "phr.", "examples": []}, {"en": "have a bad", "zh": "press有/得/受到负面报道；声誉不佳/口碑不好", "pos": "phr.", "examples": []}]}, "4.10": {"words": [{"en": "sociologist", "zh": "社会学家", "pos": "n.", "examples": []}, {"en": "sociology", "zh": "社会学 sociologic(al) adj.", "pos": "n.", "examples": []}, {"en": "venomous", "zh": "有毒的；恶意/充满仇恨的", "pos": "adj.", "examples": []}, {"en": "venom", "zh": "毒液；恶意/怨恨", "pos": "n.", "examples": []}, {"en": "underdog", "zh": "弱旅；劣势方；弱势群体；不被看好者/黑马", "pos": "n.", "examples": []}, {"en": "fluffy", "zh": "覆盖有绒毛的；松软/蓬松的 fluffy blanket 毛茸茸/绒绒的毯子", "pos": "adj.", "examples": []}, {"en": "unknowinglyad", "zh": "不知不觉/不知情地 He broke the rules unknowingly 他无意中犯了规", "pos": "v.", "examples": []}, {"en": "perceive", "zh": "认为/理解；注意/察觉", "pos": "v.", "examples": []}, {"en": "misperceive", "zh": "误解", "pos": "v.", "examples": []}, {"en": "sideline", "zh": "副业/兼职/兼营业务；边线；排挤 sideline product 副业产品on/from the sideline 袖手旁观/置身局外  be sidelined 受到排挤类似：be elbowed out", "pos": "n./v.", "examples": []}, {"en": "futility", "zh": "徒劳；无用；无意义 sense of futility 徒劳感", "pos": "n.", "examples": []}, {"en": "futile", "zh": "徒劳/的 My appeal proved futile 我的申诉徒劳了", "pos": "adj.", "examples": []}, {"en": "fuel", "zh": "燃料；燃烧剂；刺激因素/言辞；给提供燃料/加油；增强/刺激 rocket fuel 火箭燃料 fuel tank 油箱 add fuel to the fire/flames 火上浇油 fuel consumption 耗油量 oil-fueled power stations 燃油发电厂 fuel inflation 刺激/加速通货膨胀", "pos": "v./n.", "examples": []}, {"en": "fault", "zh": "过错/失；责任；缺/弱点；故障/缺陷；断层 at fault 有罪/错的；负有责任的 an electrical fault 电路故障 the San Andreas fault 圣安德烈亚斯断层 find fault with sb. /sth. 挑剔；指责", "pos": "n.", "examples": []}, {"en": "faulty", "zh": "有错误/缺点的 faulty equipment 出故障的设备 a faulty product 瑕疵品 类似于inferior product 劣质品(感觉后者更严重点)", "pos": "adj.", "examples": []}], "phrases": [{"en": "the deputy", "zh": "head副主管/副校长/副乡/团/站长", "pos": "phr.", "examples": []}, {"en": "fight-or-flight", "zh": "response战斗或逃逸反应", "pos": "phr.", "examples": []}, {"en": "As sb. puts", "zh": "it正如某人所说/言put=say", "pos": "phr.", "examples": []}, {"en": "pay the ultimate", "zh": "price付出最终/最大/终极代价", "pos": "phr.", "examples": []}, {"en": "have a respect", "zh": "for尊/敬重=respect", "pos": "phr.", "examples": []}, {"en": "fit into", "zh": "nature与自然融为一体", "pos": "phr.", "examples": []}, {"en": "become/be critical", "zh": "of对......感到不满/持批评态度/吹毛求疵", "pos": "phr.", "examples": []}, {"en": "blame sb. for sth.=blame sth. on sb.", "zh": "归咎于某人；因某事责备某人be", "pos": "phr.", "examples": []}, {"en": "to blame", "zh": "(某人)应该受到责备；是罪魁祸首/始作俑者", "pos": "phr.", "examples": []}, {"en": "be out of touch with modern ways", "zh": "与现代(生活)方式脱节", "pos": "phr.", "examples": []}, {"en": "feel cut off from the adult world", "zh": "感觉与成年人世界隔绝了", "pos": "phr.", "examples": []}]}, "4.13": {"words": [{"en": "surface", "zh": "表面/层；水/地/液面；外表；浮出/升到水面；显露；重新出现smooth surface 光滑的平面 uneven surface 凹凸不平的表/地面 on the surface 表面上/乍一看 It seems like a good idea on the surface but there are sure to be problems. 表面上看来不错但肯定存在问题。The ducks dived and surfaced again several meters away 鸭子潜入水中然后在几米外又钻出水面 Doubts began to surface.质疑(声) 开始出现", "pos": "n./v.", "examples": []}, {"en": "aim", "zh": "以......为目的；旨在；瞄准/针对aim at (doing) sth.=aim to do sth.", "pos": "v./n.", "examples": []}, {"en": "polish", "zh": "擦亮；磨/抛光；改善/润色；完美/娴熟/精湛polish shoes 擦鞋 polish one's fingernails 修剪指甲polished round-grain rice 精制/抛光粳米(对应brown rice 糙米) The statement was carefully polished and checked before release. 该声明经过仔细检查润色后才发表nail polish 指甲油 wax polish 上光蜡 silver polish 银光剂 She played the cello with the polish of much older musician 她演奏大提琴颇有资深演奏家风范", "pos": "v./n.", "examples": []}, {"en": "stuff", "zh": "物品/东西/活儿；塞/填满/填馅 stuff and wrap jiaozi 包饺子/裹馅 Don't stuff the kids with chocolate before their dinner 正餐前别给孩子可劲地吃巧克力。I don't believe in all that stuff about ghosts 我才不信鬼呀魂的那些。对比", "pos": "n./v.", "examples": []}, {"en": "staff", "zh": "全体员工/职员 medical staff (全体)医务人员 recruit/employ 招募职工 staff training 员工培训", "pos": "n.", "examples": []}, {"en": "serve", "zh": "服役；为......工作；供应(餐饮等)；接待/服务；有用 Jiaozi is served with the New Year's Eve meal 饺子随年夜饭一起端上桌 This meal will serve four hungry people 这顿饭菜够四个饥肠辘辘的人吃 He is serving behind the counter 他在柜台服务/工作 He served in the army for two years in his adulthood 年轻时他服过两年兵役/当过两年兵serve no purpose 没有意义 serve the public 为人民服务/服务公众 serve as 起......作用 The sofa can serve as a bed for a night or two 这沙发可当床凑合一两夜", "pos": "v.", "examples": []}, {"en": "photographer", "zh": "摄影师", "pos": "n.", "examples": []}, {"en": "photography", "zh": "摄影", "pos": "n.", "examples": []}, {"en": "photographic", "zh": "摄影/照片的；能详细记录的 He has a photographic memory for words 他对词汇有着惊人的记忆力", "pos": "adj.", "examples": []}, {"en": "merelyad", "zh": "仅仅；只不过=only", "pos": "v.", "examples": []}, {"en": "cuisine", "zh": "烹饪；风味/菜肴 Italian cuisine 意式烹饪 Cantonese cuisine 粤/广东菜", "pos": "n.", "examples": []}, {"en": "recipe", "zh": "诀窍；秘诀；处方；食谱；烹饪法a recipe for chicken soup 鸡汤的做法 His plans are a recipe for disaster 他的计划后患无穷 recipe for success 成功秘诀", "pos": "n.", "examples": []}, {"en": "province", "zh": "省份；一级行政区；知识范围/领域 I'm afraid this issue is outside my province 这事恐怕不归我管/我管辖范围之外了", "pos": "n.", "examples": []}, {"en": "provincial", "zh": "provincial capital 省会", "pos": "adj.", "examples": []}], "phrases": [{"en": "be aimed at (doing) sth.=be aimed to do sth.", "zh": "旨在/致力于(做)某事", "pos": "phr.", "examples": []}, {"en": "The project/program aims to provide/at providing employment for people with learning", "zh": "difficulties.该项目旨在提供就业机会给学习有障碍人士The", "pos": "phr.", "examples": []}, {"en": "initiative is specially aimed at helping/to help the", "zh": "youth该倡议旨在", "pos": "phr.", "examples": []}, {"en": "the late rice", "zh": "harvest晚稻的收成/丰收", "pos": "phr.", "examples": []}, {"en": "A Bite of", "zh": "China舌尖上的中国/品尝中国味道", "pos": "phr.", "examples": []}, {"en": "foods from different regions of China", "zh": "中国不同地区的食物", "pos": "phr.", "examples": []}, {"en": "attitude towards", "zh": "life生活态度", "pos": "phr.", "examples": []}, {"en": "a story from the second episode", "zh": "第二集的故事", "pos": "phr.", "examples": []}, {"en": "focus", "zh": "on聚焦于=be", "pos": "phr.", "examples": []}, {"en": "make rice cakes", "zh": "做年糕", "pos": "phr.", "examples": []}, {"en": "a staple food in", "zh": "meals膳食中的主食", "pos": "phr.", "examples": []}, {"en": "a side dish", "zh": "配菜", "pos": "phr.", "examples": []}, {"en": "a family reunion/get-together", "zh": "一次家庭聚会/重逢", "pos": "phr.", "examples": []}, {"en": "go on the air", "zh": "被现场直播in", "pos": "phr.", "examples": []}, {"en": "the air", "zh": "在空气中；流传中；悬而未决的", "pos": "phr.", "examples": []}]}};
+const BUILT_IN_DATA = {};
 
 
 // ================================================================
@@ -1005,11 +1837,12 @@ function selectStudyDate() {
     
     html += `<div class="study-date-option ${isActive ? 'active' : ''}" onclick="selectDateAndClose('${d}')" style="
       padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;
-      background:${isActive ? '#eef2ff' : '#fff'};
+      background:${isActive ? 'rgba(108,99,255,0.18)' : 'transparent'};
+      transition:background 0.15s;
     ">
       <div style="display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-weight:600;">${d}</span>
-        <span style="font-size:.8rem;color:var(--muted);">${wordCount} 个词</span>
+        <span style="font-weight:600;color:${isActive ? 'var(--primary-light)' : 'var(--text)'};">${d}</span>
+        <span style="font-size:.8rem;color:var(--text-3);">${wordCount} 个词</span>
       </div>
     </div>`;
   });
@@ -1155,10 +1988,12 @@ function saveDB() {
 function showPage(pageId) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(pageId).classList.add('active');
-  const pages = ['page-home','page-study','page-library','page-quiz','page-wrong','page-stats'];
-  document.querySelectorAll('.nav-tab').forEach((t,i) => {
-    t.classList.toggle('active', pages[i]===pageId);
+
+  // 底部导航 active 状态
+  document.querySelectorAll('.bot-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.page === pageId);
   });
+
   if (pageId==='page-home') renderDashboard();
   if (pageId==='page-study') renderStudyPage();
   if (pageId==='page-library') renderWordList();
@@ -1174,6 +2009,16 @@ function closeModal(id) { document.getElementById(id).classList.remove('open'); 
 // ================================================================
 function renderDashboard() {
   const now = new Date();
+  const hour = now.getHours();
+  let greeting = hour < 6 ? '夜深了，还在学 🌙' :
+                 hour < 12 ? '早上好 ☀️' :
+                 hour < 14 ? '中午好 🌞' :
+                 hour < 18 ? '下午好 🌤️' :
+                 hour < 22 ? '晚上好 🌙' : '夜了，加油 🌛';
+
+  const greetEl = document.getElementById('dash-greeting');
+  if (greetEl) greetEl.textContent = greeting;
+
   document.getElementById('dash-date').textContent =
     `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日 ${['周日','周一','周二','周三','周四','周五','周六'][now.getDay()]}`;
 
@@ -1189,13 +2034,13 @@ function renderDashboard() {
     ? `第 ${cycleLabel} 轮 · ${newPool.length} 个新词可学`
     : '本轮新词已学完 ✓';
   document.getElementById('dash-new-sub').textContent = newSub;
-  document.getElementById('dash-new-card').style.opacity = newPool.length > 0 ? '1' : '0.6';
+  document.getElementById('dash-new-card').style.opacity = newPool.length > 0 ? '1' : '0.5';
 
   const dueSub = duePool.length > 0
     ? `${duePool.length} 个词到期复习`
     : '暂无需复习单词 ✓';
   document.getElementById('dash-review-sub').textContent = dueSub;
-  document.getElementById('dash-review-card').style.opacity = duePool.length > 0 ? '1' : '0.6';
+  document.getElementById('dash-review-card').style.opacity = duePool.length > 0 ? '1' : '0.5';
 
   // 学习模块
   const studyDate = getStudyDateFromToday();
@@ -1205,25 +2050,33 @@ function renderDashboard() {
   document.getElementById('dash-study-sub').textContent = studyCount > 0 ? `${studyDate} · ${studyCount} 个词` : '暂无学习内容';
 
   // 混合总题数
-  const [newR, reviewR] = db.plan.mixRatio.split(':').map(Number);
-  const mixTotal = Math.min(
-    newPool.length * newR + duePool.length * reviewR,
-    20
-  );
+  const ratio = db.plan.mixRatio || '1:1';
+  let mixTotal = 0;
+  if (ratio === 'only-new') {
+    mixTotal = newPool.length;
+  } else if (ratio === 'only-review') {
+    mixTotal = duePool.length;
+  } else {
+    const [newR, reviewR] = ratio.split(':').map(Number);
+    mixTotal = Math.min(
+      newPool.length * newR + duePool.length * reviewR,
+      20
+    );
+  }
   document.getElementById('dash-mix-count').textContent = mixTotal;
   document.getElementById('dash-mix-sub').textContent =
-    mixTotal > 0 ? `新词 × ${newR} + 复习 × ${reviewR}，最多20题` : '请先学新词或等待复习到期';
+    mixTotal > 0 ? `新词 + 复习混合，共 ${mixTotal} 题` : '请先学新词或等待复习到期';
 
   // 提示语
   let tip = '';
   if (newPool.length > 0 && duePool.length > 0) {
     tip = `<strong>今日建议：</strong>先完成 <strong>${newPool.length} 个新词</strong>的学习，再复习 <strong>${duePool.length} 个</strong>到期单词。`;
   } else if (newPool.length > 0) {
-    tip = `<strong>今日任务：</strong>学习 <strong>${newPool.length} 个新词</strong>，为第 ${cycleLabel} 轮学习周期注入新血液 💪`;
+    tip = `<strong>今日任务：</strong>学习 <strong>${newPool.length} 个新词</strong>，第 ${cycleLabel} 轮新血液注入中 💪`;
   } else if (duePool.length > 0) {
     tip = `<strong>今日任务：</strong>复习 <strong>${duePool.length} 个</strong>到期单词，巩固记忆 🧠`;
   } else {
-    tip = `🎉 太棒了！今日任务已全部完成，记得明天再来继续学习！`;
+    tip = `🎉 今日任务全部完成！厉害了，明天继续保持！`;
   }
   document.getElementById('dash-tip').innerHTML = tip;
 
@@ -1271,9 +2124,9 @@ function renderPlanTimeline() {
     document.getElementById('recent-card').style.display = 'block';
     const recent = db.history.slice(-5).reverse();
     document.getElementById('recent-list').innerHTML = recent.map(h => `
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:.85rem;">
-        <span>${h.date} · ${h.type==='new'?'新词':h.type==='review'?'复习':'综合'}</span>
-        <span style="color:${h.pct>=80?'var(--success)':h.pct>=60?'var(--warn)':'var(--danger)'}">${h.pct}% (${h.correct}/${h.total})</span>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);font-size:.84rem;">
+        <span style="color:var(--text-2);">${h.date} · ${h.type==='new'?'新词':h.type==='review'?'复习':'综合'}</span>
+        <span style="font-weight:700;color:${h.pct>=80?'var(--success)':h.pct>=60?'var(--warn)':'var(--danger)'}">${h.pct}% (${h.correct}/${h.total})</span>
       </div>
     `).join('');
   }
@@ -1432,6 +2285,10 @@ function quizConfirm() {
 
   if (correct) {
     input.classList.add('correct');
+    // 答对微动画
+    input.classList.remove('correct-anim');
+    void input.offsetWidth; // reflow 触发重播
+    input.classList.add('correct-anim');
     quiz.correct++;
     quiz.results.push({ word:q, userAns, correct:true });
     document.getElementById('quiz-feedback').className = 'quiz-feedback correct show';
@@ -1439,6 +2296,10 @@ function quizConfirm() {
     calcNextReview(q.id, true);
   } else {
     input.classList.add('wrong');
+    // 答错抖动
+    input.classList.remove('wrong-anim');
+    void input.offsetWidth;
+    input.classList.add('wrong-anim');
     quiz.wrong++;
     quiz.results.push({ word:q, userAns, correct:false });
     document.getElementById('quiz-feedback').className = 'quiz-feedback wrong show';
@@ -1493,6 +2354,37 @@ function showQuizResult() {
   document.getElementById('result-wrong').textContent = quiz.wrong;
   document.getElementById('result-total').textContent = total;
 
+  // 情绪化表情和文案
+  let emoji = '🎉', msg = '';
+  if (pct === 100) {
+    emoji = '🏆'; msg = '满分！你今天真的很厉害！';
+  } else if (pct >= 90) {
+    emoji = '🌟'; msg = '太优秀了，距完美只差一步！';
+  } else if (pct >= 80) {
+    emoji = '🎯'; msg = '很不错！继续保持这个状态～';
+  } else if (pct >= 60) {
+    emoji = '💪'; msg = '加油！错的那些再多练练就稳了';
+  } else if (pct >= 40) {
+    emoji = '📚'; msg = '别灰心，专练错题马上就进步！';
+  } else {
+    emoji = '🌱'; msg = '从头来过也没关系，坚持才是真的赢';
+  }
+  document.getElementById('result-emoji').textContent = emoji;
+  document.getElementById('result-msg').textContent = msg;
+
+  // 结果圆圈弹入动画
+  const circle = document.getElementById('result-circle-el');
+  if (circle) {
+    circle.classList.remove('pop-in');
+    void circle.offsetWidth;
+    circle.classList.add('pop-in');
+  }
+
+  // 满分烟花
+  if (pct === 100) {
+    launchConfetti();
+  }
+
   db.history.push({ date:today(), correct:quiz.correct, wrong:quiz.wrong, total, pct,
     type: quiz.questions[0]?._type || 'mix' });
   if (db.history.length > 100) db.history = db.history.slice(-100);
@@ -1504,7 +2396,7 @@ function showQuizResult() {
       <div>
         <div class="en">${escHtml(r.word.en)}</div>
         <div class="zh">${escHtml(r.word.zh)}</div>
-        ${!r.correct ? `<div class="user">你的答案：${escHtml(r.userAns)}</div>` : ''}
+        ${!r.correct ? `<div class="user">你写的：${escHtml(r.userAns)}</div>` : ''}
       </div>
     </div>
   `).join('');
@@ -1586,9 +2478,9 @@ function renderWordList() {
 
     let meta = '';
     if (m && m.learnDate) {
-      meta = `<span style="font-size:.75rem;color:var(--muted);">已学${cycleDay}天 · 间隔${m.interval}天 · 下次${m.nextReview||'待定'}</span>`;
+      meta = `<span style="font-size:.73rem;color:var(--text-3);">已学${cycleDay}天 · 间隔${m.interval}天 · 下次${m.nextReview||'待定'}</span>`;
     } else {
-      meta = `<span style="font-size:.75rem;color:var(--purple);">未学习</span>`;
+      meta = `<span style="font-size:.73rem;color:var(--accent);">未学习</span>`;
     }
 
     return `<div class="word-item">
@@ -2056,7 +2948,7 @@ function previewCSV() {
     html += `<tr style="border-bottom:1px solid #eee;"><td style="padding:3px 6px;">${r.group}</td><td>${r.en}</td><td>${r.pos}</td><td>${r.zh}</td></tr>`;
   }
   html += '</table>';
-  if (rows.length > 5) html += `<div style="margin-top:6px;color:var(--muted);">...共 ${rows.length} 条</div>`;
+  if (rows.length > 5) html += `<div style="margin-top:6px;color:var(--text-3);">...共 ${rows.length} 条</div>`;
 
   document.getElementById('csv-preview-content').innerHTML = html;
   document.getElementById('csv-preview').style.display = 'block';
@@ -2190,7 +3082,7 @@ function renderWrongBook() {
       <div class="meta">
         ${group?`<span class="word-tag group">${esc(group.name)}</span>`:''}
         <span class="wrong-book-streak">复习间隔 ${m.interval} 天</span>
-        <span style="font-size:.75rem;color:var(--muted)">下次 ${m.nextReview}</span>
+        <span style="font-size:.75rem;color:var(--text-3)">下次 ${m.nextReview}</span>
       </div>
     </div>`;
   }).join('');
@@ -2219,36 +3111,36 @@ function renderStats() {
     <div class="stats-card"><div class="big">${total}</div><div class="desc">词库总量</div></div>
     <div class="stats-card"><div class="big" style="color:var(--success)">${learned}</div><div class="desc">已学单词</div></div>
     <div class="stats-card"><div class="big" style="color:var(--danger)">${due}</div><div class="desc">待复习</div></div>
-    <div class="stats-card"><div class="big" style="color:var(--purple)">${mastered}</div><div class="desc">已掌握</div></div>
+    <div class="stats-card"><div class="big" style="color:var(--accent)">${mastered}</div><div class="desc">已掌握</div></div>
     <div class="stats-card"><div class="big" style="color:var(--warn)">${accuracy}%</div><div class="desc">历史正确率</div></div>
     <div class="stats-card"><div class="big">${db.history.length}</div><div class="desc">练习轮次</div></div>
   `;
 
   const levels = [0,1,2,3].map(l => db.words.filter(w=>getMasteryLevel(w.id)===l).length);
-  const colors = ['#cbd5e1','#60a5fa','#34d399','#fbbf24'];
+  const colors = ['#4b5563','#6c63ff','#00d4aa','#ffb347'];
   document.getElementById('stats-mastery').innerHTML = `
-    <div style="font-weight:700;color:var(--primary);margin-bottom:8px;">掌握度分布</div>
-    <div class="mastery-bar-wrap" style="height:12px;">
+    <div style="font-weight:700;color:var(--text);margin-bottom:8px;font-size:.88rem;">掌握度分布</div>
+    <div class="mastery-bar-wrap" style="height:10px;">
       ${levels.map((cnt,i)=>`
         <div class="mastery-bar" style="width:${total>0?cnt/total*100:0}%;background:${colors[i]};display:inline-block;"></div>
       `).join('')}
     </div>
     <div class="mastery-legend">
-      ${levels.map((cnt,i)=>`<span>● ${['初学','认识','熟悉','掌握'][i]} ${cnt}</span>`).join('')}
+      ${levels.map((cnt,i)=>`<span style="color:${colors[i]};">● ${['初学','认识','熟悉','掌握'][i]} ${cnt}</span>`).join('')}
     </div>
   `;
 
-  let groupHtml = '<div style="font-weight:700;color:var(--primary);margin:16px 0 8px;">各分组进度</div>';
+  let groupHtml = '<div style="font-weight:700;color:var(--text);margin:16px 0 8px;font-size:.88rem;">各分组进度</div>';
   db.groups.forEach(g => {
     const total_g = db.words.filter(w=>w.groupId===g.id).length;
     const learned_g = db.words.filter(w=>w.groupId===g.id&&db.memData[w.id]&&db.memData[w.id].learnDate).length;
     const mastered_g = db.words.filter(w=>w.groupId===g.id&&getMasteryLevel(w.id)>=3).length;
     const due_g = db.words.filter(w=>w.groupId===g.id&&isDue(w.id)).length;
-    groupHtml += `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:.85rem;">
-      <span>${esc(g.name)}</span>
-      <span style="color:var(--muted)">
+    groupHtml += `<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);font-size:.84rem;">
+      <span style="color:var(--text-2);">${esc(g.name)}</span>
+      <span style="color:var(--text-3);">
         已学 <span style="color:var(--success);font-weight:700">${learned_g}</span>/${total_g}
-        · 掌握 <span style="color:var(--purple);font-weight:700">${mastered_g}</span>
+        · 掌握 <span style="color:var(--warn);font-weight:700">${mastered_g}</span>
         ${due_g>0?`· <span style="color:var(--danger)">待复习 ${due_g}</span>`:''}
       </span>
     </div>`;
@@ -2258,10 +3150,10 @@ function renderStats() {
   const last7 = db.history.slice(-14);
   if (last7.length>0) {
     document.getElementById('stats-history').innerHTML = last7.map(h => `
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:.85rem;">
-        <span>${h.date} · ${h.type==='new'?'新词':h.type==='review'?'复习':'综合'}</span>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);font-size:.84rem;">
+        <span style="color:var(--text-2);">${h.date} · ${h.type==='new'?'新词':h.type==='review'?'复习':'综合'}</span>
         <div style="display:flex;gap:8px;align-items:center;">
-          <span>✅${h.correct} ❌${h.wrong}</span>
+          <span style="color:var(--text-3);">✅${h.correct} ❌${h.wrong}</span>
           <span style="font-weight:700;color:${h.pct>=80?'var(--success)':h.pct>=60?'var(--warn)':'var(--danger)'}">${h.pct}%</span>
         </div>
       </div>
@@ -2290,17 +3182,17 @@ function renderPlanGroupList() {
   const groups = [...db.groups].sort((a, b) => a.id.localeCompare(b.id));
 
   if (!groups.length) {
-    container.innerHTML = '<div style="color:var(--muted);font-size:.85rem;">暂无分组，请先导入词汇。</div>';
+    container.innerHTML = '<div style="color:var(--text-3);font-size:.85rem;">暂无分组，请先导入词汇。</div>';
     return;
   }
 
   container.innerHTML = groups.map(g => {
     const wordCount = db.words.filter(w => w.groupId === g.id).length;
     const checked = selected.has(g.id) ? 'checked' : '';
-    return `<label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:4px 6px;border-radius:6px;${checked ? 'background:#ede9fe;' : ''}">
+    return `<label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:6px 8px;border-radius:8px;transition:background 0.15s;${checked ? 'background:rgba(108,99,255,0.15);' : 'background:transparent;'}">
       <input type="checkbox" value="${g.id}" ${checked} style="width:15px;height:15px;accent-color:var(--primary);">
-      <span style="font-weight:600;">${g.name || g.id}</span>
-      <span style="color:var(--muted);font-size:.8rem;margin-left:auto;">${wordCount} 词</span>
+      <span style="font-weight:600;color:var(--text);">${g.name || g.id}</span>
+      <span style="color:var(--text-3);font-size:.8rem;margin-left:auto;">${wordCount} 词</span>
     </label>`;
   }).join('');
 }
@@ -2370,6 +3262,62 @@ document.addEventListener('DOMContentLoaded', () => {
     el.addEventListener('click', () => openPlanModal());
   });
 });
+
+// ================================================================
+// 满分烟花 🎊
+// ================================================================
+function launchConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const colors = ['#FFAA85','#FFB5C5','#A8E6CF','#FFE5A0','#FFD0D0','#B5E6CF','#fff'];
+  const particles = Array.from({ length: 130 }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height * 0.4 - canvas.height * 0.1,
+    r: Math.random() * 5 + 3,
+    d: Math.random() * 80 + 20,
+    color: colors[Math.floor(Math.random() * colors.length)],
+    tilt: Math.random() * 10 - 10,
+    tiltAngle: 0,
+    tiltInc: (Math.random() * 0.1) + 0.04,
+    vy: Math.random() * 2.5 + 1.5,
+    vx: Math.random() * 2 - 1,
+    opacity: 1
+  }));
+
+  let frame = 0;
+  const maxFrames = 140;
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      ctx.save();
+      ctx.globalAlpha = p.opacity;
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.ellipse(p.x + p.tilt, p.y, p.r, p.r * 0.45, (p.tiltAngle * Math.PI) / 180, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.restore();
+
+      p.tiltAngle += p.tiltInc;
+      p.y += p.vy;
+      p.x += p.vx;
+      p.tilt = Math.sin(p.tiltAngle) * 12;
+      if (frame > maxFrames * 0.6) p.opacity -= 0.018;
+    });
+
+    frame++;
+    if (frame < maxFrames) {
+      requestAnimationFrame(draw);
+    } else {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+  draw();
+}
 
 // 键盘快捷键
 document.addEventListener('keydown', (e) => {
